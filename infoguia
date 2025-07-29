@@ -1,0 +1,33 @@
+Parsing del archivo .cub 
+- Leer y validar el archivo. 
+- Extraer rutas de texturas, colores y el mapa. 
+- Verificar que el mapa esté cerrado y tenga un solo jugador.
+
+
+Estructuras de datos 
+- Definir structs para el mapa, jugador, texturas, colores, etc.
+
+
+Inicialización de la ventana (mlx) 
+- Crear ventana y preparar el buffer de imagen.
+
+
+Renderizado básico (raycasting) 
+- Implementar el algoritmo de raycasting para dibujar paredes. 
+- Dibujar suelo y techo con colores.
+
+
+Movimiento y controles 
+- Implementar movimiento WASD y rotación con flechas.
+
+
+Texturizado 
+- Cargar texturas y aplicarlas a las paredes según la dirección.
+
+
+Gestión de errores 
+- Mensajes claros y salida limpia ante errores de parsing o ejecución.
+
+
+Limpieza y cierre 
+- Liberar memoria y cerrar la ventana correctamente.
