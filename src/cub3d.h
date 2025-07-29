@@ -19,6 +19,7 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <unistd.h>
+#include <string.h>
 
 //chars usados para crear el mapa
 # define PLAYER_N 'N'
@@ -28,8 +29,13 @@
 # define FLOOR '0'
 # define WALL '1'
 
+# define ERROR_EXTENSION "Error: Extension de archivo invalida\n"
+# define ERROR_ARGUMENTOS "Error: Nº de argumentos invalido\n"
+
 //main
 int		main(int argc, char **argv);
+
+
 
 //parsing
 int validate_extension(const char *filename);

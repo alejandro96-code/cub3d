@@ -5,6 +5,7 @@ RM = rm -f
 
 SRC =	src/main.c \
 		src/parsing.c \
+		src/checks_errors.c \
                 
 OBJS = $(SRC:.c=.o)
 
