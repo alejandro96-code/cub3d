@@ -51,7 +51,7 @@ CUB3DSRC = \
 	src/main.c \
 	src/checks_errors.c \
 	src/init_window.c \
-	src/parse_cub_file.c \
+	src/parsing.c \
 	src/free.c
 
 # Objetos
