@@ -1,3 +1,5 @@
+
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -10,43 +12,21 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #ifndef CUB3D_H
 # define CUB3D_H
 
-// Estructura principal de configuración
-typedef struct s_cub_config {
-    char *texture_north;
-    char *texture_south;
-    char *texture_east;
-    char *texture_west;
-    int  floor_color;
-    int  ceiling_color;
-    char **map; // Matriz de chars (mapa)
-    int  map_height;
-    int  map_width;
-}   t_cub_config;
-
-// Estructura para la ventana y contexto MLX
-typedef struct s_mlx {
-    void *mlx_ptr;
-    void *win_ptr;
-    int width;
-    int height;
-} t_mlx;
-
-//librerias usadas
-# include "../mlx/mlx.h" //mlx
-# include "../src/gnl/get_next_line.h" //get_next_line
-# include "../src/libft/libft.h" //libft
+// librerias usadas
+# include "../mlx/mlx.h"
+# include "../src/gnl/get_next_line.h"
+# include "../src/libft/libft.h"
+# include <fcntl.h>
+# include <math.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <fcntl.h>
-
-# include <unistd.h>
 # include <string.h>
+# include <unistd.h>
+# include <stddef.h>
 
-//chars usados para crear el mapa
 # define PLAYER_N 'N'
 # define PLAYER_S 'S'
 # define PLAYER_W 'W'
@@ -60,17 +40,107 @@ typedef struct s_mlx {
 # define ERROR_PARSEO "Error: No se pudo parsear el archivo .cub\n"
 # define ERROR_MLX "Error: No se pudo inicializar la ventana MLX\n"
 
-//main
-int		main(int argc, char **argv);
 
-//parsing
-int validate_extension(const char *filename);
-t_cub_config *parse_cub_file(const char *filename);
-void free_cub_config(t_cub_config *cfg);
+// Estructura principal de configuración
+typedef struct s_cub_config
+{
 
-//mlx
-t_mlx *init_window(const t_cub_config *cfg);
-void destroy_window(t_mlx *mlx);
-int close_window(t_mlx *mlx);
+	int			floor_color;
+	int			ceiling_color;
+	char 		**map;
+	int			map_height;
+	int			map_width;
+}				t_cub_config;
+
+// Estructura para la ventana y contexto MLX
+typedef struct s_mlx
+{
+	void		*mlx_ptr;
+	void		*win_ptr;
+	int			width;
+	int			height;
+}				t_mlx;
+
+// Estructura para el jugador (posición, dirección y plano de cámara)
+typedef struct s_player
+{
+	double x, y;
+	double dir_x, dir_y;
+	double plane_x, plane_y;
+}				t_player;
+
+// Estructura para la información del rayo
+typedef struct s_rayinfo
+{
+	double		ray_dir_x;
+	double		ray_dir_y;
+}				t_rayinfo;
+
+// Estructura para agrupar los parámetros de pintado
+typedef struct s_paintinfo
+{
+	t_mlx		*mlx;
+	int			x;
+	int			draw_start;
+	int			draw_end;
+	int			color;
+	int			side;
+}				t_paintinfo;
+
+typedef struct s_raycast_vars {
+	t_rayinfo rayinfo;
+	t_paintinfo paintinfo;
+	double  camera_x;
+	double  ray_dir_x;
+	double  ray_dir_y;
+	int     map_x;
+	int     map_y;
+	double  delta_dist_x;
+	double  delta_dist_y;
+	int     side;
+	double  perp_wall_dist;
+	int     line_height;
+	int     draw_start;
+	int     draw_end;
+	int     step_x;
+	int     step_y;
+	double  side_dist_x;
+	double  side_dist_y;
+	int     x;
+
+}   t_raycast_vars;
+
+//funciones
+int				main(int argc, char **argv);
+
+
+void			init_player_from_map(t_player *player, t_cub_config *cfg);
+
+
+int				validate_extension(const char *filename);
+t_cub_config	*parse_cub_file(const char *filename);
+void			free_cub_config(t_cub_config *cfg);
+
+
+t_mlx			*init_window(const t_cub_config *cfg);
+void			destroy_window(t_mlx *mlx);
+int				close_window(t_mlx *mlx);
+
+void			render_scene(t_mlx *mlx, t_cub_config *cfg, t_player *player);
+
+
+void calculate_ray_direction(const t_player *player, t_mlx *mlx, t_raycast_vars *v, int x);
+
+void calculate_step_and_side_dist(const t_player *player, t_raycast_vars *v);
+
+int raycast_dda(const t_cub_config *cfg, t_raycast_vars *v);
+
+void calculate_perp_wall_and_lineheight(t_mlx *mlx, t_player *player, t_raycast_vars *v);
+
+void calculate_draw_limits(t_mlx *mlx, t_raycast_vars *v);
+
+
+void draw_column_colors(t_paintinfo *p, t_rayinfo *ray);
+
 
 #endif

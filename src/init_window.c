@@ -13,40 +13,43 @@
 #include "cub3d.h"
 
 // Función que se ejecuta cuando se cierra la ventana
-int close_window(t_mlx *mlx)
+int	close_window(t_mlx *mlx)
 {
-    destroy_window(mlx);
-    exit(0);
+	destroy_window(mlx);
+	exit(0);
 }
 
-t_mlx *init_window(const t_cub_config *cfg)
+t_mlx	*init_window(const t_cub_config *cfg)
 {
-    t_mlx *mlx = malloc(sizeof(t_mlx));
-    if (!mlx)
-        return NULL;
-    mlx->width = cfg->map_width * 64;
-    mlx->height = cfg->map_height * 64;
-    mlx->mlx_ptr = mlx_init();
-    if (!mlx->mlx_ptr) {
-        free(mlx);
-        return NULL;
-    }
-    mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, mlx->width, mlx->height, "cub3D");
-    if (!mlx->win_ptr) {
-        free(mlx);
-        return NULL;
-    }
-    
-    // Configurar el hook para cerrar la ventana con la X (evento 33 para Linux)
-    mlx_hook(mlx->win_ptr, 33, 1L<<17, close_window, mlx);
-    
-    return mlx;
+	t_mlx	*mlx;
+
+	mlx = malloc(sizeof(t_mlx));
+	if (!mlx)
+		return (NULL);
+	mlx->width = cfg->map_width * 64;
+	mlx->height = cfg->map_height * 64;
+	mlx->mlx_ptr = mlx_init();
+	if (!mlx->mlx_ptr)
+	{
+		free(mlx);
+		return (NULL);
+	}
+	mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, mlx->width, mlx->height,
+			"cub3D");
+	if (!mlx->win_ptr)
+	{
+		free(mlx);
+		return (NULL);
+	}
+	mlx_hook(mlx->win_ptr, 33, 1L << 17, close_window, mlx);
+	return (mlx);
 }
 
-void destroy_window(t_mlx *mlx)
+void	destroy_window(t_mlx *mlx)
 {
-    if (!mlx) return;
-    if (mlx->win_ptr && mlx->mlx_ptr)
-        mlx_destroy_window(mlx->mlx_ptr, mlx->win_ptr);
-    free(mlx);
+	if (!mlx)
+		return ;
+	if (mlx->win_ptr && mlx->mlx_ptr)
+		mlx_destroy_window(mlx->mlx_ptr, mlx->win_ptr);
+	free(mlx);
 }

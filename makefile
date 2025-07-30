@@ -48,11 +48,16 @@ GNLSRC = \
 
 # Archivos principales del proyecto
 CUB3DSRC = \
-	src/main.c \
-	src/checks_errors.c \
-	src/init_window.c \
-	src/parsing.c \
-	src/free.c
+	   src/main.c \
+	   src/checks_errors.c \
+	   src/init_window.c \
+	   src/parsing.c \
+	   src/renderScene.c \
+	   src/free.c \
+	   src/init_player.c \
+	   src/drawColors.c \
+	   src/raycast_calc.c
+
 
 # Objetos
 OBJS = $(CUB3DSRC:.c=.o) $(LIBFTSRC:.c=.o) $(GNLSRC:.c=.o)
