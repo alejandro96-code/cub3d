@@ -12,6 +12,13 @@
 
 #include "cub3d.h"
 
+// Función que se ejecuta cuando se cierra la ventana
+int close_window(t_mlx *mlx)
+{
+    destroy_window(mlx);
+    exit(0);
+}
+
 t_mlx *init_window(const t_cub_config *cfg)
 {
     t_mlx *mlx = malloc(sizeof(t_mlx));
@@ -29,6 +36,10 @@ t_mlx *init_window(const t_cub_config *cfg)
         free(mlx);
         return NULL;
     }
+    
+    // Configurar el hook para cerrar la ventana con la X (evento 33 para Linux)
+    mlx_hook(mlx->win_ptr, 33, 1L<<17, close_window, mlx);
+    
     return mlx;
 }
 

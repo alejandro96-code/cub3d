@@ -71,5 +71,6 @@ void free_cub_config(t_cub_config *cfg);
 //mlx
 t_mlx *init_window(const t_cub_config *cfg);
 void destroy_window(t_mlx *mlx);
+int close_window(t_mlx *mlx);
 
 #endif
