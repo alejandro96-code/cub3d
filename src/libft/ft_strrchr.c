@@ -1,25 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/07/29 16:38:20 by alejanr2         ###   ########.fr       */
+/*   Created: 2024/12/17 13:30:54 by alejanr2          #+#    #+#             */
+/*   Updated: 2024/12/17 13:30:55 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../libft/libft.h"
 
-int	validate_extension(const char *filename)
+char	*ft_strrchr(const char *s, int c)
 {
-	int	len;
+	int				i;
+	unsigned char	a;
 
-	len = 0;
-	while (filename[len])
-		len++;
-	if (len < 4)
-		return (0);
-	return (filename[len - 4] == '.' && filename[len - 3] == 'c' && filename[len - 2] == 'u' && filename[len - 1] == 'b');
+	i = 0;
+	while (s[i] != '\0')
+		i++;
+	a = c;
+	while (i >= 0)
+	{
+		if (s[i] == a)
+		{
+			return (&((char *)s)[i]);
+		}
+		i--;
+	}
+	return (0);
 }

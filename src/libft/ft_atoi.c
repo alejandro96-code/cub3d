@@ -1,25 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/07/29 16:38:20 by alejanr2         ###   ########.fr       */
+/*   Created: 2024/12/17 13:27:29 by alejanr2          #+#    #+#             */
+/*   Updated: 2025/06/27 17:48:55 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../libft/libft.h"
 
-int	validate_extension(const char *filename)
+int	ft_atoi(const char *str)
 {
-	int	len;
+	int	n;
+	int	i;
+	int	sign;
 
-	len = 0;
-	while (filename[len])
-		len++;
-	if (len < 4)
-		return (0);
-	return (filename[len - 4] == '.' && filename[len - 3] == 'c' && filename[len - 2] == 'u' && filename[len - 1] == 'b');
+	n = 0;
+	i = 0;
+	sign = 1;
+	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
+		i++;
+	if (str[i] == '+' || str[i] == '-')
+	{
+		if (str[i] == '-')
+			sign = -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		n = n * 10;
+		n = n + str[i] - 48;
+		i++;
+	}
+	return (n * sign);
 }

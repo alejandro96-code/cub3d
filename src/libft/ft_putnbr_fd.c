@@ -1,25 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/07/29 16:38:20 by alejanr2         ###   ########.fr       */
+/*   Created: 2024/12/17 13:29:55 by alejanr2          #+#    #+#             */
+/*   Updated: 2024/12/17 13:29:55 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../libft/libft.h"
 
-int	validate_extension(const char *filename)
+void	ft_putnbr_fd(int nb, int fd)
 {
-	int	len;
+	char	i;
 
-	len = 0;
-	while (filename[len])
-		len++;
-	if (len < 4)
-		return (0);
-	return (filename[len - 4] == '.' && filename[len - 3] == 'c' && filename[len - 2] == 'u' && filename[len - 1] == 'b');
+	if (nb == -2147483648)
+	{
+		write (fd, "-2147483648", 11);
+		return ;
+	}
+	if (nb < 0)
+	{
+		nb *= -1;
+		write(fd, "-", 1);
+	}
+	if (nb >= 10)
+	{
+		ft_putnbr_fd(nb / 10, fd);
+		nb = nb % 10;
+	}
+	if (nb < 10)
+	{
+		i = (char)nb + 48;
+		write(fd, &i, 1);
+	}
 }

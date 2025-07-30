@@ -12,14 +12,18 @@
 
 #include "cub3d.h"
 
-int	validate_extension(const char *filename)
+void free_cub_config(t_cub_config *cfg)
 {
-	int	len;
+    if (!cfg) return;
+    free(cfg->texture_north);
+    free(cfg->texture_south);
+    free(cfg->texture_east);
+    free(cfg->texture_west);
 
-	len = 0;
-	while (filename[len])
-		len++;
-	if (len < 4)
-		return (0);
-	return (filename[len - 4] == '.' && filename[len - 3] == 'c' && filename[len - 2] == 'u' && filename[len - 1] == 'b');
+    if (cfg->map) {
+        for (int i = 0; i < cfg->map_height; i++)
+            free(cfg->map[i]);
+        free(cfg->map);
+    }
+    free(cfg);
 }

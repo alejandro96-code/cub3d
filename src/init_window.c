@@ -12,14 +12,30 @@
 
 #include "cub3d.h"
 
-int	validate_extension(const char *filename)
+t_mlx *init_window(const t_cub_config *cfg)
 {
-	int	len;
+    t_mlx *mlx = malloc(sizeof(t_mlx));
+    if (!mlx)
+        return NULL;
+    mlx->width = cfg->map_width * 64;
+    mlx->height = cfg->map_height * 64;
+    mlx->mlx_ptr = mlx_init();
+    if (!mlx->mlx_ptr) {
+        free(mlx);
+        return NULL;
+    }
+    mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, mlx->width, mlx->height, "cub3D");
+    if (!mlx->win_ptr) {
+        free(mlx);
+        return NULL;
+    }
+    return mlx;
+}
 
-	len = 0;
-	while (filename[len])
-		len++;
-	if (len < 4)
-		return (0);
-	return (filename[len - 4] == '.' && filename[len - 3] == 'c' && filename[len - 2] == 'u' && filename[len - 1] == 'b');
+void destroy_window(t_mlx *mlx)
+{
+    if (!mlx) return;
+    if (mlx->win_ptr && mlx->mlx_ptr)
+        mlx_destroy_window(mlx->mlx_ptr, mlx->win_ptr);
+    free(mlx);
 }

@@ -1,3 +1,6 @@
+Importante: implementar de la libft
+strncmp y strdup
+
 Parsing del archivo .cub 
 - Leer y validar el archivo. 
 - Extraer rutas de texturas, colores y el mapa. 
