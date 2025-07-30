@@ -23,7 +23,7 @@
 # include <fcntl.h>
 
 size_t	ft_strlen_gnl(char const *s);
-int	ft_strchr_gnl(char *s1, int nl);
+int		ft_strchr_gnl(char *s1, int nl);
 char	*get_next_line(int fd);
 char	*ft_strjoin_gnl(char *s1, char *s2);
 

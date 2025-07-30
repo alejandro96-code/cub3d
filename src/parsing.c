@@ -12,10 +12,10 @@ static int parse_cub_line(char *line)
 // Cuenta cuántas líneas de mapa hay en el archivo
 static int count_map_lines(const char *filename)
 {
-	int fd;
-	char *line;
-	int count = 0;
-	int len;
+	int		fd;
+	char 	*line;
+	int 	count = 0;
+	int 	len;
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 		return -1;
@@ -34,10 +34,10 @@ static int count_map_lines(const char *filename)
 // Guarda las líneas de mapa en un array previamente reservado
 static int fill_map_lines(const char *filename, char **lines, int count)
 {
-	int fd;
-	char *line;
-	int i = 0;
-	int len;
+	int 	fd;
+	char 	*line;
+	int 	i = 0;
+	int 	len;
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 		return 0;
@@ -104,8 +104,8 @@ static int create_map(t_cub_config *cfg, char **lines, int count)
 // Lee todas las líneas del archivo .cub, las procesa y construye el mapa y la configuración
 static int parse_cub_file_lines(const char *filename, t_cub_config *cfg)
 {
-	char **lines = NULL;
-	int count = 0;
+	char 	**lines = NULL;
+	int 	count = 0;
 	if (!process_map_lines(filename, &lines, &count))
 		return 0;
 	if (!create_map(cfg, lines, count))
