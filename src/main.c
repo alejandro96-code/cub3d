@@ -8,6 +8,6 @@ int main(int argc, char **argv)
     if (!validate_extension(argv[1]))
         return (printf(ERROR_EXTENSION), -1);
     read_cub_file(argv[1]);
-    printf("iniciando el juego...\n");
+    printf("Iniciando el juego...\n");
     return (0);
 }
