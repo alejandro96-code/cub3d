@@ -39,6 +39,15 @@
 # define ERROR_MLX "Error: No se pudo inicializar la ventana MLX\n"
 # define ERROR_MAPA_NO_CERRADO "Error: El mapa no está completamente cerrado\n"
 # define ERROR_PLAYERS "Error: Debe haber exactamente un jugador en el mapa\n"
+# define ERROR_CHAR "Error: Caracter incorrecto en la creacion del mapa\n"
+# define ERROR_LINEA_VACIA "Error: Se ha encontrado una linea vacia\n"
+
+//BONUS
+#define MINIMAP_CELL_SIZE 8
+#define MINIMAP_MARGIN 16
+#define MINIMAP_WALL_COLOR 0x888888
+#define MINIMAP_FLOOR_COLOR 0x222222
+#define MINIMAP_PLAYER_COLOR 0xFF0000
 
 // Estructura principal de configuración
 typedef struct s_cub_config
@@ -144,6 +153,9 @@ void draw_column_colors(t_paintinfo *p, t_rayinfo *ray);
 int is_map_closed(char **map, int width, int height);
 int checksAllErrors(int argc, char **argv, t_cub_config **cfg, t_mlx **mlx);
 int has_player(char **map, int width, int height);
+int has_only_valid_chars(char **map, int width, int height);
 
+// BONUS: minimapa
+void bonus_minimap(t_mlx *mlx, t_cub_config *cfg);
 
 #endif

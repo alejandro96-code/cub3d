@@ -1,4 +1,3 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -33,6 +32,39 @@ int has_player(char **map, int width, int height)
 	return (count == 1);
 }
 
+// Comprueba si hay alguna línea vacía en el mapa
+int has_empty_line(char **map, int height)
+{
+	int y = 0;
+	while (y < height)
+	{
+		if (!map[y] || map[y][0] == '\0')
+			return (1);
+		y++;
+	}
+	return (0);
+}
+
+// Comprueba que todos los caracteres del mapa sean válidos (0,1,N,S,E,W)
+int has_only_valid_chars(char **map, int width, int height)
+{
+	int x = 0;
+	int y = 0;
+	while (y < height)
+	{
+		x = 0;
+		while (x < width)
+		{
+			char c = map[y][x];
+			if (c != '0' && c != '1' && c != 'N' && c != 'S' && c != 'E' && c != 'W' && c != '\0')
+				return (0); // Carácter inválido
+			x++;
+		}
+		y++;
+	}
+	return (1);
+}
+// Valida la extensión del archivo .cub
 int	validate_extension(const char *filename)
 {
 	int	len;
@@ -85,6 +117,16 @@ int checksAllErrors(int argc, char **argv, t_cub_config **cfg, t_mlx **mlx)
 	*cfg = parse_cub_file(argv[1]);
 	if (!*cfg)
 		return (printf(ERROR_PARSEO), 0);
+	if (has_empty_line((*cfg)->map, (*cfg)->map_height))
+	{
+		free_cub_config(*cfg);
+		return (printf(ERROR_LINEA_VACIA), 0);
+	}
+	if (!has_only_valid_chars((*cfg)->map, (*cfg)->map_width, (*cfg)->map_height))
+	{
+		free_cub_config(*cfg);
+		return (printf(ERROR_CHAR), 0);
+	}
 	if (!is_map_closed((*cfg)->map, (*cfg)->map_width, (*cfg)->map_height))
 	{
 		free_cub_config(*cfg);

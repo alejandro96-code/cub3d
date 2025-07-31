@@ -3,6 +3,8 @@
 // Devuelve 1 si la línea es de mapa, 0 en caso contrario
 static int parse_cub_line(char *line)
 {
+	if (line[0] == '\0')
+		return 1; // Considerar línea vacía como parte del mapa
 	if (line[0] == ' ' || line[0] == '1' || line[0] == '0')
 		return 1;
 	else
@@ -49,6 +51,8 @@ static int fill_map_lines(const char *filename, char **lines, int count)
 			if (i < count)
 				lines[i++] = ft_strdup(line);
 		}
+		else if (line[0] == '\0' && i < count)
+			lines[i++] = ft_strdup("");
 		free(line);
 	}
 	close(fd);

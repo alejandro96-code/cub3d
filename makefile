@@ -47,16 +47,19 @@ GNLSRC = \
 	src/gnl/get_next_line_utils.c
 
 # Archivos principales del proyecto
+
 CUB3DSRC = \
-	   src/main.c \
-	   src/checks_errors.c \
-	   src/init_window.c \
-	   src/parsing.c \
-	   src/renderScene.c \
-	   src/free.c \
-	   src/init_player.c \
-	   src/drawColors.c \
-	   src/raycast_calc.c
+   src/main.c \
+   src/checks_errors.c \
+   src/init_window.c \
+   src/parsing.c \
+   src/renderScene.c \
+   src/free.c \
+   src/init_player.c \
+   src/drawColors.c \
+   src/raycast_calc.c \
+   src/bonus.c
+
 
 
 # Objetos
@@ -97,3 +100,4 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+

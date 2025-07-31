@@ -35,4 +35,6 @@ void	render_scene(t_mlx *mlx, t_cub_config *cfg, t_player *player)
 		draw_column_colors(&v.paintinfo, &v.rayinfo);
 		x++;
 	}
+	// Dibuja el minimapa después de renderizar la escena principal
+	bonus_minimap(mlx, cfg);
 }
