@@ -38,7 +38,7 @@
 # define ERROR_PARSEO "Error: No existe el mapa .cub\n"
 # define ERROR_MLX "Error: No se pudo inicializar la ventana MLX\n"
 # define ERROR_MAPA_NO_CERRADO "Error: El mapa no está completamente cerrado\n"
-
+# define ERROR_PLAYERS "Error: Debe haber exactamente un jugador en el mapa\n"
 
 // Estructura principal de configuración
 typedef struct s_cub_config
@@ -142,6 +142,8 @@ void calculate_draw_limits(t_mlx *mlx, t_raycast_vars *v);
 void draw_column_colors(t_paintinfo *p, t_rayinfo *ray);
 
 int is_map_closed(char **map, int width, int height);
+int checksAllErrors(int argc, char **argv, t_cub_config **cfg, t_mlx **mlx);
+int has_player(char **map, int width, int height);
 
 
 #endif
