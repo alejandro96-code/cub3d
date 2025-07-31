@@ -18,15 +18,22 @@ int	main(int argc, char **argv)
 	t_mlx			*mlx;
 	t_player		player;
 
-	cfg = parse_cub_file(argv[1]);
-	mlx = init_window(cfg);
+	cfg = NULL;
+	mlx = NULL;
 	player = (t_player){0};
 	if (argc != 2)
 		return (printf(ERROR_ARGUMENTOS), -1);
 	if (!validate_extension(argv[1]))
 		return (printf(ERROR_EXTENSION), -1);
+	cfg = parse_cub_file(argv[1]);
 	if (!cfg)
 		return (printf(ERROR_PARSEO), -1);
+	if (!is_map_closed(cfg->map, cfg->map_width, cfg->map_height))
+	{
+		free_cub_config(cfg);
+		return (printf(ERROR_MAPA_NO_CERRADO), -1);
+	}
+	mlx = init_window(cfg);
 	if (!mlx)
 	{
 		free_cub_config(cfg);

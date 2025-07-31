@@ -35,8 +35,9 @@
 
 # define ERROR_EXTENSION "Error: Extension de archivo invalida\n"
 # define ERROR_ARGUMENTOS "Error: Nº de argumentos invalido\n"
-# define ERROR_PARSEO "Error: No se pudo parsear el archivo .cub\n"
+# define ERROR_PARSEO "Error: No existe el mapa .cub\n"
 # define ERROR_MLX "Error: No se pudo inicializar la ventana MLX\n"
+# define ERROR_MAPA_NO_CERRADO "Error: El mapa no está completamente cerrado\n"
 
 
 // Estructura principal de configuración
@@ -139,6 +140,8 @@ void calculate_draw_limits(t_mlx *mlx, t_raycast_vars *v);
 
 
 void draw_column_colors(t_paintinfo *p, t_rayinfo *ray);
+
+int is_map_closed(char **map, int width, int height);
 
 
 #endif
