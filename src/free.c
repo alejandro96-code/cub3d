@@ -14,10 +14,16 @@
 
 void	free_cub_config(t_cub_config *cfg)
 {
+	int	i;
+
 	if (cfg->map)
 	{
-		for (int i = 0; i < cfg->map_height; i++)
+		i = 0;
+		while (i < cfg->map_height)
+		{
 			free(cfg->map[i]);
+			i++;
+		}
 		free(cfg->map);
 	}
 	free(cfg);

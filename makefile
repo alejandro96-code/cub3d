@@ -58,12 +58,15 @@ CUB3DSRC = \
    src/init_player.c \
    src/drawColors.c \
    src/raycast_calc.c \
-   src/bonus.c
+   src/bonus_minimap.c
 
+# Directorio de objetos
+OBJDIR = src/obj
 
-
-# Objetos
-OBJS = $(CUB3DSRC:.c=.o) $(LIBFTSRC:.c=.o) $(GNLSRC:.c=.o)
+# Objetos en el directorio obj
+OBJS = $(addprefix $(OBJDIR)/, $(notdir $(CUB3DSRC:.c=.o))) \
+       $(addprefix $(OBJDIR)/, $(notdir $(LIBFTSRC:.c=.o))) \
+       $(addprefix $(OBJDIR)/, $(notdir $(GNLSRC:.c=.o)))
 
 UNAME_S := $(shell uname -s)
 
@@ -71,8 +74,19 @@ MLXFLAGS = -L mlx -lmlx -lX11 -lXext -lbsd -lm
 
 all: $(NAME)
 
-%.o: %.c
-	@$(CC) -I src/ $(CFLAGS) -c $^ -o $@
+# Crear directorio obj si no existe
+$(OBJDIR):
+	@mkdir -p $(OBJDIR)
+
+# Reglas para compilar archivos .c a .o en el directorio obj
+$(OBJDIR)/%.o: src/%.c | $(OBJDIR)
+	@$(CC) -I src/ $(CFLAGS) -c $< -o $@
+
+$(OBJDIR)/%.o: src/libft/%.c | $(OBJDIR)
+	@$(CC) -I src/ $(CFLAGS) -c $< -o $@
+
+$(OBJDIR)/%.o: src/gnl/%.c | $(OBJDIR)
+	@$(CC) -I src/ $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJS)	
 	@printf "\e[43m\e[30mCompilando Archivos Propios\e[0m\n"
@@ -89,8 +103,8 @@ $(NAME): $(OBJS)
 clean:
 	@make clean -C mlx
 	@printf "\e[42m\e[30mEliminados los archivos generados de MLX .o\e[0m\n"
-	@rm -f $(OBJS)
-	@printf "\e[42m\e[30mEliminados los archivos generados propios .o\e[0m\n"
+	@rm -rf $(OBJDIR)
+	@printf "\e[42m\e[30mEliminados los archivos generados propios .o y carpeta obj\e[0m\n"
 
 
 fclean: clean

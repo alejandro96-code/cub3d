@@ -47,7 +47,6 @@
 #define MINIMAP_MARGIN 16
 #define MINIMAP_WALL_COLOR 0x888888
 #define MINIMAP_FLOOR_COLOR 0x222222
-#define MINIMAP_PLAYER_COLOR 0xFF0000
 
 // Estructura principal de configuración
 typedef struct s_cub_config
