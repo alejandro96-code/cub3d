@@ -140,7 +140,6 @@ static int	parse_cub_file_lines(const char *filename, t_cub_config *cfg)
 	char	**lines;
 	int		count;
 	int		i;
-	int		i;
 
 	lines = NULL;
 	count = 0;
