@@ -13,7 +13,7 @@
 #include "cub3d.h"
 
 // Comprueba que exista exactamente un jugador en el mapa (N, S, E, W)
-int	has_player(char **map, int width, int height)
+int	has_player(t_cub_config *cfg)
 {
 	int	x;
 	int	y;
@@ -22,13 +22,13 @@ int	has_player(char **map, int width, int height)
 	x = 0;
 	y = 0;
 	count = 0;
-	while (y < height)
+	while (y < cfg->map_height)
 	{
 		x = 0;
-		while (x < width)
+		while (x < cfg->map_width)
 		{
-			if (map[y][x] == 'N' || map[y][x] == 'S' || map[y][x] == 'E'
-				|| map[y][x] == 'W')
+			if (cfg->map[y][x] == 'N' || cfg->map[y][x] == 'S' || cfg->map[y][x] == 'E'
+				|| cfg->map[y][x] == 'W')
 				count++;
 			x++;
 		}
@@ -38,14 +38,14 @@ int	has_player(char **map, int width, int height)
 }
 
 // Comprueba si hay alguna línea vacía en el mapa
-int	has_empty_line(char **map, int height)
+int	has_empty_line(t_cub_config *cfg)
 {
 	int	y;
 
 	y = 0;
-	while (y < height)
+	while (y < cfg->map_height)
 	{
-		if (!map[y] || map[y][0] == '\0')
+		if (!cfg->map[y] || cfg->map[y][0] == '\0')
 			return (1);
 		y++;
 	}
@@ -53,7 +53,7 @@ int	has_empty_line(char **map, int height)
 }
 
 // Comprueba que todos los caracteres del mapa sean válidos (0,1,N,S,E,W)
-int	has_only_valid_chars(char **map, int width, int height)
+int	has_only_valid_chars(t_cub_config *cfg)
 {
 	int		x;
 	int		y;
@@ -61,12 +61,12 @@ int	has_only_valid_chars(char **map, int width, int height)
 
 	x = 0;
 	y = 0;
-	while (y < height)
+	while (y < cfg->map_height)
 	{
 		x = 0;
-		while (x < width)
+		while (x < cfg->map_width)
 		{
-			c = map[y][x];
+			c = cfg->map[y][x];
 			if (c != '0' && c != '1' && c != 'N' && c != 'S' && c != 'E'
 				&& c != 'W' && c != '\0')
 				return (0);
@@ -91,26 +91,26 @@ int	validate_extension(const char *filename)
 }
 
 // Verifica que el mapa esté completamente cerrado por '1'
-int	is_map_closed(char **map, int width, int height)
+int	is_map_closed(t_cub_config *cfg)
 {
 	int	x;
 	int	y;
 
 	x = 0;
 	y = 0;
-	while (x < width)
+	while (x < cfg->map_width)
 	{
-		if (map[0][x] != '1' && map[0][x] != '\0')
+		if (cfg->map[0][x] != '1' && cfg->map[0][x] != '\0')
 			return (0);
-		if (map[height - 1][x] != '1' && map[height - 1][x] != '\0')
+		if (cfg->map[cfg->map_height - 1][x] != '1' && cfg->map[cfg->map_height - 1][x] != '\0')
 			return (0);
 		x++;
 	}
-	while (y < height)
+	while (y < cfg->map_height)
 	{
-		if (map[y][0] != '1')
+		if (cfg->map[y][0] != '1')
 			return (0);
-		if (map[y][width - 1] != '1' && map[y][width - 1] != '\0')
+		if (cfg->map[y][cfg->map_width - 1] != '1' && cfg->map[y][cfg->map_width - 1] != '\0')
 			return (0);
 		y++;
 	}
@@ -127,23 +127,22 @@ int	checksAllErrors(int argc, char **argv, t_cub_config **cfg, t_mlx **mlx)
 	*cfg = parse_cub_file(argv[1]);
 	if (!*cfg)
 		return (printf(ERROR_PARSEO), 0);
-	if (has_empty_line((*cfg)->map, (*cfg)->map_height))
+	if (has_empty_line(*cfg))
 	{
 		free_cub_config(*cfg);
 		return (printf(ERROR_LINEA_VACIA), 0);
 	}
-	if (!has_only_valid_chars((*cfg)->map, (*cfg)->map_width,
-			(*cfg)->map_height))
+	if (!has_only_valid_chars(*cfg))
 	{
 		free_cub_config(*cfg);
 		return (printf(ERROR_CHAR), 0);
 	}
-	if (!is_map_closed((*cfg)->map, (*cfg)->map_width, (*cfg)->map_height))
+	if (!is_map_closed(*cfg))
 	{
 		free_cub_config(*cfg);
 		return (printf(ERROR_MAPA_NO_CERRADO), 0);
 	}
-	if (!has_player((*cfg)->map, (*cfg)->map_width, (*cfg)->map_height))
+	if (!has_player(*cfg))
 	{
 		free_cub_config(*cfg);
 		return (printf(ERROR_PLAYERS), 0);

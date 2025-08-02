@@ -136,7 +136,7 @@ int				close_window(t_mlx *mlx);
 void			render_scene(t_mlx *mlx, t_cub_config *cfg, t_player *player);
 
 void			calculate_ray_direction(const t_player *player, t_mlx *mlx,
-					t_raycast_vars *v, int x);
+					t_raycast_vars *v);
 
 void			calculate_step_and_side_dist(const t_player *player,
 					t_raycast_vars *v);
@@ -150,11 +150,12 @@ void			calculate_draw_limits(t_mlx *mlx, t_raycast_vars *v);
 
 void			draw_column_colors(t_paintinfo *p, t_rayinfo *ray);
 
-int				is_map_closed(char **map, int width, int height);
+int				is_map_closed(t_cub_config *cfg);
 int				checksAllErrors(int argc, char **argv, t_cub_config **cfg,
 					t_mlx **mlx);
-int				has_player(char **map, int width, int height);
-int				has_only_valid_chars(char **map, int width, int height);
+int				has_player(t_cub_config *cfg);
+int				has_only_valid_chars(t_cub_config *cfg);
+int				has_empty_line(t_cub_config *cfg);
 
 // BONUS: minimapa
 void			bonus_minimap(t_mlx *mlx, t_cub_config *cfg);

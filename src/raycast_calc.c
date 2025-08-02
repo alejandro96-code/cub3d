@@ -14,9 +14,8 @@
 
 // Calcula la dirección del rayo y la posición de la cámara para una columna x
 void	calculate_ray_direction(const t_player *player, t_mlx *mlx,
-		t_raycast_vars *v, int x)
+		t_raycast_vars *v)
 {
-	v->x = x;
 	v->camera_x = 2 * v->x / (double)mlx->width - 1;
 	v->ray_dir_x = player->dir_x + player->plane_x * v->camera_x;
 	v->ray_dir_y = player->dir_y + player->plane_y * v->camera_x;

@@ -20,7 +20,8 @@ void	render_scene(t_mlx *mlx, t_cub_config *cfg, t_player *player)
 	x = 0;
 	while (x < mlx->width)
 	{
-		calculate_ray_direction(player, mlx, &v, x);
+		v.x = x;
+		calculate_ray_direction(player, mlx, &v);
 		calculate_step_and_side_dist(player, &v);
 		v.side = raycast_dda(cfg, &v);
 		calculate_perp_wall_and_lineheight(mlx, player, &v);
