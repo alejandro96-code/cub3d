@@ -78,13 +78,6 @@ typedef struct s_player
 	double		plane_y;
 }				t_player;
 
-// Estructura para la información del rayo
-typedef struct s_rayinfo
-{
-	double		ray_dir_x;
-	double		ray_dir_y;
-}				t_rayinfo;
-
 // Estructura para agrupar los parámetros de pintado
 typedef struct s_paintinfo
 {
@@ -98,7 +91,6 @@ typedef struct s_paintinfo
 
 typedef struct s_raycast_vars
 {
-	t_rayinfo	rayinfo;
 	t_paintinfo	paintinfo;
 	double		camera_x;
 	double		ray_dir_x;
@@ -160,7 +152,7 @@ void			calculate_perp_wall_and_lineheight(t_mlx *mlx, t_player *player,
 void			calculate_draw_limits(t_mlx *mlx, t_raycast_vars *v);
 
 // drawColors.c
-void			draw_column_colors(t_paintinfo *p, t_rayinfo *ray);
+void			draw_column_colors(t_raycast_vars *v);
 
 // bonus_minimap.c
 void			bonus_minimap(t_mlx *mlx, t_cub_config *cfg);

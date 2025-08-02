@@ -54,8 +54,8 @@ int	get_wall_color(int side, double ray_dir_x, double ray_dir_y)
 }
 
 // Llama a las funciones anteriores
-void	draw_column_colors(t_paintinfo *p, t_rayinfo *ray)
+void	draw_column_colors(t_raycast_vars *v)
 {
-	p->color = get_wall_color(p->side, ray->ray_dir_x, ray->ray_dir_y);
-	draw_ceiling_wall_floor(p);
+	v->paintinfo.color = get_wall_color(v->paintinfo.side, v->ray_dir_x, v->ray_dir_y);
+	draw_ceiling_wall_floor(&v->paintinfo);
 }
