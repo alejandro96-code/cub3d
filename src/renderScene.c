@@ -26,8 +26,7 @@ void	render_scene(t_mlx *mlx, t_cub_config *cfg, t_player *player)
 		v.side = raycast_dda(cfg, &v);
 		calculate_perp_wall_and_lineheight(mlx, player, &v);
 		calculate_draw_limits(mlx, &v);
-		v.mlx = mlx;
-		draw_column_colors(&v);
+		draw_column_colors(mlx, cfg, &v);
 		x++;
 	}
 	bonus_minimap(mlx, cfg);

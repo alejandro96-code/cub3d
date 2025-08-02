@@ -13,24 +13,24 @@
 #include "cub3d.h"
 
 // Pinta la columna de colores (techo, pared, suelo) para una columna x
-void	draw_ceiling_wall_floor(t_raycast *v)
+void	draw_ceiling_wall_floor(t_mlx *mlx, t_cub_config *cfg, t_raycast *v)
 {
 	int	y;
 
 	y = 0;
 	while (y < v->draw_start)
 	{
-		mlx_pixel_put(v->mlx->mlx_ptr, v->mlx->win_ptr, v->x, y, 0x7CFC00);
+		mlx_pixel_put(mlx->mlx_ptr, mlx->win_ptr, v->x, y, cfg->ceiling_color);
 		y++;
 	}
 	while (y <= v->draw_end)
 	{
-		mlx_pixel_put(v->mlx->mlx_ptr, v->mlx->win_ptr, v->x, y, v->color);
+		mlx_pixel_put(mlx->mlx_ptr, mlx->win_ptr, v->x, y, v->color);
 		y++;
 	}
-	while (y < v->mlx->height)
+	while (y < mlx->height)
 	{
-		mlx_pixel_put(v->mlx->mlx_ptr, v->mlx->win_ptr, v->x, y, 0x00BFFF);
+		mlx_pixel_put(mlx->mlx_ptr, mlx->win_ptr, v->x, y, cfg->floor_color);
 		y++;
 	}
 }
@@ -54,8 +54,8 @@ int	get_wall_color(int side, double ray_dir_x, double ray_dir_y)
 }
 
 // Llama a las funciones anteriores
-void	draw_column_colors(t_raycast *v)
+void	draw_column_colors(t_mlx *mlx, t_cub_config *cfg, t_raycast *v)
 {
 	v->color = get_wall_color(v->side, v->ray_dir_x, v->ray_dir_y);
-	draw_ceiling_wall_floor(v);
+	draw_ceiling_wall_floor(mlx, cfg, v);
 }

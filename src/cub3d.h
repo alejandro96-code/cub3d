@@ -80,7 +80,6 @@ typedef struct s_player
 
 typedef struct s_raycast
 {
-	t_mlx		*mlx;
 	double		camera_x;
 	double		ray_dir_x;
 	double		ray_dir_y;
@@ -141,7 +140,7 @@ void			calculate_perp_wall_and_lineheight(t_mlx *mlx, t_player *player,
 void			calculate_draw_limits(t_mlx *mlx, t_raycast *v);
 
 // drawColors.c
-void			draw_column_colors(t_raycast *v);
+void			draw_column_colors(t_mlx *mlx, t_cub_config *cfg, t_raycast *v);
 
 // bonus_minimap.c
 void			bonus_minimap(t_mlx *mlx, t_cub_config *cfg);
