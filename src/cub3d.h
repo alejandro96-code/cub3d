@@ -78,20 +78,9 @@ typedef struct s_player
 	double		plane_y;
 }				t_player;
 
-// Estructura para agrupar los parámetros de pintado
-typedef struct s_paintinfo
+typedef struct s_raycast
 {
 	t_mlx		*mlx;
-	int			x;
-	int			draw_start;
-	int			draw_end;
-	int			color;
-	int			side;
-}				t_paintinfo;
-
-typedef struct s_raycast_vars
-{
-	t_paintinfo	paintinfo;
 	double		camera_x;
 	double		ray_dir_x;
 	double		ray_dir_y;
@@ -109,8 +98,8 @@ typedef struct s_raycast_vars
 	double		side_dist_x;
 	double		side_dist_y;
 	int			x;
-
-}				t_raycast_vars;
+	int			color;
+}				t_raycast;
 
 // main.c
 int				main(int argc, char **argv);
@@ -143,16 +132,16 @@ void			render_scene(t_mlx *mlx, t_cub_config *cfg, t_player *player);
 
 // raycast_calc.c
 void			calculate_ray_direction(const t_player *player, t_mlx *mlx,
-					t_raycast_vars *v);
+					t_raycast *v);
 void			calculate_step_and_side_dist(const t_player *player,
-					t_raycast_vars *v);
-int				raycast_dda(const t_cub_config *cfg, t_raycast_vars *v);
+					t_raycast *v);
+int				raycast_dda(const t_cub_config *cfg, t_raycast *v);
 void			calculate_perp_wall_and_lineheight(t_mlx *mlx, t_player *player,
-					t_raycast_vars *v);
-void			calculate_draw_limits(t_mlx *mlx, t_raycast_vars *v);
+					t_raycast *v);
+void			calculate_draw_limits(t_mlx *mlx, t_raycast *v);
 
 // drawColors.c
-void			draw_column_colors(t_raycast_vars *v);
+void			draw_column_colors(t_raycast *v);
 
 // bonus_minimap.c
 void			bonus_minimap(t_mlx *mlx, t_cub_config *cfg);

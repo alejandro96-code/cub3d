@@ -15,7 +15,7 @@
 void	render_scene(t_mlx *mlx, t_cub_config *cfg, t_player *player)
 {
 	int				x;
-	t_raycast_vars	v;
+	t_raycast	v;
 
 	x = 0;
 	while (x < mlx->width)
@@ -26,11 +26,7 @@ void	render_scene(t_mlx *mlx, t_cub_config *cfg, t_player *player)
 		v.side = raycast_dda(cfg, &v);
 		calculate_perp_wall_and_lineheight(mlx, player, &v);
 		calculate_draw_limits(mlx, &v);
-		v.paintinfo.mlx = mlx;
-		v.paintinfo.x = v.x;
-		v.paintinfo.draw_start = v.draw_start;
-		v.paintinfo.draw_end = v.draw_end;
-		v.paintinfo.side = v.side;
+		v.mlx = mlx;
 		draw_column_colors(&v);
 		x++;
 	}

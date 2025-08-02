@@ -13,24 +13,24 @@
 #include "cub3d.h"
 
 // Pinta la columna de colores (techo, pared, suelo) para una columna x
-void	draw_ceiling_wall_floor(t_paintinfo *p)
+void	draw_ceiling_wall_floor(t_raycast *v)
 {
 	int	y;
 
 	y = 0;
-	while (y < p->draw_start)
+	while (y < v->draw_start)
 	{
-		mlx_pixel_put(p->mlx->mlx_ptr, p->mlx->win_ptr, p->x, y, 0x7CFC00);
+		mlx_pixel_put(v->mlx->mlx_ptr, v->mlx->win_ptr, v->x, y, 0x7CFC00);
 		y++;
 	}
-	while (y <= p->draw_end)
+	while (y <= v->draw_end)
 	{
-		mlx_pixel_put(p->mlx->mlx_ptr, p->mlx->win_ptr, p->x, y, p->color);
+		mlx_pixel_put(v->mlx->mlx_ptr, v->mlx->win_ptr, v->x, y, v->color);
 		y++;
 	}
-	while (y < p->mlx->height)
+	while (y < v->mlx->height)
 	{
-		mlx_pixel_put(p->mlx->mlx_ptr, p->mlx->win_ptr, p->x, y, 0x00BFFF);
+		mlx_pixel_put(v->mlx->mlx_ptr, v->mlx->win_ptr, v->x, y, 0x00BFFF);
 		y++;
 	}
 }
@@ -54,8 +54,8 @@ int	get_wall_color(int side, double ray_dir_x, double ray_dir_y)
 }
 
 // Llama a las funciones anteriores
-void	draw_column_colors(t_raycast_vars *v)
+void	draw_column_colors(t_raycast *v)
 {
-	v->paintinfo.color = get_wall_color(v->paintinfo.side, v->ray_dir_x, v->ray_dir_y);
-	draw_ceiling_wall_floor(&v->paintinfo);
+	v->color = get_wall_color(v->side, v->ray_dir_x, v->ray_dir_y);
+	draw_ceiling_wall_floor(v);
 }

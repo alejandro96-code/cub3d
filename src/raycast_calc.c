@@ -14,7 +14,7 @@
 
 // Calcula la dirección del rayo y la posición de la cámara para una columna x
 void	calculate_ray_direction(const t_player *player, t_mlx *mlx,
-		t_raycast_vars *v)
+		t_raycast *v)
 {
 	v->camera_x = 2 * v->x / (double)mlx->width - 1;
 	v->ray_dir_x = player->dir_x + player->plane_x * v->camera_x;
@@ -29,7 +29,7 @@ void	calculate_ray_direction(const t_player *player, t_mlx *mlx,
 	Calcula el paso y la distancia inicial a la
 	siguiente línea de grid para el algoritmo DDA
 */
-void	calculate_step_and_side_dist(const t_player *player, t_raycast_vars *v)
+void	calculate_step_and_side_dist(const t_player *player, t_raycast *v)
 {
 	if (v->ray_dir_x < 0)
 	{
@@ -57,7 +57,7 @@ void	calculate_step_and_side_dist(const t_player *player, t_raycast_vars *v)
 	Realiza el algoritmo DDA para avanzar el rayo hasta chocar con una pared
 	Devuelve el lado impactado y modifica map_x/map_y
 */
-int	raycast_dda(const t_cub_config *cfg, t_raycast_vars *v)
+int	raycast_dda(const t_cub_config *cfg, t_raycast *v)
 {
 	int	hit;
 
@@ -89,7 +89,7 @@ int	raycast_dda(const t_cub_config *cfg, t_raycast_vars *v)
 */
 
 void	calculate_perp_wall_and_lineheight(t_mlx *mlx, t_player *player,
-		t_raycast_vars *v)
+		t_raycast *v)
 {
 	if (v->side == 0)
 		v->perp_wall_dist = (v->map_x - player->x + (1 - v->step_x) / 2)
@@ -101,7 +101,7 @@ void	calculate_perp_wall_and_lineheight(t_mlx *mlx, t_player *player,
 }
 
 // Calcula los límites de dibujo (draw_start, draw_end) para la columna actual
-void	calculate_draw_limits(t_mlx *mlx, t_raycast_vars *v)
+void	calculate_draw_limits(t_mlx *mlx, t_raycast *v)
 {
 	v->draw_start = -v->line_height / 2 + mlx->height / 2;
 	if (v->draw_start < 0)
