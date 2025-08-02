@@ -19,11 +19,11 @@
 # include "../src/libft/libft.h"
 # include <fcntl.h>
 # include <math.h>
+# include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-# include <stddef.h>
 
 # define PLAYER_N 'N'
 # define PLAYER_S 'S'
@@ -42,19 +42,18 @@
 # define ERROR_CHAR "Error: Caracter incorrecto en la creacion del mapa\n"
 # define ERROR_LINEA_VACIA "Error: Se ha encontrado una linea vacia\n"
 
-//BONUS
-#define MINIMAP_CELL_SIZE 8
-#define MINIMAP_MARGIN 16
-#define MINIMAP_WALL_COLOR 0x888888
-#define MINIMAP_FLOOR_COLOR 0x222222
+// BONUS
+# define MINIMAP_CELL_SIZE 8
+# define MINIMAP_MARGIN 16
+# define MINIMAP_WALL_COLOR 0x888888
+# define MINIMAP_FLOOR_COLOR 0x222222
 
 // Estructura principal de configuración
 typedef struct s_cub_config
 {
-
 	int			floor_color;
 	int			ceiling_color;
-	char 		**map;
+	char		**map;
 	int			map_height;
 	int			map_width;
 }				t_cub_config;
@@ -71,9 +70,12 @@ typedef struct s_mlx
 // Estructura para el jugador (posición, dirección y plano de cámara)
 typedef struct s_player
 {
-	double x, y;
-	double dir_x, dir_y;
-	double plane_x, plane_y;
+	double		x;
+	double		y;
+	double		dir_x;
+	double		dir_y;
+	double		plane_x;
+	double		plane_y;
 }				t_player;
 
 // Estructura para la información del rayo
@@ -94,40 +96,38 @@ typedef struct s_paintinfo
 	int			side;
 }				t_paintinfo;
 
-typedef struct s_raycast_vars {
-	t_rayinfo rayinfo;
-	t_paintinfo paintinfo;
-	double  camera_x;
-	double  ray_dir_x;
-	double  ray_dir_y;
-	int     map_x;
-	int     map_y;
-	double  delta_dist_x;
-	double  delta_dist_y;
-	int     side;
-	double  perp_wall_dist;
-	int     line_height;
-	int     draw_start;
-	int     draw_end;
-	int     step_x;
-	int     step_y;
-	double  side_dist_x;
-	double  side_dist_y;
-	int     x;
+typedef struct s_raycast_vars
+{
+	t_rayinfo	rayinfo;
+	t_paintinfo	paintinfo;
+	double		camera_x;
+	double		ray_dir_x;
+	double		ray_dir_y;
+	int			map_x;
+	int			map_y;
+	double		delta_dist_x;
+	double		delta_dist_y;
+	int			side;
+	double		perp_wall_dist;
+	int			line_height;
+	int			draw_start;
+	int			draw_end;
+	int			step_x;
+	int			step_y;
+	double		side_dist_x;
+	double		side_dist_y;
+	int			x;
 
-}   t_raycast_vars;
+}				t_raycast_vars;
 
-//funciones
+// funciones
 int				main(int argc, char **argv);
 
-
 void			init_player_from_map(t_player *player, t_cub_config *cfg);
-
 
 int				validate_extension(const char *filename);
 t_cub_config	*parse_cub_file(const char *filename);
 void			free_cub_config(t_cub_config *cfg);
-
 
 t_mlx			*init_window(const t_cub_config *cfg);
 void			destroy_window(t_mlx *mlx);
@@ -135,26 +135,28 @@ int				close_window(t_mlx *mlx);
 
 void			render_scene(t_mlx *mlx, t_cub_config *cfg, t_player *player);
 
+void			calculate_ray_direction(const t_player *player, t_mlx *mlx,
+					t_raycast_vars *v, int x);
 
-void calculate_ray_direction(const t_player *player, t_mlx *mlx, t_raycast_vars *v, int x);
+void			calculate_step_and_side_dist(const t_player *player,
+					t_raycast_vars *v);
 
-void calculate_step_and_side_dist(const t_player *player, t_raycast_vars *v);
+int				raycast_dda(const t_cub_config *cfg, t_raycast_vars *v);
 
-int raycast_dda(const t_cub_config *cfg, t_raycast_vars *v);
+void			calculate_perp_wall_and_lineheight(t_mlx *mlx, t_player *player,
+					t_raycast_vars *v);
 
-void calculate_perp_wall_and_lineheight(t_mlx *mlx, t_player *player, t_raycast_vars *v);
+void			calculate_draw_limits(t_mlx *mlx, t_raycast_vars *v);
 
-void calculate_draw_limits(t_mlx *mlx, t_raycast_vars *v);
+void			draw_column_colors(t_paintinfo *p, t_rayinfo *ray);
 
-
-void draw_column_colors(t_paintinfo *p, t_rayinfo *ray);
-
-int is_map_closed(char **map, int width, int height);
-int checksAllErrors(int argc, char **argv, t_cub_config **cfg, t_mlx **mlx);
-int has_player(char **map, int width, int height);
-int has_only_valid_chars(char **map, int width, int height);
+int				is_map_closed(char **map, int width, int height);
+int				checksAllErrors(int argc, char **argv, t_cub_config **cfg,
+					t_mlx **mlx);
+int				has_player(char **map, int width, int height);
+int				has_only_valid_chars(char **map, int width, int height);
 
 // BONUS: minimapa
-void bonus_minimap(t_mlx *mlx, t_cub_config *cfg);
+void			bonus_minimap(t_mlx *mlx, t_cub_config *cfg);
 
 #endif

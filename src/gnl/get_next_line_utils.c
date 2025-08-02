@@ -28,7 +28,7 @@ char	*ft_strjoin_gnl(char *s1, char *s2)
 	size_t	cont1;
 	size_t	cont2;
 
-   s3 = malloc(ft_strlen_gnl(s1) + ft_strlen_gnl(s2) + 1);
+	s3 = malloc(ft_strlen_gnl(s1) + ft_strlen_gnl(s2) + 1);
 	cont1 = 0;
 	while (s1[cont1] != '\0')
 	{

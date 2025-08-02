@@ -67,7 +67,7 @@ char	*ft_remainder(char *s)
 	if (s[i] == '\n')
 	{
 		ptr = &s[i + 1];
-				remainder = malloc(ft_strlen_gnl((char *)ptr) + 1);
+		remainder = malloc(ft_strlen_gnl((char *)ptr) + 1);
 		j = 0;
 		while (s[i + 1] != '\0')
 		{
@@ -86,7 +86,7 @@ char	*read_loop(char *buffer, int bytes_read, char *stash, int fd)
 {
 	int	i;
 
-   while (ft_strchr_gnl(buffer, '\n') == 0 && bytes_read == BUFFER_SIZE)
+	while (ft_strchr_gnl(buffer, '\n') == 0 && bytes_read == BUFFER_SIZE)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		buffer[bytes_read] = '\0';
@@ -128,4 +128,3 @@ char	*get_next_line(int fd)
 		return (free(stash), stash = NULL, line);
 	return (line);
 }
-

@@ -26,7 +26,10 @@ void	calculate_ray_direction(const t_player *player, t_mlx *mlx,
 	v->delta_dist_y = fabs(1 / v->ray_dir_y);
 }
 
-// Calcula el paso y la distancia inicial a la siguiente línea de grid para el algoritmo DDA
+/*
+	Calcula el paso y la distancia inicial a la
+	siguiente línea de grid para el algoritmo DDA
+*/
 void	calculate_step_and_side_dist(const t_player *player, t_raycast_vars *v)
 {
 	if (v->ray_dir_x < 0)
@@ -51,8 +54,10 @@ void	calculate_step_and_side_dist(const t_player *player, t_raycast_vars *v)
 	}
 }
 
-// Realiza el algoritmo DDA para avanzar el rayo hasta chocar con una pared
-// Devuelve el lado impactado y modifica map_x/map_y
+/*
+	Realiza el algoritmo DDA para avanzar el rayo hasta chocar con una pared
+	Devuelve el lado impactado y modifica map_x/map_y
+*/
 int	raycast_dda(const t_cub_config *cfg, t_raycast_vars *v)
 {
 	int	hit;
@@ -79,7 +84,11 @@ int	raycast_dda(const t_cub_config *cfg, t_raycast_vars *v)
 	return (v->side);
 }
 
-// Calcula la distancia perpendicular a la pared y la altura de la línea a dibujar
+/*
+	Calcula la distancia perpendicular a la pared
+	y la altura de la línea a dibujar
+*/
+
 void	calculate_perp_wall_and_lineheight(t_mlx *mlx, t_player *player,
 		t_raycast_vars *v)
 {

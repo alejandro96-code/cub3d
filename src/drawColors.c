@@ -12,7 +12,6 @@
 
 #include "cub3d.h"
 
-
 // Pinta la columna de colores (techo, pared, suelo) para una columna x
 void	draw_ceiling_wall_floor(t_paintinfo *p)
 {

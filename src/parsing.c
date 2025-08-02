@@ -1,27 +1,42 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
+/*   Updated: 2025/07/29 16:38:20 by alejanr2         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 // Devuelve 1 si la línea es de mapa, 0 en caso contrario
-static int parse_cub_line(char *line)
+static int	parse_cub_line(char *line)
 {
 	if (line[0] == '\0')
-		return 1; // Considerar línea vacía como parte del mapa
+		return (1);
 	if (line[0] == ' ' || line[0] == '1' || line[0] == '0')
-		return 1;
+		return (1);
 	else
-		return 0;
+		return (0);
 }
 
 // Cuenta cuántas líneas de mapa hay en el archivo
-static int count_map_lines(const char *filename)
+static int	count_map_lines(const char *filename)
 {
 	int		fd;
-	char 	*line;
-	int 	count = 0;
-	int 	len;
+	char	*line;
+	int		count;
+	int		len;
+
+	count = 0;
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-		return -1;
-	while ((line = get_next_line(fd))) {
+		return (-1);
+	while ((line = get_next_line(fd)))
+	{
 		len = ft_strlen(line);
 		if (len > 0 && line[len - 1] == '\n')
 			line[len - 1] = 0;
@@ -30,24 +45,28 @@ static int count_map_lines(const char *filename)
 		free(line);
 	}
 	close(fd);
-	return count;
+	return (count);
 }
 
 // Guarda las líneas de mapa en un array previamente reservado
-static int fill_map_lines(const char *filename, char **lines, int count)
+static int	fill_map_lines(const char *filename, char **lines, int count)
 {
-	int 	fd;
-	char 	*line;
-	int 	i = 0;
-	int 	len;
+	int		fd;
+	char	*line;
+	int		i;
+	int		len;
+
+	i = 0;
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-		return 0;
-	while ((line = get_next_line(fd))) {
+		return (0);
+	while ((line = get_next_line(fd)))
+	{
 		len = ft_strlen(line);
 		if (len > 0 && line[len - 1] == '\n')
 			line[len - 1] = 0;
-		if (parse_cub_line(line)) {
+		if (parse_cub_line(line))
+		{
 			if (i < count)
 				lines[i++] = ft_strdup(line);
 		}
@@ -60,39 +79,47 @@ static int fill_map_lines(const char *filename, char **lines, int count)
 }
 
 // Orquesta el proceso de contar y guardar líneas de mapa
-static int process_map_lines(const char *filename, char ***lines_out, int *count_out)
+static int	process_map_lines(const char *filename, char ***lines_out,
+		int *count_out)
 {
-	int count = count_map_lines(filename);
-	char **lines;
+	int		count;
+	char	**lines;
+	int		i;
+
+	count = count_map_lines(filename);
 	if (count <= 0)
-		return 0;
+		return (0);
 	lines = malloc(count * sizeof(char *));
 	if (!lines)
-		return 0;
-	if (!fill_map_lines(filename, lines, count)) {
-		int i = 0;
-		while (i < count) {
+		return (0);
+	if (!fill_map_lines(filename, lines, count))
+	{
+		i = 0;
+		while (i < count)
+		{
 			free(lines[i]);
 			i++;
 		}
 		free(lines);
-		return 0;
+		return (0);
 	}
 	*lines_out = lines;
 	*count_out = count;
-	return 1;
+	return (1);
 }
 
 // Crea el mapa en cfg a partir de las líneas procesadas
-static int create_map(t_cub_config *cfg, char **lines, int count)
+static int	create_map(t_cub_config *cfg, char **lines, int count)
 {
-	int l;
+	int	l;
+	int	i;
+
 	cfg->map = malloc(count * sizeof(char *));
 	if (!cfg->map)
-		return 0;
+		return (0);
 	cfg->map_height = count;
 	cfg->map_width = 0;
-	int i = 0;
+	i = 0;
 	while (i < count)
 	{
 		cfg->map[i] = ft_strdup(lines[i]);
@@ -101,39 +128,51 @@ static int create_map(t_cub_config *cfg, char **lines, int count)
 			cfg->map_width = l;
 		i++;
 	}
-	return 1;
+	return (1);
 }
 
-
-// Lee todas las líneas del archivo .cub, las procesa y construye el mapa y la configuración
-static int parse_cub_file_lines(const char *filename, t_cub_config *cfg)
+/*
+	Lee todas las líneas del archivo .cub,
+	las procesa y construye el mapa y la configuración
+*/
+static int	parse_cub_file_lines(const char *filename, t_cub_config *cfg)
 {
-	char 	**lines = NULL;
-	int 	count = 0;
+	char	**lines;
+	int		count;
+	int		i;
+	int		i;
+
+	lines = NULL;
+	count = 0;
 	if (!process_map_lines(filename, &lines, &count))
-		return 0;
+		return (0);
 	if (!create_map(cfg, lines, count))
 	{
-		int i = 0;
-		while (i < count) {
+		i = 0;
+		while (i < count)
+		{
 			free(lines[i]);
 			i++;
 		}
 		free(lines);
-		return 0;
+		return (0);
 	}
 	{
-		int i = 0;
-		while (i < count) {
+		i = 0;
+		while (i < count)
+		{
 			free(lines[i]);
 			i++;
 		}
 	}
 	free(lines);
-	return 1;
+	return (1);
 }
 
-// Función principal: abre el archivo .cub, reserva memoria y llama al parser de líneas
+/*
+	Función principal: abre el archivo .cub,
+	reserva memoria y llama al parser de líneas
+*/
 t_cub_config	*parse_cub_file(const char *filename)
 {
 	int				fd;

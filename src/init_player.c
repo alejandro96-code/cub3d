@@ -75,13 +75,13 @@ void	init_player_from_map(t_player *player, t_cub_config *cfg)
 		while (x < cfg->map_width)
 		{
 			c = cfg->map[y][x];
-			if (c == PLAYER_N || c == PLAYER_S || \
-				c == PLAYER_E || c == PLAYER_W)
+			if (c == PLAYER_N || c == PLAYER_S || c == PLAYER_E
+				|| c == PLAYER_W)
 			{
 				player->x = x + 0.5;
 				player->y = y + 0.5;
 				set_player_direction(player, c);
-				return;
+				return ;
 			}
 			x++;
 		}

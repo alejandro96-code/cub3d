@@ -1,9 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
+/*   Updated: 2025/07/29 16:38:20 by alejanr2         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 // Dibuja un cuadrado en el minimapa
 static void	draw_square(void *mlx_ptr, void *win_ptr, int x, int y, int color)
 {
-	int i, j;
+	int	i;
+	int	j;
+
 	i = 0;
 	while (i < MINIMAP_CELL_SIZE)
 	{
@@ -23,8 +37,9 @@ void	bonus_minimap(t_mlx *mlx, t_cub_config *cfg)
 	int		px;
 	int		py;
 	char	c;
+	int		y;
+	int		x;
 
-	int y, x;
 	y = 0;
 	while (y < cfg->map_height)
 	{
