@@ -120,44 +120,49 @@ typedef struct s_raycast_vars
 
 }				t_raycast_vars;
 
-// funciones
+// main.c
 int				main(int argc, char **argv);
 
-void			init_player_from_map(t_player *player, t_cub_config *cfg);
-
+// checks_errors.c
 int				validate_extension(const char *filename);
-t_cub_config	*parse_cub_file(const char *filename);
-void			free_cub_config(t_cub_config *cfg);
-
-t_mlx			*init_window(const t_cub_config *cfg);
-void			destroy_window(t_mlx *mlx);
-int				close_window(t_mlx *mlx);
-
-void			render_scene(t_mlx *mlx, t_cub_config *cfg, t_player *player);
-
-void			calculate_ray_direction(const t_player *player, t_mlx *mlx,
-					t_raycast_vars *v);
-
-void			calculate_step_and_side_dist(const t_player *player,
-					t_raycast_vars *v);
-
-int				raycast_dda(const t_cub_config *cfg, t_raycast_vars *v);
-
-void			calculate_perp_wall_and_lineheight(t_mlx *mlx, t_player *player,
-					t_raycast_vars *v);
-
-void			calculate_draw_limits(t_mlx *mlx, t_raycast_vars *v);
-
-void			draw_column_colors(t_paintinfo *p, t_rayinfo *ray);
-
-int				is_map_closed(t_cub_config *cfg);
 int				checksAllErrors(int argc, char **argv, t_cub_config **cfg,
 					t_mlx **mlx);
 int				has_player(t_cub_config *cfg);
 int				has_only_valid_chars(t_cub_config *cfg);
 int				has_empty_line(t_cub_config *cfg);
+int				is_map_closed(t_cub_config *cfg);
 
-// BONUS: minimapa
+// parsing.c
+t_cub_config	*parse_cub_file(const char *filename);
+
+// free.c
+void			free_cub_config(t_cub_config *cfg);
+
+// init_window.c
+t_mlx			*init_window(const t_cub_config *cfg);
+void			destroy_window(t_mlx *mlx);
+int				close_window(t_mlx *mlx);
+
+// init_player.c
+void			init_player_from_map(t_player *player, t_cub_config *cfg);
+
+// renderScene.c
+void			render_scene(t_mlx *mlx, t_cub_config *cfg, t_player *player);
+
+// raycast_calc.c
+void			calculate_ray_direction(const t_player *player, t_mlx *mlx,
+					t_raycast_vars *v);
+void			calculate_step_and_side_dist(const t_player *player,
+					t_raycast_vars *v);
+int				raycast_dda(const t_cub_config *cfg, t_raycast_vars *v);
+void			calculate_perp_wall_and_lineheight(t_mlx *mlx, t_player *player,
+					t_raycast_vars *v);
+void			calculate_draw_limits(t_mlx *mlx, t_raycast_vars *v);
+
+// drawColors.c
+void			draw_column_colors(t_paintinfo *p, t_rayinfo *ray);
+
+// bonus_minimap.c
 void			bonus_minimap(t_mlx *mlx, t_cub_config *cfg);
 
 #endif
