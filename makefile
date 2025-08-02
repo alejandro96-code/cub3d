@@ -101,16 +101,15 @@ $(NAME): $(OBJS)
 	@printf "\e[42m\e[30mListo para jugar!\e[0m\n"
 
 clean:
+	@printf "\e[41m\e[30mEliminando los archivos generados de MLX .o\e[0m\n"
 	@make clean -C mlx 2>/dev/null >/dev/null
-	@printf "\e[41m\e[30mEliminados los archivos generados de MLX .o\e[0m\n"
+	@printf "\e[41m\e[30mEliminando los archivos obj\e[0m\n"
 	@rm -rf $(OBJDIR)
-	@printf "\e[41m\e[30mEliminados los archivos generados propios .o y carpeta obj\e[0m\n"
-
-
+	
 fclean: clean
+	@printf "\e[41m\e[30mEliminando el ejecutable\e[0m\n"
 	@rm -f $(NAME)
-	@printf "\e[41m\e[30mEliminados todos los archivos generados\e[0m\n"
-
+	
 re: fclean all
 
 .PHONY: all clean fclean re
