@@ -96,20 +96,20 @@ $(NAME): $(OBJS)
 	@$(MAKE) -C mlx 2>/dev/null >/dev/null
 	@printf "\e[42m\e[30mArchivos MLX Compilada\e[0m\n"
 
-	@printf "\e[43m\e[30mPreparando la librería MLX\e[0m\n"
+	@printf "\e[43m\e[30mPreparando el cub3d\e[0m\n"
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) mlx/libmlx.a $(MLXFLAGS)
 	@printf "\e[42m\e[30mListo para jugar!\e[0m\n"
 
 clean:
-	@make clean -C mlx
-	@printf "\e[42m\e[30mEliminados los archivos generados de MLX .o\e[0m\n"
+	@make clean -C mlx 2>/dev/null >/dev/null
+	@printf "\e[41m\e[30mEliminados los archivos generados de MLX .o\e[0m\n"
 	@rm -rf $(OBJDIR)
-	@printf "\e[42m\e[30mEliminados los archivos generados propios .o y carpeta obj\e[0m\n"
+	@printf "\e[41m\e[30mEliminados los archivos generados propios .o y carpeta obj\e[0m\n"
 
 
 fclean: clean
-	rm -f $(NAME)
-	@printf "\e[42m\e[30mEliminados todos los archivos generados\e[0m\n"
+	@rm -f $(NAME)
+	@printf "\e[41m\e[30mEliminados todos los archivos generados\e[0m\n"
 
 re: fclean all
 
