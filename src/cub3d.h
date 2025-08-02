@@ -51,53 +51,67 @@
 // Estructura principal de configuración
 typedef struct s_cub_config
 {
-	int			floor_color;
-	int			ceiling_color;
-	char		**map;
-	int			map_height;
-	int			map_width;
+	// COLORES DEL ENTORNO
+	int			floor_color;	// Color del suelo (formato RGB hex)
+	int			ceiling_color;	// Color del techo (formato RGB hex)
+	// DATOS DEL MAPA
+	char		**map;			// Array 2D con el mapa del juego
+	int			map_height;		// Número de filas del mapa
+	int			map_width;		// Número de columnas del mapa
 }				t_cub_config;
 
 // Estructura para la ventana y contexto MLX
 typedef struct s_mlx
 {
-	void		*mlx_ptr;
-	void		*win_ptr;
-	int			width;
-	int			height;
+	// PUNTEROS MLX
+	void		*mlx_ptr;		// Puntero a la instancia MLX principal
+	void		*win_ptr;		// Puntero a la ventana creada
+	// DIMENSIONES DE VENTANA
+	int			width;			// Ancho de la ventana en píxeles
+	int			height;			// Alto de la ventana en píxeles
 }				t_mlx;
 
 // Estructura para el jugador (posición, dirección y plano de cámara)
 typedef struct s_player
 {
-	double		x;
-	double		y;
-	double		dir_x;
-	double		dir_y;
-	double		plane_x;
-	double		plane_y;
+	// POSICIÓN EN EL MUNDO
+	double		x;				// Coordenada X del jugador en el mapa
+	double		y;				// Coordenada Y del jugador en el mapa
+	// VECTOR DE DIRECCIÓN
+	double		dir_x;			// Componente X del vector dirección
+	double		dir_y;			// Componente Y del vector dirección
+	// PLANO DE CÁMARA (para FOV)
+	double		plane_x;		// Componente X del plano de cámara
+	double		plane_y;		// Componente Y del plano de cámara
 }				t_player;
 
 typedef struct s_raycast
 {
-	double		camera_x;
-	double		ray_dir_x;
-	double		ray_dir_y;
-	int			map_x;
-	int			map_y;
-	double		delta_dist_x;
-	double		delta_dist_y;
-	int			side;
-	double		perp_wall_dist;
-	int			line_height;
-	int			draw_start;
-	int			draw_end;
-	int			step_x;
-	int			step_y;
-	double		side_dist_x;
-	double		side_dist_y;
-	int			x;
-	int			color;
+	// CONFIGURACIÓN DEL RAYO
+	double		camera_x;		// Posición x en el plano de cámara (-1 a 1)
+	double		ray_dir_x;		// Dirección X del rayo en el mundo
+	double		ray_dir_y;		// Dirección Y del rayo en el mundo
+	// POSICIÓN EN EL MAPA
+	int			map_x;			// Coordenada X en el grid del mapa
+	int			map_y;			// Coordenada Y en el grid del mapa
+	// CÁLCULOS DE DISTANCIA DDA
+	double		delta_dist_x;	// Distancia para cruzar una celda en X
+	double		delta_dist_y;	// Distancia para cruzar una celda en Y
+	double		side_dist_x;	// Distancia hasta el próximo lado X del grid
+	double		side_dist_y;	// Distancia hasta el próximo lado Y del grid
+	// PASOS Y DIRECCIÓN
+	int			step_x;			// Dirección del paso en X: +1 o -1
+	int			step_y;			// Dirección del paso en Y: +1 o -1
+	// RESULTADOS DE COLISIÓN
+	int			side;			// Qué lado de pared se golpeó (0=X, 1=Y)
+	double		perp_wall_dist;	// Distancia perpendicular a la pared
+	// CÁLCULOS DE RENDERIZADO
+	int			line_height;	// Altura de la línea a dibujar en pantalla
+	int			draw_start;		// Píxel Y donde empezar a dibujar la pared
+	int			draw_end;		// Píxel Y donde terminar de dibujar la pared
+	// INFORMACIÓN DE DIBUJADO
+	int			x;				// Columna actual de píxeles renderizando
+	int			color;			// Color calculado para esta columna
 }				t_raycast;
 
 // main.c
