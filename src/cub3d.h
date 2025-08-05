@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/07/29 16:38:20 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/08/05 12:16:28 by ybahri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,14 @@ typedef struct s_raycast
 	int			x;				// Columna actual de píxeles renderizando
 	int			color;			// Color calculado para esta columna
 }				t_raycast;
+
+// Estructura principal que contiene todo el estado del juego
+typedef struct s_game
+{
+    t_mlx			*mlx;
+    t_cub_config	*cfg;
+    t_player		*player;
+}				    t_game;
 
 // main.c
 int				main(int argc, char **argv);
