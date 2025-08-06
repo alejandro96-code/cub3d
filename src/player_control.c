@@ -3,74 +3,92 @@
 /*                                                        :::      ::::::::   */
 /*   player_control.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/06 08:57:21 by ybahri            #+#    #+#             */
-/*   Updated: 2025/08/06 12:02:38 by ybahri           ###   ########.fr       */
+/*   Created: 2025/08/06 17:00:00 by alejanr2          #+#    #+#             */
+/*   Updated: 2025/08/06 17:00:00 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "cub3d.h"
 
-void	move_player(int keycode, t_game *game)
+// Verifica si una posición es válida (no hay pared)
+static int	is_valid_position(t_cub_config *cfg, double x, double y)
 {
-	double	new_y;
-	double	new_x;
-	char	**map;
+	int	map_x;
+	int	map_y;
 
-	new_x = game->player->x;
-	new_y = game->player->y;
-	map = game->cfg->map;
+	map_x = (int)x;
+	map_y = (int)y;
+	
+	// Verificar límites del mapa
+	if (map_x < 0 || map_x >= cfg->map_width || 
+		map_y < 0 || map_y >= cfg->map_height)
+		return (0);
+	
+	// Verificar si hay una pared
+	if (cfg->map[map_y][map_x] == '1')
+		return (0);
+	
+	return (1);
+}
+
+void	move_player(int keycode, t_cub_config *cfg, t_player *player)
+{
+	double	new_x;
+	double	new_y;
+
+	new_x = player->x;
+	new_y = player->y;
 
 	if (keycode == KEY_W)
 	{
-		new_x += game->player->dir_x * game->player->move_speed;
-		new_y += game->player->dir_y * game->player->move_speed;
+		new_x += player->dir_x * MOVE_SPEED;
+		new_y += player->dir_y * MOVE_SPEED;
 	}
 	else if (keycode == KEY_S)
 	{
-		new_x -= game->player->dir_x * game->player->move_speed;
-		new_y -= game->player->dir_y * game->player->move_speed;
+		new_x -= player->dir_x * MOVE_SPEED;
+		new_y -= player->dir_y * MOVE_SPEED;
 	}
 	else if (keycode == KEY_A)
 	{
-		new_x -= game->player->dir_x * game->player->move_speed;
-		new_y -= game->player->dir_y * game->player->move_speed;
+		new_x += player->dir_y * MOVE_SPEED;  // Perpendicular a la dirección
+		new_y -= player->dir_x * MOVE_SPEED;
 	}
 	else if (keycode == KEY_D)
 	{
-		new_x += game->player->dir_x * game->player->move_speed;
-		new_y += game->player->dir_y * game->player->move_speed;
+		new_x -= player->dir_y * MOVE_SPEED;  // Perpendicular a la dirección
+		new_y += player->dir_x * MOVE_SPEED;
 	}
 
-	//comprueba colisiones
-	if (map[(int)game->player->y][(int)new_x] == '0')
-		game->player->x = new_x;
-	if (map[(int)new_y][(int)game->player->x] == '0')
-		game->player->y = new_y;
+	// Verificar colisiones antes de mover
+	if (is_valid_position(cfg, new_x, player->y))
+		player->x = new_x;
+	if (is_valid_position(cfg, player->x, new_y))
+		player->y = new_y;
 }
 
-void rotate_view(int keycode, t_game *game)
+void	rotate_view(int keycode, t_player *player)
 {
-	double old_dir_x;
-	double old_plane_x;
-	double angle;
+	double	old_dir_x;
+	double	old_plane_x;
+	double	rotation;
 
-	old_dir_x = game->player->dir_x;
-	old_plane_x = game->player->plane_x;
-	angle = (keycode == KEY_LEFT)
-		? game->player->rot_speed
-		: -game->player->rot_speed;
+	if (keycode == KEY_LEFT)
+		rotation = -ROT_SPEED;
+	else if (keycode == KEY_RIGHT)
+		rotation = ROT_SPEED;
+	else
+		return;
 
-//Rotación del vector de dirección
-	game->player->dir_x = old_dir_x * cos(angle)
-	- game->player->dir_y * sin(angle);
-	game->player->dir_y = old_dir_x * sin(angle)
-	+ game->player->dir_y * cos(angle);
+	// Rotar vector de dirección
+	old_dir_x = player->dir_x;
+	player->dir_x = player->dir_x * cos(rotation) - player->dir_y * sin(rotation);
+	player->dir_y = old_dir_x * sin(rotation) + player->dir_y * cos(rotation);
 
-//Rotación del plano de cámara
-	game->player->plane_x = old_plane_x * cos(angle)
-	- game->player->plane_y * sin(angle);
-	game->player->plane_y = old_plane_x * sin(angle) 
-	+ game->player->plane_y * cos(angle);
+	// Rotar plano de cámara
+	old_plane_x = player->plane_x;
+	player->plane_x = player->plane_x * cos(rotation) - player->plane_y * sin(rotation);
+	player->plane_y = old_plane_x * sin(rotation) + player->plane_y * cos(rotation);
 }

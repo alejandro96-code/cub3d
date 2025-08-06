@@ -12,28 +12,39 @@
 
 #include "cub3d.h"
 
-void	setup_hooks(t_game *game)
+// Variable global para los datos del hook
+static t_hook_data	g_hook_data;
+
+void	setup_hooks(t_mlx *mlx, t_cub_config *cfg, t_player *player)
 {
-	mlx_hook(game->mlx->win_ptr, KeyPress, KeyPressMask, key_press, game);
-	mlx_hook(game->mlx->win_ptr, 33, 1L<<17, close_window, game);
-	mlx_loop_hook(game->mlx->mlx_ptr, loop_render, game);
+	// Configurar datos globales
+	g_hook_data.mlx = mlx;
+	g_hook_data.cfg = cfg;
+	g_hook_data.player = player;
+	
+	// Configurar hooks de eventos
+	mlx_hook(mlx->win_ptr, KeyPress, KeyPressMask, key_press, &g_hook_data);
+	mlx_hook(mlx->win_ptr, 33, 1L<<17, close_window_hook, &g_hook_data);
 }
 
-int	key_press(int keycode, t_game *game)
+int	key_press(int keycode, t_hook_data *data)
 {
 	if (keycode == KEY_ESC)
-		return (close_window(game));
+		return (close_window_hook(data));
 	if (keycode == KEY_W || keycode == KEY_S
 		|| keycode == KEY_A || keycode == KEY_D)
-		move_player(keycode, game);
+		move_player(keycode, data->cfg, data->player);
 	if (keycode == KEY_LEFT || keycode == KEY_RIGHT)
-		rotate_view(keycode, game);
+		rotate_view(keycode, data->player);
+	
+	// Re-renderizar después del movimiento
+	render_scene(data->mlx, data->cfg, data->player);
 	return (0);
 }
 
-int	loop_render(t_game *game)
+int	close_window_hook(t_hook_data *data)
 {
-	mlx_clear_window(game->mlx->mlx_ptr, game->mlx->win_ptr);
-	render_scene(game->mlx, game->cfg, game->player);
-	return (0);
+	destroy_window(data->mlx);
+	free_cub_config(data->cfg);
+	exit(0);
 }

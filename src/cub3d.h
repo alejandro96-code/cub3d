@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/06 11:51:29 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/07/29 16:38:20 by alejanr2         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
@@ -24,8 +24,6 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-# include <X11/X.h>
-# include <X11/keysym.h>
 
 # define PLAYER_N 'N'
 # define PLAYER_S 'S'
@@ -34,14 +32,6 @@
 # define FLOOR '0'
 # define WALL '1'
 # define TILE_SIZE 64
-
-# define KEY_ESC 65307
-# define KEY_W 119
-# define KEY_A 97
-# define KEY_S 115
-# define KEY_D 100
-# define KEY_LEFT 65361
-# define KEY_RIGHT 65363
 
 # define ERROR_EXTENSION "Error: Extension de archivo invalida\n"
 # define ERROR_ARGUMENTOS "Error: Nº de argumentos invalido\n"
@@ -57,6 +47,23 @@
 # define MINIMAP_MARGIN 16
 # define MINIMAP_WALL_COLOR 0x888888
 # define MINIMAP_FLOOR_COLOR 0x222222
+
+// EVENTOS Y TECLAS
+# define KeyPress		2
+# define KeyPressMask	(1L<<0)
+
+// DEFINICIONES DE TECLAS
+# define KEY_ESC		65307
+# define KEY_W			119
+# define KEY_S			115
+# define KEY_A			97
+# define KEY_D			100
+# define KEY_LEFT		65361
+# define KEY_RIGHT		65363
+
+// VELOCIDADES DE MOVIMIENTO Y ROTACIÓN
+# define MOVE_SPEED		0.1
+# define ROT_SPEED		0.05
 
 // Estructura principal de configuración
 typedef struct s_cub_config
@@ -93,8 +100,6 @@ typedef struct s_player
 	// PLANO DE CÁMARA (para FOV)
 	double		plane_x;		// Componente X del plano de cámara
 	double		plane_y;		// Componente Y del plano de cámara
-	double		move_speed;     // Velocidad de movimiento del jugador
-	double		rot_speed;      // Velocidad de rotación del jugador
 }				t_player;
 
 typedef struct s_raycast
@@ -126,13 +131,13 @@ typedef struct s_raycast
 	int			color;			// Color calculado para esta columna
 }				t_raycast;
 
-// Estructura principal que contiene todo el estado del juego
-typedef struct s_game
+// Estructura para pasar datos a los hooks
+typedef struct s_hook_data
 {
 	t_mlx			*mlx;
 	t_cub_config	*cfg;
 	t_player		*player;
-}					t_game;
+}				t_hook_data;
 
 // main.c
 int				main(int argc, char **argv);
@@ -155,8 +160,7 @@ void			free_cub_config(t_cub_config *cfg);
 // init_window.c
 t_mlx			*init_window(const t_cub_config *cfg);
 void			destroy_window(t_mlx *mlx);
-int				close_window_mlx(t_mlx *mlx);
-int				close_window(t_game *game);
+int				close_window(t_mlx *mlx);
 
 // init_player.c
 void			init_player_from_map(t_player *player, t_cub_config *cfg);
@@ -180,13 +184,13 @@ void			draw_column_colors(t_mlx *mlx, t_cub_config *cfg, t_raycast *v);
 // bonus_minimap.c
 void			bonus_minimap(t_mlx *mlx, t_cub_config *cfg);
 
-//player_control.c
-void 			rotate_view(int keycode, t_game *game);
-void			move_player(int keycode, t_game *game);
+// hooks.c
+void			setup_hooks(t_mlx *mlx, t_cub_config *cfg, t_player *player);
+int				key_press(int keycode, t_hook_data *data);
+int				close_window_hook(t_hook_data *data);
 
-//hooks.c
-int				key_press(int keycode, t_game *game);
-void			setup_hooks(t_game *game);
-int				loop_render(t_game *game);
+// player_control.c
+void			move_player(int keycode, t_cub_config *cfg, t_player *player);
+void			rotate_view(int keycode, t_player *player);
 
 #endif

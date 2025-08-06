@@ -1,15 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_player.c                                      :+:      :+:    :+:   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/05 22:17:29 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/07/29 16:38:20 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "cub3d.h"
 
 // Inicializa la dirección y el plano del jugador para norte o sur
@@ -82,8 +81,6 @@ void	init_player_from_map(t_player *player, t_cub_config *cfg)
 				player->x = x + 0.5;
 				player->y = y + 0.5;
 				set_player_direction(player, c);
-				player->rot_speed = 0.05;
-				player->move_speed = 0.1;
 				return ;
 			}
 			x++;

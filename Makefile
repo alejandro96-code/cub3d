@@ -60,7 +60,7 @@ CUB3DSRC = \
    src/raycast_calc.c \
    src/bonus_minimap.c \
    src/hooks.c \
-   src/player_control.c
+   src/player_control.c \
 
 # Directorio de objetos
 OBJDIR = src/obj
