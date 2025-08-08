@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player_control.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:00:00 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/06 17:00:00 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/08/08 12:39:18 by ybahri           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -20,17 +20,41 @@ static int	is_valid_position(t_cub_config *cfg, double x, double y)
 
 	map_x = (int)x;
 	map_y = (int)y;
-	
+
 	// Verificar límites del mapa
-	if (map_x < 0 || map_x >= cfg->map_width || 
+	if (map_x < 0 || map_x >= cfg->map_width ||
 		map_y < 0 || map_y >= cfg->map_height)
 		return (0);
-	
+
 	// Verificar si hay una pared
 	if (cfg->map[map_y][map_x] == '1')
 		return (0);
-	
+
 	return (1);
+}
+
+static void	calculate_movement(int keycode, t_player *player, double *new_x, double *new_y)
+{
+	if (keycode == KEY_W)
+	{
+		*new_x += player->dir_x * MOVE_SPEED;
+		*new_y += player->dir_y * MOVE_SPEED;
+	}
+	else if (keycode == KEY_S)
+	{
+		*new_x -= player->dir_x * MOVE_SPEED;
+		*new_y -= player->dir_y * MOVE_SPEED;
+	}
+	else if (keycode == KEY_A)
+	{
+		*new_x += player->dir_y * MOVE_SPEED;
+		*new_y -= player->dir_x * MOVE_SPEED;
+	}
+	else if (keycode == KEY_D)
+	{
+		*new_x -= player->dir_y * MOVE_SPEED;
+		*new_y += player->dir_x * MOVE_SPEED;
+	}
 }
 
 void	move_player(int keycode, t_cub_config *cfg, t_player *player)
@@ -40,29 +64,7 @@ void	move_player(int keycode, t_cub_config *cfg, t_player *player)
 
 	new_x = player->x;
 	new_y = player->y;
-
-	if (keycode == KEY_W)
-	{
-		new_x += player->dir_x * MOVE_SPEED;
-		new_y += player->dir_y * MOVE_SPEED;
-	}
-	else if (keycode == KEY_S)
-	{
-		new_x -= player->dir_x * MOVE_SPEED;
-		new_y -= player->dir_y * MOVE_SPEED;
-	}
-	else if (keycode == KEY_A)
-	{
-		new_x += player->dir_y * MOVE_SPEED;  // Perpendicular a la dirección
-		new_y -= player->dir_x * MOVE_SPEED;
-	}
-	else if (keycode == KEY_D)
-	{
-		new_x -= player->dir_y * MOVE_SPEED;  // Perpendicular a la dirección
-		new_y += player->dir_x * MOVE_SPEED;
-	}
-
-	// Verificar colisiones antes de mover
+	calculate_movement(keycode, player, &new_x, &new_y);
 	if (is_valid_position(cfg, new_x, player->y))
 		player->x = new_x;
 	if (is_valid_position(cfg, player->x, new_y))

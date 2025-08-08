@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/07/29 16:38:20 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/08/08 12:31:07 by ybahri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,20 @@ static int	create_map(t_cub_config *cfg, char **lines, int count)
 	return (1);
 }
 
+// Auxiliar de parse_cub_file_lines (superaba 25 lineas)
+static void	free_lines_array(char **lines, int count)
+{
+	int	i;
+
+	i = 0;
+	while (i < count)
+	{
+		free(lines[i]);
+		i++;
+	}
+	free(lines);
+}
+
 /*
 	Lee todas las líneas del archivo .cub,
 	las procesa y construye el mapa y la configuración
@@ -139,7 +153,6 @@ static int	parse_cub_file_lines(const char *filename, t_cub_config *cfg)
 {
 	char	**lines;
 	int		count;
-	int		i;
 
 	lines = NULL;
 	count = 0;
@@ -147,24 +160,10 @@ static int	parse_cub_file_lines(const char *filename, t_cub_config *cfg)
 		return (0);
 	if (!create_map(cfg, lines, count))
 	{
-		i = 0;
-		while (i < count)
-		{
-			free(lines[i]);
-			i++;
-		}
-		free(lines);
+		free_lines_array(lines, count);
 		return (0);
 	}
-	{
-		i = 0;
-		while (i < count)
-		{
-			free(lines[i]);
-			i++;
-		}
-	}
-	free(lines);
+	free_lines_array(lines, count);
 	return (1);
 }
 

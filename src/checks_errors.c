@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
+/*   checks_errors.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/07/29 16:38:20 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/08/08 11:03:04 by ybahri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,19 @@ int	is_map_closed(t_cub_config *cfg)
 	}
 	return (1);
 }
+// Separa la comprobacion de errores de mapa de la funcion checkAllErrors (+25 lineas)
+static int	validate_map_config(t_cub_config *cfg)
+{
+	if (has_empty_line(cfg))
+		return (printf(ERROR_LINEA_VACIA), 0);
+	if (!has_only_valid_chars(cfg))
+		return (printf(ERROR_CHAR), 0);
+	if (!is_map_closed(cfg))
+		return (printf(ERROR_MAPA_NO_CERRADO), 0);
+	if (!has_player(cfg))
+		return (printf(ERROR_PLAYERS), 0);
+	return (1);
+}
 
 // Comprueba todos los errores iniciales y retorna 0 si hay error, 1 si todo OK
 int	checksAllErrors(int argc, char **argv, t_cub_config **cfg, t_mlx **mlx)
@@ -127,25 +140,10 @@ int	checksAllErrors(int argc, char **argv, t_cub_config **cfg, t_mlx **mlx)
 	*cfg = parse_cub_file(argv[1]);
 	if (!*cfg)
 		return (printf(ERROR_PARSEO), 0);
-	if (has_empty_line(*cfg))
+	if (!validate_map_config(*cfg))
 	{
 		free_cub_config(*cfg);
-		return (printf(ERROR_LINEA_VACIA), 0);
-	}
-	if (!has_only_valid_chars(*cfg))
-	{
-		free_cub_config(*cfg);
-		return (printf(ERROR_CHAR), 0);
-	}
-	if (!is_map_closed(*cfg))
-	{
-		free_cub_config(*cfg);
-		return (printf(ERROR_MAPA_NO_CERRADO), 0);
-	}
-	if (!has_player(*cfg))
-	{
-		free_cub_config(*cfg);
-		return (printf(ERROR_PLAYERS), 0);
+		return (0);
 	}
 	*mlx = init_window(*cfg);
 	if (!*mlx)
