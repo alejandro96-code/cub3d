@@ -56,7 +56,6 @@ CUB3DSRC = \
    src/parsing.c \
    src/map_parser.c \
    src/renderScene.c \
-   src/free.c \
    src/init_player.c \
    src/drawColors.c \
    src/raycast_calc.c \
