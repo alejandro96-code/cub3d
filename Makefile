@@ -51,8 +51,10 @@ GNLSRC = \
 CUB3DSRC = \
    src/main.c \
    src/checks_errors.c \
+   src/validation.c \
    src/init_window.c \
    src/parsing.c \
+   src/map_parser.c \
    src/renderScene.c \
    src/free.c \
    src/init_player.c \

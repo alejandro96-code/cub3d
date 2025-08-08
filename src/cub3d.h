@@ -6,7 +6,7 @@
 /*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/07 02:43:22 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/08/08 13:25:29 by ybahri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,10 @@ int				is_map_closed(t_cub_config *cfg);
 
 // parsing.c
 t_cub_config	*parse_cub_file(const char *filename);
+
+// map_parser.c
+int				process_map_lines(const char *filename, char ***lines_out,
+					int *count_out);
 
 // free.c
 void			free_cub_config(t_cub_config *cfg);
