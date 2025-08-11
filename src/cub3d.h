@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/08 13:25:29 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/08/11 19:41:54 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@
 # define MINIMAP_FLOOR_COLOR 0x222222
 
 // EVENTOS Y TECLAS
-# define KeyPress		2
-# define KeyPressMask	(1L<<0)
+# define KEYPRESS		2
+# define KEYPRESSMASK	(1L<<0)
 
 // DEFINICIONES DE TECLAS
 # define KEY_ESC		65307
@@ -64,6 +64,12 @@
 // VELOCIDADES DE MOVIMIENTO Y ROTACIÓN
 # define MOVE_SPEED		0.1
 # define ROT_SPEED		0.05
+
+//DEFINICIONES PARA LAS ESTRUCTURAS
+# define IDX_NO	0
+# define IDX_SO	1
+# define IDX_EA	2
+# define IDX_WE	3
 
 typedef struct s_texture
 {
@@ -160,7 +166,7 @@ int				main(int argc, char **argv);
 
 // checks_errors.c
 int				validate_extension(const char *filename);
-int				checksAllErrors(int argc, char **argv, t_cub_config **cfg,
+int				checks_all_errors(int argc, char **argv, t_cub_config **cfg,
 					t_mlx **mlx);
 int				has_player(t_cub_config *cfg);
 int				has_only_valid_chars(t_cub_config *cfg);
@@ -205,7 +211,7 @@ void			draw_column_colors(t_mlx *mlx, t_cub_config *cfg, t_raycast *v);
 void			bonus_minimap(t_mlx *mlx, t_cub_config *cfg);
 
 // hooks.c
-void			setup_hooks(t_mlx *mlx, t_cub_config *cfg, t_player *player);
+void			setup_hooks(t_mlx *mlx, t_cub_config *cfg, t_player *player, t_hook_data *hook_data);
 int				key_press(int keycode, t_hook_data *data);
 int				close_window_hook(t_hook_data *data);
 

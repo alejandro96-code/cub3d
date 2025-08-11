@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   player_control.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/06 17:00:00 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/08 12:39:18 by ybahri           ###   ########.fr       */
+/*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
+/*   Updated: 2025/08/08 12:27:31 by ybahri           ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "cub3d.h"
 
@@ -20,20 +20,16 @@ static int	is_valid_position(t_cub_config *cfg, double x, double y)
 
 	map_x = (int)x;
 	map_y = (int)y;
-
-	// Verificar límites del mapa
-	if (map_x < 0 || map_x >= cfg->map_width ||
-		map_y < 0 || map_y >= cfg->map_height)
+	if (map_x < 0 || map_x >= cfg->map_width || map_y < 0
+		|| map_y >= cfg->map_height)
 		return (0);
-
-	// Verificar si hay una pared
 	if (cfg->map[map_y][map_x] == '1')
 		return (0);
-
 	return (1);
 }
 
-static void	calculate_movement(int keycode, t_player *player, double *new_x, double *new_y)
+static void	calculate_movement(int keycode, t_player *player, double *new_x,
+		double *new_y)
 {
 	if (keycode == KEY_W)
 	{
@@ -82,15 +78,14 @@ void	rotate_view(int keycode, t_player *player)
 	else if (keycode == KEY_RIGHT)
 		rotation = ROT_SPEED;
 	else
-		return;
-
-	// Rotar vector de dirección
+		return ;
 	old_dir_x = player->dir_x;
-	player->dir_x = player->dir_x * cos(rotation) - player->dir_y * sin(rotation);
+	player->dir_x = player->dir_x * cos(rotation) - player->dir_y
+		* sin(rotation);
 	player->dir_y = old_dir_x * sin(rotation) + player->dir_y * cos(rotation);
-
-	// Rotar plano de cámara
 	old_plane_x = player->plane_x;
-	player->plane_x = player->plane_x * cos(rotation) - player->plane_y * sin(rotation);
-	player->plane_y = old_plane_x * sin(rotation) + player->plane_y * cos(rotation);
+	player->plane_x = player->plane_x * cos(rotation) - player->plane_y
+		* sin(rotation);
+	player->plane_y = old_plane_x * sin(rotation) + player->plane_y
+		* cos(rotation);
 }

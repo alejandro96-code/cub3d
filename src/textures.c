@@ -12,11 +12,6 @@
 
 #include "cub3d.h"
 
-# define IDX_NO	0
-# define IDX_SO	1
-# define IDX_EA	2
-# define IDX_WE	3
-
 static t_texture	load_one(char *path, t_mlx *mlx)
 {
 	t_texture	tex;

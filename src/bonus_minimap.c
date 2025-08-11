@@ -13,7 +13,7 @@
 #include "cub3d.h"
 
 // Dibuja un cuadrado en el minimapa
-static void	draw_square(void *mlx_ptr, void *win_ptr, int x, int y, int color)
+static void	draw_square(t_mlx *mlx, int x, int y, int color)
 {
 	int	i;
 	int	j;
@@ -24,7 +24,7 @@ static void	draw_square(void *mlx_ptr, void *win_ptr, int x, int y, int color)
 		j = 0;
 		while (j < MINIMAP_CELL_SIZE)
 		{
-			mlx_pixel_put(mlx_ptr, win_ptr, x + i, y + j, color);
+			mlx_pixel_put(mlx->mlx_ptr, mlx->win_ptr, x + i, y + j, color);
 			j++;
 		}
 		i++;
@@ -50,11 +50,9 @@ void	bonus_minimap(t_mlx *mlx, t_cub_config *cfg)
 			py = MINIMAP_MARGIN + y * MINIMAP_CELL_SIZE;
 			c = cfg->map[y][x];
 			if (c == '1')
-				draw_square(mlx->mlx_ptr, mlx->win_ptr, px, py,
-					MINIMAP_WALL_COLOR);
+				draw_square(mlx, px, py, MINIMAP_WALL_COLOR);
 			else if (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W')
-				draw_square(mlx->mlx_ptr, mlx->win_ptr, px, py,
-					MINIMAP_FLOOR_COLOR);
+				draw_square(mlx, px, py, MINIMAP_FLOOR_COLOR);
 			x++;
 		}
 		y++;

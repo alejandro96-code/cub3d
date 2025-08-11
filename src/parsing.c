@@ -89,9 +89,8 @@ t_cub_config	*parse_cub_file(const char *filename)
 		close(fd);
 		return (NULL);
 	}
-	// Inicializar colores por defecto
-	cfg->floor_color = 0x00BFFF;   // Azul (DeepSkyBlue)
-	cfg->ceiling_color = 0x7CFC00; // Verde claro (LawnGreen)
+	cfg->floor_color = 0x00BFFF;
+	cfg->ceiling_color = 0x7CFC00;
 	if (!parse_cub_file_lines(filename, cfg))
 	{
 		free_cub_config(cfg);

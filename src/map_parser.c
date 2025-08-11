@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 12:45:00 by ybahri            #+#    #+#             */
-/*   Updated: 2025/08/08 13:22:49 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/08/11 19:53:41 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ static int	count_map_lines(const char *filename)
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 		return (-1);
-	while ((line = get_next_line(fd)))
+	line = get_next_line(fd);
+	while (line)
 	{
 		len = ft_strlen(line);
 		if (len > 0 && line[len - 1] == '\n')
@@ -43,6 +44,7 @@ static int	count_map_lines(const char *filename)
 		if (parse_cub_line(line))
 			count++;
 		free(line);
+		line = get_next_line(fd);
 	}
 	close(fd);
 	return (count);
@@ -60,7 +62,8 @@ static int	fill_map_lines(const char *filename, char **lines, int count)
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 		return (0);
-	while ((line = get_next_line(fd)))
+	line = get_next_line(fd);
+	while (line)
 	{
 		len = ft_strlen(line);
 		if (len > 0 && line[len - 1] == '\n')
@@ -73,6 +76,7 @@ static int	fill_map_lines(const char *filename, char **lines, int count)
 		else if (line[0] == '\0' && i < count)
 			lines[i++] = ft_strdup("");
 		free(line);
+		line = get_next_line(fd);
 	}
 	close(fd);
 	return (i == count);
