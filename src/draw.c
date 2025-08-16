@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 02:18:43 by ybahri            #+#    #+#             */
-/*   Updated: 2025/08/07 02:27:05 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/08/16 12:54:09 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,20 @@ void	draw_floor_ceiling(t_mlx *mlx, t_cub_config *cfg, t_raycast *v)
 {
 	int	y;
 
+	if (!mlx || !mlx->pixels || !cfg || !v)
+		return ;
 	y = 0;
-	while (y < v->draw_start)
+	while (y < v->draw_start && y >= 0 && y < mlx->height)
 	{
-		mlx->pixels[y * mlx->width + v->x] = cfg->ceiling_color;
+		if (v->x >= 0 && v->x < mlx->width)
+			mlx->pixels[y * mlx->width + v->x] = cfg->ceiling_color;
 		y++;
 	}
 	y = v->draw_end;
-	while (y < mlx->height)
+	while (y < mlx->height && y >= 0)
 	{
-		mlx->pixels[y * mlx->width + v->x] = cfg->floor_color;
+		if (v->x >= 0 && v->x < mlx->width)
+			mlx->pixels[y * mlx->width + v->x] = cfg->floor_color;
 		y++;
 	}
 }
@@ -48,6 +52,7 @@ static void	draw_texture_column(t_mlx *mlx, t_texture *tex, t_raycast *v)
 	double	tex_pos;
 	int		y;
 	int		color;
+		int tex_y;
 
 	if (!tex || !tex->buffer || tex->width <= 0 || tex->height <= 0)
 		return ;
@@ -56,11 +61,10 @@ static void	draw_texture_column(t_mlx *mlx, t_texture *tex, t_raycast *v)
 	y = v->draw_start;
 	while (y < v->draw_end)
 	{
-		int	tex_y;
-
 		tex_y = (int)tex_pos & (tex->height - 1);
 		tex_pos += step;
-		if (v->tex_x >= 0 && v->tex_x < tex->width && tex_y >= 0 && tex_y < tex->height)
+		if (v->tex_x >= 0 && v->tex_x < tex->width && tex_y >= 0
+			&& tex_y < tex->height)
 		{
 			color = tex->buffer[tex_y * tex->width + v->tex_x];
 			if (v->side == 1)
@@ -86,7 +90,8 @@ void	draw_wall_textures(t_mlx *mlx, t_cub_config *cfg, t_player *player,
 	if (!tex || tex->width <= 0)
 		return ;
 	v->tex_x = (int)(wall_x * tex->width);
-	if ((v->side == 0 && v->ray_dir_x > 0) || (v->side == 1 && v->ray_dir_y < 0))
+	if ((v->side == 0 && v->ray_dir_x > 0) || (v->side == 1
+			&& v->ray_dir_y < 0))
 		v->tex_x = tex->width - v->tex_x - 1;
 	draw_texture_column(mlx, tex, v);
 }

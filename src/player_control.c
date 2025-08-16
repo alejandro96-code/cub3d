@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player_control.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/08 12:27:31 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/08/16 12:54:35 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,16 @@ static int	is_valid_position(t_cub_config *cfg, double x, double y)
 	int	map_x;
 	int	map_y;
 
+	if (!cfg || !cfg->map)
+		return (0);
+	if (cfg->map_width <= 0 || cfg->map_height <= 0)
+		return (0);
 	map_x = (int)x;
 	map_y = (int)y;
 	if (map_x < 0 || map_x >= cfg->map_width || map_y < 0
 		|| map_y >= cfg->map_height)
+		return (0);
+	if (!cfg->map[map_y])
 		return (0);
 	if (cfg->map[map_y][map_x] == '1')
 		return (0);
@@ -31,6 +37,8 @@ static int	is_valid_position(t_cub_config *cfg, double x, double y)
 static void	calculate_movement(int keycode, t_player *player, double *new_x,
 		double *new_y)
 {
+	if (!player || !new_x || !new_y)
+		return ;
 	if (keycode == KEY_W)
 	{
 		*new_x += player->dir_x * MOVE_SPEED;
@@ -58,6 +66,8 @@ void	move_player(int keycode, t_cub_config *cfg, t_player *player)
 	double	new_x;
 	double	new_y;
 
+	if (!cfg || !player)
+		return ;
 	new_x = player->x;
 	new_y = player->y;
 	calculate_movement(keycode, player, &new_x, &new_y);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_window.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/08 12:27:31 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/08/16 12:53:17 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,12 @@ t_mlx	*init_window(const t_cub_config *cfg)
 {
 	t_mlx	*mlx;
 
+	(void)cfg;
 	mlx = malloc(sizeof(t_mlx));
 	if (!mlx)
 		return (NULL);
-	mlx->width = cfg->map_width * 64;
-	mlx->height = cfg->map_height * 64;
+	mlx->width = 1024;
+	mlx->height = 768;
 	if (!init_mlx_components(mlx))
 	{
 		free(mlx);

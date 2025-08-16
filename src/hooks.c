@@ -6,7 +6,7 @@
 /*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:35:26 by aleja             #+#    #+#             */
-/*   Updated: 2025/08/11 19:39:47 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/16 12:51:09 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@ void	setup_hooks(t_mlx *mlx, t_cub_config *cfg, t_player *player,
 	hook_data->player = player;
 	mlx_hook(mlx->win_ptr, KEYPRESS, KEYPRESSMASK, key_press, hook_data);
 	mlx_hook(mlx->win_ptr, 33, 1L << 17, close_window_hook, hook_data);
+#ifdef BONUS
+	setup_mouse_hooks(mlx, hook_data);
+#endif
 }
 
 int	key_press(int keycode, t_hook_data *data)

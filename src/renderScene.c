@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderScene.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/07 02:43:53 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/08/16 12:53:50 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,7 @@ void	render_scene(t_mlx *mlx, t_cub_config *cfg, t_player *player)
 		x++;
 	}
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img_ptr, 0, 0);
+#ifdef BONUS
 	bonus_minimap(mlx, cfg);
+#endif
 }

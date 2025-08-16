@@ -46,8 +46,7 @@ GNLSRC = \
 	src/gnl/get_next_line.c \
 	src/gnl/get_next_line_utils.c
 
-# Archivos principales del proyecto
-
+# Archivos principales del proyecto (sin bonus)
 CUB3DSRC = \
    src/main.c \
    src/checks_errors.c \
@@ -59,26 +58,51 @@ CUB3DSRC = \
    src/init_player.c \
    src/drawColors.c \
    src/raycast_calc.c \
-   src/bonus_minimap.c \
    src/hooks.c \
    src/player_control.c \
    src/utils.c \
    src/textures.c \
    src/draw.c \
 
+# Archivos bonus (solo se incluyen con make bonus)
+BONUSSRC = \
+   src/bonus_minimap.c \
+   src/bonus_mouse.c \
+
 # Directorio de objetos
 OBJDIR = src/obj
 
-# Objetos en el directorio obj
+# Objetos normales (sin bonus)
 OBJS = $(addprefix $(OBJDIR)/, $(notdir $(CUB3DSRC:.c=.o))) \
        $(addprefix $(OBJDIR)/, $(notdir $(LIBFTSRC:.c=.o))) \
        $(addprefix $(OBJDIR)/, $(notdir $(GNLSRC:.c=.o)))
+
+# Objetos con bonus
+BONUS_OBJS = $(addprefix $(OBJDIR)/, $(notdir $(CUB3DSRC:.c=.o))) \
+             $(addprefix $(OBJDIR)/, $(notdir $(BONUSSRC:.c=.o))) \
+             $(addprefix $(OBJDIR)/, $(notdir $(LIBFTSRC:.c=.o))) \
+             $(addprefix $(OBJDIR)/, $(notdir $(GNLSRC:.c=.o)))
 
 UNAME_S := $(shell uname -s)
 
 MLXFLAGS = -L mlx -lmlx -lX11 -lXext -lbsd -lm
 
 all: $(NAME)
+
+bonus: CFLAGS += -DBONUS
+bonus: $(NAME)_bonus
+
+$(NAME)_bonus: $(BONUS_OBJS)
+	@printf "\e[43m\e[30mCompilando Archivos Propios (con BONUS)\e[0m\n"
+	@printf "\e[42m\e[30mArchivos Propios Compilados\e[0m\n"
+
+	@printf "\e[43m\e[30mCompilando MLX\e[0m\n"
+	@$(MAKE) -C mlx 2>/dev/null >/dev/null
+	@printf "\e[42m\e[30mArchivos MLX Compilada\e[0m\n"
+
+	@printf "\e[43m\e[30mPreparando el cub3d con BONUS\e[0m\n"
+	@$(CC) $(CFLAGS) -o $(NAME) $(BONUS_OBJS) mlx/libmlx.a $(MLXFLAGS)
+	@printf "\e[42m\e[30mListo para jugar con BONUS!\e[0m\n"
 
 # Crear directorio obj si no existe
 $(OBJDIR):
@@ -118,5 +142,5 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all bonus clean fclean re
 

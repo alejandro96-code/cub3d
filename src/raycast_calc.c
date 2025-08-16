@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
+/*   raycast_calc.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/07/29 16:38:20 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/08/16 12:54:30 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,15 @@ int	raycast_dda(const t_cub_config *cfg, t_raycast *v)
 			v->map_y += v->step_y;
 			v->side = 1;
 		}
-		if (cfg->map[v->map_y][v->map_x] == '1')
+		if (v->map_x < 0 || v->map_x >= cfg->map_width || v->map_y < 0
+			|| v->map_y >= cfg->map_height)
+		{
 			hit = 1;
+		}
+		else if (cfg->map[v->map_y][v->map_x] == '1')
+		{
+			hit = 1;
+		}
 	}
 	return (v->side);
 }
