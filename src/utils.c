@@ -6,7 +6,7 @@
 /*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:34:38 by aleja             #+#    #+#             */
-/*   Updated: 2025/08/16 12:53:44 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/16 13:23:24 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,19 @@ void	my_mlx_pixel_put(t_mlx *mlx, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-void	free_cub_config(t_cub_config *cfg)
+void	free_g(t_g *g)
 {
 	int	i;
 
-	if (cfg->map)
+	if (g->map)
 	{
 		i = 0;
-		while (i < cfg->map_height)
+		while (i < g->map_height)
 		{
-			free(cfg->map[i]);
+			free(g->map[i]);
 			i++;
 		}
-		free(cfg->map);
+		free(g->map);
 	}
-	free(cfg);
+	free(g);
 }

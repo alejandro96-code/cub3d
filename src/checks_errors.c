@@ -6,7 +6,7 @@
 /*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/11 19:50:33 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/16 13:23:24 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,38 +26,38 @@ int	validate_extension(const char *filename)
 }
 
 // validaciones del mapa
-static int	validate_map_config(t_cub_config *cfg)
+static int	validate_map_config(t_g *g)
 {
-	if (has_empty_line(cfg))
+	if (has_empty_line(g))
 		return (printf(ERROR_LINEA_VACIA), 0);
-	if (!has_only_valid_chars(cfg))
+	if (!has_only_valid_chars(g))
 		return (printf(ERROR_CHAR), 0);
-	if (!is_map_closed(cfg))
+	if (!is_map_closed(g))
 		return (printf(ERROR_MAPA_NO_CERRADO), 0);
-	if (!has_player(cfg))
+	if (!has_player(g))
 		return (printf(ERROR_PLAYERS), 0);
 	return (1);
 }
 
 // Comprueba todos los errores iniciales y retorna 0 si hay error, 1 si todo OK
-int	checks_all_errors(int argc, char **argv, t_cub_config **cfg, t_mlx **mlx)
+int	checks_all_errors(int argc, char **argv, t_g **g, t_mlx **mlx)
 {
 	if (argc != 2)
 		return (printf(ERROR_ARGUMENTOS), 0);
 	if (!validate_extension(argv[1]))
 		return (printf(ERROR_EXTENSION), 0);
-	*cfg = parse_cub_file(argv[1]);
-	if (!*cfg)
+	*g = parse_cub_file(argv[1]);
+	if (!*g)
 		return (printf(ERROR_PARSEO), 0);
-	if (!validate_map_config(*cfg))
+	if (!validate_map_config(*g))
 	{
-		free_cub_config(*cfg);
+		free_g(*g);
 		return (0);
 	}
-	*mlx = init_window(*cfg);
+	*mlx = init_window(*g);
 	if (!*mlx)
 	{
-		free_cub_config(*cfg);
+		free_g(*g);
 		return (printf(ERROR_MLX), 0);
 	}
 	return (1);

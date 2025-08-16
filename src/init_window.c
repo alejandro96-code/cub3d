@@ -6,7 +6,7 @@
 /*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/16 12:53:17 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/16 13:23:24 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ static int	init_mlx_components(t_mlx *mlx)
 	return (1);
 }
 
-t_mlx	*init_window(const t_cub_config *cfg)
+t_mlx	*init_window(const t_g *g)
 {
 	t_mlx	*mlx;
 
-	(void)cfg;
+	(void)g;
 	mlx = malloc(sizeof(t_mlx));
 	if (!mlx)
 		return (NULL);

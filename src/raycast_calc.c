@@ -6,50 +6,49 @@
 /*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/16 12:54:30 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/16 13:23:26 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 // Calcula la dirección del rayo y la posición de la cámara para una columna x
-void	calculate_ray_direction(const t_player *player, t_mlx *mlx,
-		t_raycast *v)
+void	calculate_ray_direction(t_g *g, t_mlx *mlx)
 {
-	v->camera_x = 2 * v->x / (double)mlx->width - 1;
-	v->ray_dir_x = player->dir_x + player->plane_x * v->camera_x;
-	v->ray_dir_y = player->dir_y + player->plane_y * v->camera_x;
-	v->map_x = (int)player->x;
-	v->map_y = (int)player->y;
-	v->delta_dist_x = fabs(1 / v->ray_dir_x);
-	v->delta_dist_y = fabs(1 / v->ray_dir_y);
+	g->camera_x = 2 * g->x / (double)mlx->width - 1;
+	g->ray_dir_x = g->dir_x + g->plane_x * g->camera_x;
+	g->ray_dir_y = g->dir_y + g->plane_y * g->camera_x;
+	g->map_x = (int)g->player_x;
+	g->map_y = (int)g->player_y;
+	g->delta_dist_x = fabs(1 / g->ray_dir_x);
+	g->delta_dist_y = fabs(1 / g->ray_dir_y);
 }
 
 /*
 	Calcula el paso y la distancia inicial a la
 	siguiente línea de grid para el algoritmo DDA
 */
-void	calculate_step_and_side_dist(const t_player *player, t_raycast *v)
+void	calculate_step_and_side_dist(t_g *g)
 {
-	if (v->ray_dir_x < 0)
+	if (g->ray_dir_x < 0)
 	{
-		v->step_x = -1;
-		v->side_dist_x = (player->x - v->map_x) * v->delta_dist_x;
+		g->step_x = -1;
+		g->side_dist_x = (g->player_x - g->map_x) * g->delta_dist_x;
 	}
 	else
 	{
-		v->step_x = 1;
-		v->side_dist_x = (v->map_x + 1.0 - player->x) * v->delta_dist_x;
+		g->step_x = 1;
+		g->side_dist_x = (g->map_x + 1.0 - g->player_x) * g->delta_dist_x;
 	}
-	if (v->ray_dir_y < 0)
+	if (g->ray_dir_y < 0)
 	{
-		v->step_y = -1;
-		v->side_dist_y = (player->y - v->map_y) * v->delta_dist_y;
+		g->step_y = -1;
+		g->side_dist_y = (g->player_y - g->map_y) * g->delta_dist_y;
 	}
 	else
 	{
-		v->step_y = 1;
-		v->side_dist_y = (v->map_y + 1.0 - player->y) * v->delta_dist_y;
+		g->step_y = 1;
+		g->side_dist_y = (g->map_y + 1.0 - g->player_y) * g->delta_dist_y;
 	}
 }
 
@@ -57,37 +56,37 @@ void	calculate_step_and_side_dist(const t_player *player, t_raycast *v)
 	Realiza el algoritmo DDA para avanzar el rayo hasta chocar con una pared
 	Devuelve el lado impactado y modifica map_x/map_y
 */
-int	raycast_dda(const t_cub_config *cfg, t_raycast *v)
+int	raycast_dda(t_g *g)
 {
 	int	hit;
 
 	hit = 0;
-	v->side = 0;
+	g->side = 0;
 	while (!hit)
 	{
-		if (v->side_dist_x < v->side_dist_y)
+		if (g->side_dist_x < g->side_dist_y)
 		{
-			v->side_dist_x += v->delta_dist_x;
-			v->map_x += v->step_x;
-			v->side = 0;
+			g->side_dist_x += g->delta_dist_x;
+			g->map_x += g->step_x;
+			g->side = 0;
 		}
 		else
 		{
-			v->side_dist_y += v->delta_dist_y;
-			v->map_y += v->step_y;
-			v->side = 1;
+			g->side_dist_y += g->delta_dist_y;
+			g->map_y += g->step_y;
+			g->side = 1;
 		}
-		if (v->map_x < 0 || v->map_x >= cfg->map_width || v->map_y < 0
-			|| v->map_y >= cfg->map_height)
+		if (g->map_x < 0 || g->map_x >= g->map_width || g->map_y < 0
+			|| g->map_y >= g->map_height)
 		{
 			hit = 1;
 		}
-		else if (cfg->map[v->map_y][v->map_x] == '1')
+		else if (g->map[g->map_y][g->map_x] == '1')
 		{
 			hit = 1;
 		}
 	}
-	return (v->side);
+	return (g->side);
 }
 
 /*
@@ -95,25 +94,24 @@ int	raycast_dda(const t_cub_config *cfg, t_raycast *v)
 	y la altura de la línea a dibujar
 */
 
-void	calculate_perp_wall_and_lineheight(t_mlx *mlx, t_player *player,
-		t_raycast *v)
+void	calculate_perp_wall_and_lineheight(t_mlx *mlx, t_g *g)
 {
-	if (v->side == 0)
-		v->perp_wall_dist = (v->map_x - player->x + (1 - v->step_x) / 2)
-			/ v->ray_dir_x;
+	if (g->side == 0)
+		g->perp_wall_dist = (g->map_x - g->player_x + (1 - g->step_x) / 2)
+			/ g->ray_dir_x;
 	else
-		v->perp_wall_dist = (v->map_y - player->y + (1 - v->step_y) / 2)
-			/ v->ray_dir_y;
-	v->line_height = (int)(mlx->height / v->perp_wall_dist);
+		g->perp_wall_dist = (g->map_y - g->player_y + (1 - g->step_y) / 2)
+			/ g->ray_dir_y;
+	g->line_height = (int)(mlx->height / g->perp_wall_dist);
 }
 
 // Calcula los límites de dibujo (draw_start, draw_end) para la columna actual
-void	calculate_draw_limits(t_mlx *mlx, t_raycast *v)
+void	calculate_draw_limits(t_mlx *mlx, t_g *g)
 {
-	v->draw_start = -v->line_height / 2 + mlx->height / 2;
-	if (v->draw_start < 0)
-		v->draw_start = 0;
-	v->draw_end = v->line_height / 2 + mlx->height / 2;
-	if (v->draw_end >= mlx->height)
-		v->draw_end = mlx->height - 1;
+	g->draw_start = -g->line_height / 2 + mlx->height / 2;
+	if (g->draw_start < 0)
+		g->draw_start = 0;
+	g->draw_end = g->line_height / 2 + mlx->height / 2;
+	if (g->draw_end >= mlx->height)
+		g->draw_end = mlx->height - 1;
 }

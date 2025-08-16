@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bonus_minimap.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/08 10:57:59 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/08/16 13:23:24 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	draw_square(t_mlx *mlx, int x, int y, int color)
 }
 
 // Renderiza un minimapa fijo en la esquina superior izquierda
-void	bonus_minimap(t_mlx *mlx, t_cub_config *cfg)
+void	bonus_minimap(t_mlx *mlx, t_g *g)
 {
 	int		px;
 	int		py;
@@ -41,14 +41,14 @@ void	bonus_minimap(t_mlx *mlx, t_cub_config *cfg)
 	int		x;
 
 	y = 0;
-	while (y < cfg->map_height)
+	while (y < g->map_height)
 	{
 		x = 0;
-		while (x < cfg->map_width)
+		while (x < g->map_width)
 		{
 			px = MINIMAP_MARGIN + x * MINIMAP_CELL_SIZE;
 			py = MINIMAP_MARGIN + y * MINIMAP_CELL_SIZE;
-			c = cfg->map[y][x];
+			c = g->map[y][x];
 			if (c == '1')
 				draw_square(mlx, px, py, MINIMAP_WALL_COLOR);
 			else if (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W')
