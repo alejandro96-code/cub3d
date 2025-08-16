@@ -6,7 +6,7 @@
 /*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/16 13:23:24 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/16 13:31:29 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,14 @@ static void	free_lines_array(char **lines, int count)
 	Lee todas las líneas del archivo .cub,
 	las procesa y construye el mapa y la configuración
 */
-static int	parse_cub_file_lines(const char *filename, t_g *g)
+static int	parse_cub_file_lines(const char *f, t_g *g)
 {
 	char	**lines;
 	int		count;
 
 	lines = NULL;
 	count = 0;
-	if (!process_map_lines(filename, &lines, &count))
+	if (!process_map_lines(f, &lines, &count))
 		return (0);
 	if (!create_map(g, lines, count))
 	{
@@ -75,12 +75,12 @@ static int	parse_cub_file_lines(const char *filename, t_g *g)
 	Función principal: abre el archivo .cub,
 	reserva memoria y llama al parser de líneas
 */
-t_g	*parse_cub_file(const char *filename)
+t_g	*parse_cub_file(const char *f)
 {
 	int		fd;
-	t_g	*g;
+	t_g		*g;
 
-	fd = open(filename, O_RDONLY);
+	fd = open(f, O_RDONLY);
 	if (fd < 0)
 		return (NULL);
 	g = ft_calloc(1, sizeof(t_g));
@@ -91,7 +91,7 @@ t_g	*parse_cub_file(const char *filename)
 	}
 	g->floor_color = 0x00BFFF;
 	g->ceiling_color = 0x7CFC00;
-	if (!parse_cub_file_lines(filename, g))
+	if (!parse_cub_file_lines(f, g))
 	{
 		free_g(g);
 		close(fd);

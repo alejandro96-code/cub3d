@@ -6,7 +6,7 @@
 /*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/16 13:23:24 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/16 13:36:52 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ void	init_player_from_map(t_g *g)
 				g->player_x = x + 0.5;
 				g->player_y = y + 0.5;
 				set_player_direction(g, c);
+				g->mouse_initialized = 0;
+				g->mouse_last_x = -1;
 				return ;
 			}
 			x++;

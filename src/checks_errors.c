@@ -6,23 +6,23 @@
 /*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/16 13:23:24 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/16 13:45:38 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 // Valida la extensión del archivo .cub
-int	validate_extension(const char *filename)
+int	validate_extension(const char *f)
 {
 	int	len;
 
 	len = 0;
-	while (filename[len])
+	while (f[len])
 		len++;
 	if (len < 4)
 		return (0);
-	return (filename[len - 4] == '.' && filename[len - 3] == 'c' && filename[len - 2] == 'u' && filename[len - 1] == 'b');
+	return (f[len - 4] == '.' && f[len - 3] == 'c' && f[len - 2] == 'u' && f[len - 1] == 'b');
 }
 
 // validaciones del mapa

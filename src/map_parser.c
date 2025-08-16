@@ -6,7 +6,7 @@
 /*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 12:45:00 by ybahri            #+#    #+#             */
-/*   Updated: 2025/08/11 19:53:41 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/16 13:31:29 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	parse_cub_line(char *line)
 }
 
 // Cuenta cuántas líneas de mapa hay en el archivo
-static int	count_map_lines(const char *filename)
+static int	count_map_lines(const char *f)
 {
 	int		fd;
 	char	*line;
@@ -32,7 +32,7 @@ static int	count_map_lines(const char *filename)
 	int		len;
 
 	count = 0;
-	fd = open(filename, O_RDONLY);
+	fd = open(f, O_RDONLY);
 	if (fd < 0)
 		return (-1);
 	line = get_next_line(fd);
@@ -51,7 +51,7 @@ static int	count_map_lines(const char *filename)
 }
 
 // Guarda las líneas de mapa en un array previamente reservado
-static int	fill_map_lines(const char *filename, char **lines, int count)
+static int	fill_map_lines(const char *f, char **lines, int count)
 {
 	int		fd;
 	char	*line;
@@ -59,7 +59,7 @@ static int	fill_map_lines(const char *filename, char **lines, int count)
 	int		len;
 
 	i = 0;
-	fd = open(filename, O_RDONLY);
+	fd = open(f, O_RDONLY);
 	if (fd < 0)
 		return (0);
 	line = get_next_line(fd);
@@ -83,20 +83,20 @@ static int	fill_map_lines(const char *filename, char **lines, int count)
 }
 
 // Orquesta el proceso de contar y guardar líneas de mapa
-int	process_map_lines(const char *filename, char ***lines_out,
+int	process_map_lines(const char *f, char ***lines_out,
 		int *count_out)
 {
 	int		count;
 	char	**lines;
 	int		i;
 
-	count = count_map_lines(filename);
+	count = count_map_lines(f);
 	if (count <= 0)
 		return (0);
 	lines = malloc(count * sizeof(char *));
 	if (!lines)
 		return (0);
-	if (!fill_map_lines(filename, lines, count))
+	if (!fill_map_lines(f, lines, count))
 	{
 		i = 0;
 		while (i < count)

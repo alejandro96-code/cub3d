@@ -6,7 +6,7 @@
 /*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/16 13:23:24 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/16 13:44:40 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@
 # define MINIMAP_MARGIN 16
 # define MINIMAP_WALL_COLOR 0x888888
 # define MINIMAP_FLOOR_COLOR 0x222222
+# define MOUSE_SENSITIVITY 0.0008
 
 // EVENTOS Y TECLAS
 # define KEYPRESS 2
@@ -74,13 +75,10 @@
 // Estructura para la ventana y contexto MLX (se mantiene separada)
 typedef struct s_mlx
 {
-	// PUNTEROS MLX
-	void 	*mlx_ptr; // Puntero a la instancia MLX principal
-	void 	*win_ptr; // Puntero a la ventana creada
-	// DIMENSIONES DE VENTANA
-	int		width;
-	int		height;
-	// FRAMEBUFFER
+	void	*mlx_ptr; // Puntero a la instancia MLX principal
+	void	*win_ptr; // Puntero a la ventana creada
+	int		width; //Dimension anchura
+	int		height; //Dimension altura
 	void	*img_ptr;
 	int		*pixels;
 	int		bpp;
@@ -91,78 +89,57 @@ typedef struct s_mlx
 // Estructura principal del juego que contiene todo
 typedef struct s_g
 {
-	// COLORES DEL ENTORNO
-	int		floor_color;   // Color del suelo (formato RGB hex)
+	int		floor_color; // Color del suelo (formato RGB hex)
 	int		ceiling_color; // Color del techo (formato RGB hex)
-	// DATOS DEL MAPA
-	char	**map;     // Array 2D con el mapa del juego
-	int 	map_height; // Número de filas del mapa
-	int 	map_width;  // Número de columnas del mapa
-
-	// TEXTURAS (integradas directamente)
+	char	**map; // Array 2D con el mapa del juego
+	int		map_height; // Número de filas del mapa
+	int		map_width; // Número de columnas del mapa
 	void	*tex_img_ptr[4]; // Punteros a imágenes de texturas
-	int		*tex_buffer[4];   // Buffers de texturas
-	int		tex_width[4];     // Anchos de texturas
-	int		tex_height[4];    // Alturas de texturas
-
-	// JUGADOR (posición, dirección y plano de cámara)
-	// POSICIÓN EN EL MUNDO
+	int		*tex_buffer[4]; // Buffers de texturas
+	int		tex_width[4]; // Anchos de texturas
+	int		tex_height[4]; // Alturas de texturas
 	double	player_x; // Coordenada X del jugador en el mapa
 	double	player_y; // Coordenada Y del jugador en el mapa
-	// VECTOR DE DIRECCIÓN
 	double	dir_x; // Componente X del vector dirección
 	double	dir_y; // Componente Y del vector dirección
-	// PLANO DE CÁMARA (para FOV)
 	double	plane_x; // Componente X del plano de cámara
 	double	plane_y; // Componente Y del plano de cámara
-
-	// RAYCAST
-	// CONFIGURACIÓN DEL RAYO
-	double	camera_x;  // Posición x en el plano de cámara (-1 a 1)
+	double	camera_x; // Posición x en el plano de cámara (-1 a 1)
 	double	ray_dir_x; // Dirección X del rayo en el mundo
 	double	ray_dir_y; // Dirección Y del rayo en el mundo
-	// POSICIÓN EN EL MAPA
 	int		map_x; // Coordenada X en el grid del mapa
 	int		map_y; // Coordenada Y en el grid del mapa
-	// CÁLCULOS DE DISTANCIA DDA
 	double	delta_dist_x; // Distancia para cruzar una celda en X
 	double	delta_dist_y; // Distancia para cruzar una celda en Y
-	double	side_dist_x;  // Distancia hasta el próximo lado X del grid
-	double	side_dist_y;  // Distancia hasta el próximo lado Y del grid
-	// PASOS Y DIRECCIÓN
+	double	side_dist_x; // Distancia hasta el próximo lado X del grid
+	double	side_dist_y; // Distancia hasta el próximo lado Y del grid
 	int		step_x; // Dirección del paso en X: +1 o -1
 	int		step_y; // Dirección del paso en Y: +1 o -1
-	// RESULTADOS DE COLISIÓN
-	int 	side;              // Qué lado de pared se golpeó (0=X, 1=Y)
-	double 	perp_wall_dist; // Distancia perpendicular a la pared
-	// CÁLCULOS DE RENDERIZADO
-	int 	line_height; // Altura de la línea a dibujar en pantalla
-	int 	draw_start;  // Píxel Y donde empezar a dibujar la pared
-	int 	draw_end;    // Píxel Y donde terminar de dibujar la pared
-	// INFORMACIÓN DE DIBUJADO
-	int 	x;     // Columna actual de píxeles renderizando
-	int 	color; // Color calculado para esta columna
-	int 	tex_x; // Coordenada X en la textura
-
-	// HOOK DATA (integrada directamente)
-	t_mlx 	*mlx; // Puntero a MLX para hooks
+	int		side; // Qué lado de pared se golpeó (0=X, 1=Y)
+	double	perp_wall_dist; // Distancia perpendicular a la pared
+	int		line_height; // Altura de la línea a dibujar en pantalla
+	int		draw_start; // Píxel Y donde empezar a dibujar la pared
+	int		draw_end; // Píxel Y donde terminar de dibujar la pared
+	int		x; // Columna actual de píxeles renderizando
+	int		color; // Color calculado para esta columna
+	int		tex_x; // Coordenada X en la textura
+	int		mouse_last_x; // Última posición X del mouse
+	int		mouse_initialized; // Flag para saber si el mouse está inicializado
+	t_mlx	*mlx; // Puntero a MLX para hooks
 }			t_g;
 // main.c
 int			main(int argc, char **argv);
 // checks_errors.c
-int			validate_extension(const char *filename);
-int			checks_all_errors(int argc, char **argv, t_g **g,
-				t_mlx **mlx);
+int			validate_extension(const char *f);
+int			checks_all_errors(int argc, char **argv, t_g **g, t_mlx **mlx);
 int			has_player(t_g *g);
 int			has_only_valid_chars(t_g *g);
 int			has_empty_line(t_g *g);
 int			is_map_closed(t_g *g);
 // parsing.c
-t_g		*parse_cub_file(const char *filename);
+t_g			*parse_cub_file(const char *f);
 // map_parser.c
-int			process_map_lines(const char *filename, char ***lines_out,
-				int *count_out);
-
+int			process_map_lines(const char *f, char ***lines_out, int *count_out);
 // free.c
 void		free_g(t_g *g);
 // init_window.c
