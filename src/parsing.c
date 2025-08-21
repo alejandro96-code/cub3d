@@ -6,7 +6,7 @@
 /*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:34:38 by aleja             #+#    #+#             */
-/*   Updated: 2025/08/21 15:53:36 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/08/21 16:01:05 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ static int	parse_rgb_values(char *rgb_str, int *color)
 	values = ft_split(rgb_str, ',');
 	if (!values || !values[0] || !values[1] || !values[2])
 	{
-		printf("Error:\nFormato RGB inválido.");
+		printf(ERROR_RGB_FORMAT);
 		if (values)
 		{
 			i = 0;
@@ -136,7 +136,7 @@ static int	parse_rgb_values(char *rgb_str, int *color)
 	free(values);
 	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
 	{
-		printf("Error:\nValores RGB deben estar entre 0 y 255.");
+		printf(ERROR_RGB_VALUES);
 		return (0);
 	}
 	*color = (r << 16) | (g << 8) | b;
@@ -189,17 +189,17 @@ static int	is_config_line(char *line)
 static int	validate_config_completeness(t_g *g)
 {
 	if (!g->north_texture)
-		return (printf("Error: Falta textura del norte (NO)\n"), 0);
+		return (printf(ERROR_NO_TEXTURE), 0);
 	if (!g->south_texture)
-		return (printf("Error: Falta textura del sur (SO)\n"), 0);
+		return (printf(ERROR_SO_TEXTURE), 0);
 	if (!g->east_texture)
-		return (printf("Error: Falta textura del este (EA)\n"), 0);
+		return (printf(ERROR_EA_TEXTURE), 0);
 	if (!g->west_texture)
-		return (printf("Error: Falta textura del oeste (WE)\n"), 0);
+		return (printf(ERROR_WE_TEXTURE), 0);
 	if (!g->ceiling_color_set)
-		return (printf("Error: Falta color del cielo (C)\n"), 0);
+		return (printf(ERROR_CEILING_COLOR), 0);
 	if (!g->floor_color_set)
-		return (printf("Error: Falta color del suelo (F)\n"), 0);
+		return (printf(ERROR_FLOOR_COLOR), 0);
 	return (1);
 }
 
@@ -308,7 +308,7 @@ t_g	*parse_cub_file(const char *f)
 	}
 	if (map_count == 0)
 	{
-		printf("Error: No se encontraron líneas de mapa\n");
+		printf(ERROR_NO_MAP_LINES);
 		while (map_count > 0)
 			free(map_lines[--map_count]);
 		free(map_lines);
