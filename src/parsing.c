@@ -6,7 +6,7 @@
 /*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:34:38 by aleja             #+#    #+#             */
-/*   Updated: 2025/08/21 16:07:42 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/08/21 16:14:37 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,6 +268,9 @@ t_g	*parse_cub_file(const char *f)
 			if (!parse_texture_line(line, g) && !parse_color_line(line, g))
 			{
 				free(line);
+				// Leer todas las líneas restantes para cerrar get_next_line correctamente
+				while ((line = get_next_line(fd)) != NULL)
+					free(line);
 				while (map_count > 0)
 					free(map_lines[--map_count]);
 				free(map_lines);
@@ -283,6 +286,9 @@ t_g	*parse_cub_file(const char *f)
 			if (!map_lines[map_count])
 			{
 				free(line);
+				// Leer todas las líneas restantes para cerrar get_next_line correctamente
+				while ((line = get_next_line(fd)) != NULL)
+					free(line);
 				while (map_count > 0)
 					free(map_lines[--map_count]);
 				free(map_lines);
