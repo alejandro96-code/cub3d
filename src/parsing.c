@@ -6,7 +6,7 @@
 /*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:34:38 by aleja             #+#    #+#             */
-/*   Updated: 2025/08/21 17:00:17 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/08/21 17:09:39 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ static int	parse_rgb_values(char *rgb_str, int *color)
 	int		r;
 	int		g;
 	int		b;
-	int		i;
 
 	rgb_str = trim_whitespace(rgb_str);
 	rtrim(rgb_str);
@@ -113,27 +112,13 @@ static int	parse_rgb_values(char *rgb_str, int *color)
 	{
 		printf(ERROR_RGB_FORMAT);
 		if (values)
-		{
-			i = 0;
-			while (values[i])
-			{
-				free(values[i]);
-				i++;
-			}
-			free(values);
-		}
+			free_string_array(values);
 		return (0);
 	}
 	r = ft_atoi(trim_whitespace(values[0]));
 	g = ft_atoi(trim_whitespace(values[1]));
 	b = ft_atoi(trim_whitespace(values[2]));
-	i = 0;
-	while (values[i])
-	{
-		free(values[i]);
-		i++;
-	}
-	free(values);
+	free_string_array(values);
 	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
         {
 		printf(ERROR_RGB_VALUES);

@@ -59,6 +59,7 @@ CUB3DSRC = \
    src/raycast_calc.c \
    src/hooks.c \
    src/player_control.c \
+   src/free.c \
    src/utils.c \
    src/textures.c \
    src/draw.c \

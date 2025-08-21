@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 12:45:00 by ybahri            #+#    #+#             */
-/*   Updated: 2025/08/21 12:38:27 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/08/21 17:09:40 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,7 @@ static int	fill_map_lines(const char *f, char **lines, int count)
 			lines[i] = ft_strdup(line);
 			if (!lines[i])
 			{
-				free(line);
-				close(fd);
+				cleanup_file_and_line(fd, &line);
 				return (0);
 			}
 			i++;
@@ -101,7 +100,6 @@ int	process_map_lines(const char *f, char ***lines_out,
 {
 	int		count;
 	char	**lines;
-	int		i;
 
 	count = count_map_lines(f);
 	if (count <= 0)
@@ -111,13 +109,7 @@ int	process_map_lines(const char *f, char ***lines_out,
 		return (0);
 	if (!fill_map_lines(f, lines, count))
 	{
-		i = 0;
-		while (i < count)
-		{
-			free(lines[i]);
-			i++;
-		}
-		free(lines);
+		free_string_array_count(lines, count);
 		return (0);
 	}
 	*lines_out = lines;
