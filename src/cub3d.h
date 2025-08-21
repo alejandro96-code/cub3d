@@ -6,7 +6,7 @@
 /*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/21 09:38:54 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/08/21 10:28:42 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ typedef struct s_g
 {
 	int		floor_color; // Color del suelo (formato RGB hex)
 	int		ceiling_color; // Color del techo (formato RGB hex)
+	int		floor_color_set; // Bandera: 1 si se configuró el color del suelo
+	int		ceiling_color_set; // Bandera: 1 si se configuró el color del techo
 	char	*north_texture; // Ruta textura norte (NO)
 	char	*south_texture; // Ruta textura sur (SO)  
 	char	*east_texture; // Ruta textura este (EA)
@@ -163,8 +165,6 @@ void		calculate_step_and_side_dist(t_g *g);
 int			raycast_dda(t_g *g);
 void		calculate_perp_wall_and_lineheight(t_mlx *mlx, t_g *g);
 void		calculate_draw_limits(t_mlx *mlx, t_g *g);
-// drawColors.c
-// Archivo obsoleto - funciones ya no se usan
 // hooks.c
 void		setup_hooks(t_g *g);
 int			key_press(int keycode, t_g *g);

@@ -6,7 +6,7 @@
 /*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/21 09:27:19 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/08/21 10:33:05 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ static int	parse_rgb_values(char *rgb_str, int *color)
 	values = ft_split(rgb_str, ',');
 	if (!values || !values[0] || !values[1] || !values[2])
 	{
+		printf("Error:\nFormato RGB inválido.");
 		if (values)
 		{
 			i = 0;
@@ -84,7 +85,10 @@ static int	parse_rgb_values(char *rgb_str, int *color)
 	
 	// Verificar que los valores estén en rango válido
 	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
+	{
+		printf("Error:\nValores RGB deben estar entre 0 y 255.");
 		return (0);
+	}
 	*color = (r << 16) | (g << 8) | b;
 	return (1);
 }
@@ -98,12 +102,22 @@ int	parse_color_line(char *line, t_g *g)
 	if (ft_strncmp(line, "C ", 2) == 0)
 	{
 		rgb_str = trim_whitespace(line + 2);
-		return (parse_rgb_values(rgb_str, &g->ceiling_color));
+		if (parse_rgb_values(rgb_str, &g->ceiling_color))
+		{
+			g->ceiling_color_set = 1;
+			return (1);
+		}
+		return (0);
 	}
 	else if (ft_strncmp(line, "F ", 2) == 0)
 	{
 		rgb_str = trim_whitespace(line + 2);
-		return (parse_rgb_values(rgb_str, &g->floor_color));
+		if (parse_rgb_values(rgb_str, &g->floor_color))
+		{
+			g->floor_color_set = 1;
+			return (1);
+		}
+		return (0);
 	}
 	return (0);
 }
@@ -119,6 +133,24 @@ static int	is_config_line(char *line)
 		ft_strncmp(line, "C ", 2) == 0 || ft_strncmp(line, "F ", 2) == 0)
 		return (1);
 	return (0);
+}
+
+// Verifica que todas las configuraciones requeridas estén presentes
+static int	validate_config_completeness(t_g *g)
+{
+	if (!g->north_texture)
+		return (printf("Error: Falta textura del norte (NO)\n"), 0);
+	if (!g->south_texture)
+		return (printf("Error: Falta textura del sur (SO)\n"), 0);
+	if (!g->east_texture)
+		return (printf("Error: Falta textura del este (EA)\n"), 0);
+	if (!g->west_texture)
+		return (printf("Error: Falta textura del oeste (WE)\n"), 0);
+	if (!g->ceiling_color_set)
+		return (printf("Error: Falta color del cielo (C)\n"), 0);
+	if (!g->floor_color_set)
+		return (printf("Error: Falta color del suelo (F)\n"), 0);
+	return (1);
 }
 
 // Crea el mapa en g a partir de las líneas procesadas
@@ -191,7 +223,8 @@ t_g	*parse_cub_file(const char *f)
 		{
 			if (!parse_texture_line(line, g) && !parse_color_line(line, g))
 			{
-				printf("Error: Línea de configuración inválida: %s\n", line);
+				// No mostrar mensaje adicional aquí, parse_texture_line y parse_color_line
+				// ya muestran sus propios errores específicos
 				free(line);
 				// Liberar map_lines
 				while (map_index > 0)
@@ -225,10 +258,22 @@ t_g	*parse_cub_file(const char *f)
 	}
 	close(fd);
 	
+	// Validar que todas las configuraciones estén presentes
+	if (!validate_config_completeness(g))
+	{
+		while (map_count > 0)
+			free(map_lines[--map_count]);
+		free(map_lines);
+		free_g(g);
+		return (NULL);
+	}
+	
 	// Crear el mapa final
 	if (map_count == 0)
 	{
 		printf("Error: No se encontraron líneas de mapa\n");
+		while (map_count > 0)
+			free(map_lines[--map_count]);
 		free(map_lines);
 		free_g(g);
 		return (NULL);

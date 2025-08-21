@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checks_errors.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
+/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/16 13:45:38 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/21 09:50:46 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,9 @@ int	checks_all_errors(int argc, char **argv, t_g **g, t_mlx **mlx)
 		return (printf(ERROR_EXTENSION), 0);
 	*g = parse_cub_file(argv[1]);
 	if (!*g)
-		return (printf(ERROR_PARSEO), 0);
+	{
+		return (0);
+	}
 	if (!validate_map_config(*g))
 	{
 		free_g(*g);
