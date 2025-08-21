@@ -3,16 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/21 12:46:47 by ybahri           ###   ########.fr       */
+/*   Created: 2025/08/11 19:34:38 by aleja             #+#    #+#             */
+/*   Updated: 2025/08/21 15:53:36 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	pad_map_to_rect(t_g *g);
+/* Rellena con espacios hasta map_width para evitar '\0' en filas cortas */
+static void	pad_map_to_rect(t_g *g)
+{
+	int		y;
+	int		len;
+	char	*row;
+
+	y = 0;
+	while (y < g->map_height)
+	{
+		len = (int)ft_strlen(g->map[y]);
+		if (len < g->map_width)
+		{
+			row = (char *)malloc(g->map_width + 1);
+			if (!row)
+				return ;
+			ft_memset(row, ' ', g->map_width);
+			ft_memcpy(row, g->map[y], len);
+			row[g->map_width] = '\0';
+			free(g->map[y]);
+			g->map[y] = row;
+		}
+		y++;
+	}
+}
 
 static void	rtrim(char *s)
 {
@@ -154,9 +178,9 @@ static int	is_config_line(char *line)
 	line = trim_whitespace(line);
 	if (ft_strlen(line) == 0)
 		return (0);
-	if (ft_strncmp(line, "NO ", 3) == 0 || ft_strncmp(line, "SO ", 3) == 0 ||
-		ft_strncmp(line, "WE ", 3) == 0 || ft_strncmp(line, "EA ", 3) == 0 ||
-		ft_strncmp(line, "C ", 2) == 0 || ft_strncmp(line, "F ", 2) == 0)
+	if (ft_strncmp(line, "NO ", 3) == 0 || ft_strncmp(line, "SO ", 3) == 0
+		|| ft_strncmp(line, "WE ", 3) == 0 || ft_strncmp(line, "EA ", 3) == 0
+		|| ft_strncmp(line, "C ", 2) == 0 || ft_strncmp(line, "F ", 2) == 0)
 		return (1);
 	return (0);
 }
@@ -226,8 +250,6 @@ t_g	*parse_cub_file(const char *f)
 		close(fd);
 		return (NULL);
 	}
-
-	// Reservar espacio para líneas del mapa (estimación inicial)
 	map_lines = malloc(100 * sizeof(char *));
 	if (!map_lines)
 	{
@@ -237,23 +259,17 @@ t_g	*parse_cub_file(const char *f)
 	}
 	map_count = 0;
 	map_index = 0;
-
-	// Procesar todas las líneas en una sola pasada
 	line = get_next_line(fd);
 	while (line)
 	{
 		len = ft_strlen(line);
 		if (len > 0 && line[len - 1] == '\n')
 			line[len - 1] = 0;
-
 		if (is_config_line(line))
 		{
 			if (!parse_texture_line(line, g) && !parse_color_line(line, g))
 			{
-				// No mostrar mensaje adicional aquí, parse_texture_line y parse_color_line
-				// ya muestran sus propios errores específicos
 				free(line);
-				// Liberar map_lines
 				while (map_index > 0)
 					free(map_lines[--map_index]);
 				free(map_lines);
@@ -262,9 +278,9 @@ t_g	*parse_cub_file(const char *f)
 				return (NULL);
 			}
 		}
-		else if (line[0] != '\0' && (line[0] == ' ' || line[0] == '1' || line[0] == '0'))
+		else if (line[0] != '\0' && (line[0] == ' ' || line[0] == '1'
+				|| line[0] == '0'))
 		{
-			// Es una línea del mapa
 			map_lines[map_count] = ft_strdup(line);
 			if (!map_lines[map_count])
 			{
@@ -278,14 +294,10 @@ t_g	*parse_cub_file(const char *f)
 			}
 			map_count++;
 		}
-		// Ignorar líneas vacías
-
 		free(line);
 		line = get_next_line(fd);
 	}
 	close(fd);
-
-	// Validar que todas las configuraciones estén presentes
 	if (!validate_config_completeness(g))
 	{
 		while (map_count > 0)
@@ -294,8 +306,6 @@ t_g	*parse_cub_file(const char *f)
 		free_g(g);
 		return (NULL);
 	}
-
-	// Crear el mapa final
 	if (map_count == 0)
 	{
 		printf("Error: No se encontraron líneas de mapa\n");
@@ -305,7 +315,6 @@ t_g	*parse_cub_file(const char *f)
 		free_g(g);
 		return (NULL);
 	}
-
 	if (!create_map(g, map_lines, map_count))
 	{
 		while (map_count > 0)
@@ -314,37 +323,8 @@ t_g	*parse_cub_file(const char *f)
 		free_g(g);
 		return (NULL);
 	}
-
-	// Liberar el array temporal
 	while (map_count > 0)
 		free(map_lines[--map_count]);
 	free(map_lines);
-
 	return (g);
-}
-
-/* Rellena con espacios hasta map_width para evitar '\0' en filas cortas */
-static void	pad_map_to_rect(t_g *g)
-{
-	int		y;
-	int		len;
-	char	*row;
-
-	y = 0;
-	while (y < g->map_height)
-	{
-		len = (int)ft_strlen(g->map[y]);
-		if (len < g->map_width)
-		{
-			row = (char *)malloc(g->map_width + 1);
-			if (!row)
-				return ;
-			ft_memset(row, ' ', g->map_width);
-			ft_memcpy(row, g->map[y], len);
-			row[g->map_width] = '\0';
-			free(g->map[y]);
-			g->map[y] = row;
-		}
-		y++;
-	}
 }
