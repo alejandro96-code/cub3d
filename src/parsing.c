@@ -6,7 +6,7 @@
 /*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:34:38 by aleja             #+#    #+#             */
-/*   Updated: 2025/08/21 16:14:37 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/08/21 17:00:17 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,15 +267,7 @@ t_g	*parse_cub_file(const char *f)
 		{
 			if (!parse_texture_line(line, g) && !parse_color_line(line, g))
 			{
-				free(line);
-				// Leer todas las líneas restantes para cerrar get_next_line correctamente
-				while ((line = get_next_line(fd)) != NULL)
-					free(line);
-				while (map_count > 0)
-					free(map_lines[--map_count]);
-				free(map_lines);
-				free_g(g);
-				close(fd);
+				cleanup_parsing(fd, line, map_lines, map_count, g);
 				return (NULL);
 			}
 		}
@@ -285,15 +277,7 @@ t_g	*parse_cub_file(const char *f)
 			map_lines[map_count] = ft_strdup(line);
 			if (!map_lines[map_count])
 			{
-				free(line);
-				// Leer todas las líneas restantes para cerrar get_next_line correctamente
-				while ((line = get_next_line(fd)) != NULL)
-					free(line);
-				while (map_count > 0)
-					free(map_lines[--map_count]);
-				free(map_lines);
-				free_g(g);
-				close(fd);
+				cleanup_parsing(fd, line, map_lines, map_count, g);
 				return (NULL);
 			}
 			map_count++;
@@ -304,31 +288,23 @@ t_g	*parse_cub_file(const char *f)
 	close(fd);
 	if (!validate_config_completeness(g))
 	{
-		while (map_count > 0)
-			free(map_lines[--map_count]);
-		free(map_lines);
+		cleanup_map_lines(map_lines, map_count);
 		free_g(g);
 		return (NULL);
 	}
 	if (map_count == 0)
 	{
 		printf(ERROR_NO_MAP_LINES);
-		while (map_count > 0)
-			free(map_lines[--map_count]);
-		free(map_lines);
+		cleanup_map_lines(map_lines, map_count);
 		free_g(g);
 		return (NULL);
 	}
 	if (!create_map(g, map_lines, map_count))
 	{
-		while (map_count > 0)
-			free(map_lines[--map_count]);
-		free(map_lines);
+		cleanup_map_lines(map_lines, map_count);
 		free_g(g);
 		return (NULL);
 	}
-	while (map_count > 0)
-		free(map_lines[--map_count]);
-	free(map_lines);
+	cleanup_map_lines(map_lines, map_count);
 	return (g);
 }
