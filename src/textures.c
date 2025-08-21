@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   textures.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
+/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 02:18:18 by ybahri            #+#    #+#             */
-/*   Updated: 2025/08/16 13:23:24 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/21 09:27:21 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,13 @@ static void	load_one(char *path, t_mlx *mlx, int idx, t_g *g)
 
 void	load_textures(t_mlx *mlx, t_g *g)
 {
-	load_one("src/textures/north.xpm", mlx, IDX_NO, g);
-	load_one("src/textures/south.xpm", mlx, IDX_SO, g);
-	load_one("src/textures/east.xpm", mlx, IDX_EA, g);
-	load_one("src/textures/west.xpm", mlx, IDX_WE, g);
+	if (!g->north_texture || !g->south_texture || !g->east_texture || !g->west_texture)
+	{
+		printf("Error: Faltan texturas en el archivo .cub\n");
+		exit(1);
+	}
+	load_one(g->north_texture, mlx, IDX_NO, g);
+	load_one(g->south_texture, mlx, IDX_SO, g);
+	load_one(g->east_texture, mlx, IDX_EA, g);
+	load_one(g->west_texture, mlx, IDX_WE, g);
 }

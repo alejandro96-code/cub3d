@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
+/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:34:38 by aleja             #+#    #+#             */
-/*   Updated: 2025/08/16 13:23:24 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/21 09:27:20 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void	free_g(t_g *g)
 {
 	int	i;
 
+	if (!g)
+		return;
 	if (g->map)
 	{
 		i = 0;
@@ -38,5 +40,13 @@ void	free_g(t_g *g)
 		}
 		free(g->map);
 	}
+	if (g->north_texture)
+		free(g->north_texture);
+	if (g->south_texture)
+		free(g->south_texture);
+	if (g->east_texture)
+		free(g->east_texture);
+	if (g->west_texture)
+		free(g->west_texture);
 	free(g);
 }

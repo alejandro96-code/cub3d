@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
+/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/16 13:44:40 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/21 09:27:19 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,10 @@ typedef struct s_g
 {
 	int		floor_color; // Color del suelo (formato RGB hex)
 	int		ceiling_color; // Color del techo (formato RGB hex)
+	char	*north_texture; // Ruta textura norte (NO)
+	char	*south_texture; // Ruta textura sur (SO)  
+	char	*east_texture; // Ruta textura este (EA)
+	char	*west_texture; // Ruta textura oeste (WE)
 	char	**map; // Array 2D con el mapa del juego
 	int		map_height; // Número de filas del mapa
 	int		map_width; // Número de columnas del mapa
@@ -138,6 +142,9 @@ int			has_empty_line(t_g *g);
 int			is_map_closed(t_g *g);
 // parsing.c
 t_g			*parse_cub_file(const char *f);
+int			parse_texture_line(char *line, t_g *g);
+int			parse_color_line(char *line, t_g *g);
+char		*trim_whitespace(char *str);
 // map_parser.c
 int			process_map_lines(const char *f, char ***lines_out, int *count_out);
 // free.c

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
+/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 12:45:00 by ybahri            #+#    #+#             */
-/*   Updated: 2025/08/16 13:31:29 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/21 09:27:23 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,18 @@
 // Devuelve 1 si la línea es de mapa, 0 en caso contrario
 static int	parse_cub_line(char *line)
 {
+	char	*trimmed;
+
 	if (line[0] == '\0')
 		return (1);
+	
+	// Verificar si es una línea de configuración (textura o color)
+	trimmed = trim_whitespace(line);
+	if (ft_strncmp(trimmed, "NO ", 3) == 0 || ft_strncmp(trimmed, "SO ", 3) == 0 ||
+		ft_strncmp(trimmed, "WE ", 3) == 0 || ft_strncmp(trimmed, "EA ", 3) == 0 ||
+		ft_strncmp(trimmed, "C ", 2) == 0 || ft_strncmp(trimmed, "F ", 2) == 0)
+		return (0);
+	
 	if (line[0] == ' ' || line[0] == '1' || line[0] == '0')
 		return (1);
 	else
@@ -63,18 +73,22 @@ static int	fill_map_lines(const char *f, char **lines, int count)
 	if (fd < 0)
 		return (0);
 	line = get_next_line(fd);
-	while (line)
+	while (line && i < count)
 	{
 		len = ft_strlen(line);
 		if (len > 0 && line[len - 1] == '\n')
 			line[len - 1] = 0;
 		if (parse_cub_line(line))
 		{
-			if (i < count)
-				lines[i++] = ft_strdup(line);
+			lines[i] = ft_strdup(line);
+			if (!lines[i])
+			{
+				free(line);
+				close(fd);
+				return (0);
+			}
+			i++;
 		}
-		else if (line[0] == '\0' && i < count)
-			lines[i++] = ft_strdup("");
 		free(line);
 		line = get_next_line(fd);
 	}
