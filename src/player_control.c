@@ -1,37 +1,35 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   player_control.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/16 13:23:24 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/22 00:49:57 by ybahri           ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "cub3d.h"
 
 // Verifica si una posición es válida (no hay pared)
 static int	is_valid_position(t_g *g, double x, double y)
 {
-	int	map_x;
-	int	map_y;
+	int		map_x;
+	int		map_y;
+	char	c;
 
-	if (!g || !g->map)
-		return (0);
-	if (g->map_width <= 0 || g->map_height <= 0)
+	if (!g)
 		return (0);
 	map_x = (int)x;
 	map_y = (int)y;
 	if (map_x < 0 || map_x >= g->map_width || map_y < 0
 		|| map_y >= g->map_height)
 		return (0);
-	if (!g->map[map_y])
-		return (0);
-	if (g->map[map_y][map_x] == '1')
-		return (0);
-	return (1);
+	c = g->map[map_y][map_x];
+	if (c == '0')
+		return (1);
+	return (0);
 }
 
 static void	calculate_movement(int keycode, t_g *g, double *new_x,

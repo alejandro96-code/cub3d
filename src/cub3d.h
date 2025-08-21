@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/21 17:20:00 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/08/22 01:17:45 by ybahri           ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #ifndef CUB3D_H
 # define CUB3D_H
@@ -33,26 +33,31 @@
 # define WALL '1'
 # define TILE_SIZE 64
 
-# define ERROR_EXTENSION "Error:\nExtension de archivo invalida\n"
-# define ERROR_ARGUMENTOS "Error:\nNº de argumentos invalido\n"
-# define ERROR_PARSEO "Error:\nNo existe el mapa .cub\n"
-# define ERROR_MLX "Error:\nNo se pudo inicializar la ventana MLX\n"
-# define ERROR_MAPA_NO_CERRADO "Error:\nEl mapa no está completamente cerrado\n"
-# define ERROR_PLAYERS "Error:\nDebe haber exactamente un jugador en el mapa\n"
-# define ERROR_CHAR "Error:\nCaracter incorrecto en la creacion del mapa\n"
-# define ERROR_LINEA_VACIA "Error:\nSe ha encontrado una linea vacia\n"
-# define ERROR_RGB_FORMAT "Error:\nFormato RGB inválido.\n"
-# define ERROR_RGB_VALUES "Error:\nValores RGB deben estar entre 0 y 255.\n"
-# define ERROR_NO_TEXTURE "Error:\nFalta textura del norte (NO)\n"
-# define ERROR_SO_TEXTURE "Error:\nFalta textura del sur (SO)\n"
-# define ERROR_EA_TEXTURE "Error:\nFalta textura del este (EA)\n"
-# define ERROR_WE_TEXTURE "Error:\nFalta textura del oeste (WE)\n"
-# define ERROR_CEILING_COLOR "Error:\nFalta color del cielo (C)\n"
-# define ERROR_FLOOR_COLOR "Error:\nFalta color del suelo (F)\n"
-# define ERROR_NO_MAP_LINES "Error:\nNo se encontraron líneas de mapa\n"
-# define ERROR_TEXTURE_LOAD "Error:\nNo se pudo cargar la textura: %s\n"
-# define ERROR_TEXTURE_BUFFER "Error:\nNo se pudo obtener el buffer de la textura: %s\n"
-# define ERROR_MISSING_TEXTURES "Error:\nFaltan texturas en el archivo .cub\n"
+# define ERROR_EXTENSION "Extension de archivo invalida\n"
+# define ERROR_ARGUMENTOS "Nº de argumentos invalido\n"
+# define ERROR_PARSEO "No existe el mapa .cub\n"
+# define ERROR_MLX "No se pudo inicializar la ventana MLX\n"
+# define ERROR_MAPA_NO_CERRADO "El mapa no está completamente cerrado\n"
+# define ERROR_PLAYERS "Debe haber exactamente un jugador en el mapa\n"
+# define ERROR_CHAR "Caracter incorrecto en la creacion del mapa\n"
+# define ERROR_LINEA_VACIA "Se ha encontrado una linea vacia\n"
+# define ERROR_RGB_FORMAT "Formato RGB inválido.\n"
+# define ERROR_RGB_VALUES "Valores RGB deben estar entre 0 y 255.\n"
+# define ERROR_NO_TEXTURE "Falta textura del norte (NO)\n"
+# define ERROR_SO_TEXTURE "Falta textura del sur (SO)\n"
+# define ERROR_EA_TEXTURE "Falta textura del este (EA)\n"
+# define ERROR_WE_TEXTURE "Falta textura del oeste (WE)\n"
+# define ERROR_CEILING_COLOR "Falta color del cielo (C)\n"
+# define ERROR_FLOOR_COLOR "Falta color del suelo (F)\n"
+# define ERROR_NO_MAP_LINES "No se encontraron líneas de mapa\n"
+# define ERROR_TEXTURE_LOAD "No se pudo cargar la textura\n"
+# define ERROR_TEXTURE_BUFFER "No se pudo obtener el buffer de la textura\n"
+# define ERROR_MISSING_TEXTURES "Faltan texturas en el archivo .cub\n"
+# define ERROR_FILE_ACCESS "No se puede acceder al archivo\n"
+# define ERROR_MEMORY "Error de memoria\n"
+# define ERROR_MAP_ORDER "El mapa debe estar al final del archivo\n"
+# define ERROR_CONFIG_AFTER_MAP "No se permiten configuraciones después del mapa\n"
+# define ERROR_INCOMPLETE_CONFIG "Configuración incompleta antes del mapa\n"
 
 // BONUS
 # define MINIMAP_CELL_SIZE 8
@@ -143,13 +148,15 @@ typedef struct s_g
 	int		tex_x; // Coordenada X en la textura
 	int		mouse_last_x; // Última posición X del mouse
 	int		mouse_initialized; // Flag para saber si el mouse está inicializado
+	int		map_started; // Flag para validar orden del archivo (config antes del mapa)
 	t_mlx	*mlx; // Puntero a MLX para hooks
 }			t_g;
 // main.c
 int			main(int argc, char **argv);
 // checks_errors.c
 int			validate_extension(const char *f);
-int			checks_all_errors(int argc, char **argv, t_g **g, t_mlx **mlx);
+void		checks_all_errors(int argc, char **argv, t_g **g, t_mlx **mlx);
+void		validate_map_config(t_g *g);
 int			has_player(t_g *g);
 int			has_only_valid_chars(t_g *g);
 int			has_empty_line(t_g *g);
@@ -163,9 +170,9 @@ char		*trim_whitespace(char *str);
 // validate_parse_errors.c
 int			parse_rgb_values(char *rgb_str, int *color);
 int			is_config_line(char *line);
-int			validate_config_completeness(t_g *g);
+void		validate_config_completeness(t_g *g);
 int			validate_file_access(const char *filename);
-int			validate_map_lines_count(int map_count);
+void		validate_map_lines_count(int map_count);
 int			validate_complete_parsing(t_g *g, char **map_lines, int map_count);
 // map_parser.c
 int			process_map_lines(const char *f, char ***lines_out, int *count_out);
@@ -194,6 +201,7 @@ void		move_player(int keycode, t_g *g);
 void		rotate_view(int keycode, t_g *g);
 // utils.c
 void		my_mlx_pixel_put(t_mlx *mlx, int x, int y, int color);
+void		error_exit(const char *msg);
 // free.c
 void		free_string_array(char **array);
 void		free_string_array_count(char **array, int count);

@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   raycast_calc.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:34:38 by aleja             #+#    #+#             */
-/*   Updated: 2025/08/21 15:45:00 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/08/22 01:01:54 by ybahri           ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "cub3d.h"
 
@@ -58,7 +58,8 @@ void	calculate_step_and_side_dist(t_g *g)
 */
 int	raycast_dda(t_g *g)
 {
-	int	hit;
+	int		hit;
+	char	cell;
 
 	hit = 0;
 	g->side = 0;
@@ -78,12 +79,12 @@ int	raycast_dda(t_g *g)
 		}
 		if (g->map_x < 0 || g->map_x >= g->map_width || g->map_y < 0
 			|| g->map_y >= g->map_height)
-		{
 			hit = 1;
-		}
 		else if (g->map[g->map_y][g->map_x] == '1')
 		{
-			hit = 1;
+			cell = g->map[g->map_y][g->map_x];
+			if (cell == '1' || cell == ' ' || cell == '\0')
+				hit = 1;
 		}
 	}
 	return (g->side);

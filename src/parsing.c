@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:34:38 by aleja             #+#    #+#             */
-/*   Updated: 2025/08/21 17:32:22 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/08/22 01:18:48 by ybahri           ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "cub3d.h"
 
@@ -154,11 +154,20 @@ static int	process_file_line(char *line, t_g *g, char **map_lines, int *map_coun
 {
 	if (is_config_line(line))
 	{
+		if (g->map_started)
+			error_exit(ERROR_CONFIG_AFTER_MAP);
 		if (!parse_texture_line(line, g) && !parse_color_line(line, g))
 			return (0);
 	}
 	else if (line[0] != '\0' && (line[0] == ' ' || line[0] == '1' || line[0] == '0'))
 	{
+		if (!g->map_started)
+		{
+			if (!g->north_texture || !g->south_texture || !g->east_texture || 
+				!g->west_texture || !g->ceiling_color_set || !g->floor_color_set)
+				error_exit(ERROR_INCOMPLETE_CONFIG);
+			g->map_started = 1;
+		}
 		map_lines[*map_count] = ft_strdup(line);
 		if (!map_lines[*map_count])
 			return (0);

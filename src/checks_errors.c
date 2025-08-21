@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   checks_errors.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/21 15:52:44 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/08/22 01:07:22 by ybahri           ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "cub3d.h"
 
@@ -26,41 +26,35 @@ int	validate_extension(const char *f)
 }
 
 // validaciones del mapa
-static int	validate_map_config(t_g *g)
+void	validate_map_config(t_g *g)
 {
 	if (has_empty_line(g))
-		return (printf(ERROR_LINEA_VACIA), 0);
+		error_exit(ERROR_LINEA_VACIA);
 	if (!has_only_valid_chars(g))
-		return (printf(ERROR_CHAR), 0);
+		error_exit(ERROR_CHAR);
 	if (!is_map_closed(g))
-		return (printf(ERROR_MAPA_NO_CERRADO), 0);
+		error_exit(ERROR_MAPA_NO_CERRADO);
 	if (!has_player(g))
-		return (printf(ERROR_PLAYERS), 0);
-	return (1);
+		error_exit(ERROR_PLAYERS);
 }
 
 // Comprueba todos los errores iniciales y retorna 0 si hay error, 1 si todo OK
-int	checks_all_errors(int argc, char **argv, t_g **g, t_mlx **mlx)
+void	checks_all_errors(int argc, char **argv, t_g **g, t_mlx **mlx)
 {
 	if (argc != 2)
-		return (printf(ERROR_ARGUMENTOS), 0);
+		error_exit(ERROR_ARGUMENTOS);
 	if (!validate_extension(argv[1]))
-		return (printf(ERROR_EXTENSION), 0);
+		error_exit(ERROR_EXTENSION);
 	*g = parse_cub_file(argv[1]);
 	if (!*g)
 	{
-		return (0);
+		error_exit(ERROR_PARSEO);
 	}
-	if (!validate_map_config(*g))
-	{
-		free_g(*g);
-		return (0);
-	}
+	validate_map_config(*g);
 	*mlx = init_window(*g);
 	if (!*mlx)
 	{
 		free_g(*g);
-		return (printf(ERROR_MLX), 0);
+		error_exit(ERROR_MLX);
 	}
-	return (1);
 }

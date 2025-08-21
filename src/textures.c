@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   textures.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 02:18:18 by ybahri            #+#    #+#             */
-/*   Updated: 2025/08/21 16:07:54 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/08/22 01:07:22 by ybahri           ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "cub3d.h"
 
@@ -21,26 +21,17 @@ static void	load_one(char *path, t_mlx *mlx, int idx, t_g *g)
 	g->tex_img_ptr[idx] = mlx_xpm_file_to_image(mlx->mlx_ptr, path,
 			&g->tex_width[idx], &g->tex_height[idx]);
 	if (!g->tex_img_ptr[idx])
-	{
-		printf(ERROR_TEXTURE_LOAD, path);
-		exit(1);
-	}
+		error_exit(ERROR_TEXTURE_LOAD);
 	g->tex_buffer[idx] = (int *)mlx_get_data_addr(g->tex_img_ptr[idx],
 			&bpp, &line_len, &endian);
 	if (!g->tex_buffer[idx])
-	{
-		printf(ERROR_TEXTURE_BUFFER, path);
-		exit(1);
-	}
+		error_exit(ERROR_TEXTURE_BUFFER);
 }
 
 void	load_textures(t_mlx *mlx, t_g *g)
 {
 	if (!g->north_texture || !g->south_texture || !g->east_texture || !g->west_texture)
-	{
-		printf(ERROR_MISSING_TEXTURES);
-		exit(1);
-	}
+		error_exit(ERROR_MISSING_TEXTURES);
 	load_one(g->north_texture, mlx, IDX_NO, g);
 	load_one(g->south_texture, mlx, IDX_SO, g);
 	load_one(g->east_texture, mlx, IDX_EA, g);
