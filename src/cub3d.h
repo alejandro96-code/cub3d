@@ -6,7 +6,7 @@
 /*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/21 16:01:20 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/08/21 16:09:02 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,26 +33,26 @@
 # define WALL '1'
 # define TILE_SIZE 64
 
-# define ERROR_EXTENSION "Error: Extension de archivo invalida\n"
-# define ERROR_ARGUMENTOS "Error: Nº de argumentos invalido\n"
-# define ERROR_PARSEO "Error: No existe el mapa .cub\n"
-# define ERROR_MLX "Error: No se pudo inicializar la ventana MLX\n"
-# define ERROR_MAPA_NO_CERRADO "Error: El mapa no está completamente cerrado\n"
-# define ERROR_PLAYERS "Error: Debe haber exactamente un jugador en el mapa\n"
-# define ERROR_CHAR "Error: Caracter incorrecto en la creacion del mapa\n"
-# define ERROR_LINEA_VACIA "Error: Se ha encontrado una linea vacia\n"
+# define ERROR_EXTENSION "Error:\nExtension de archivo invalida\n"
+# define ERROR_ARGUMENTOS "Error:\nNº de argumentos invalido\n"
+# define ERROR_PARSEO "Error:\nNo existe el mapa .cub\n"
+# define ERROR_MLX "Error:\nNo se pudo inicializar la ventana MLX\n"
+# define ERROR_MAPA_NO_CERRADO "Error:\nEl mapa no está completamente cerrado\n"
+# define ERROR_PLAYERS "Error:\nDebe haber exactamente un jugador en el mapa\n"
+# define ERROR_CHAR "Error:\nCaracter incorrecto en la creacion del mapa\n"
+# define ERROR_LINEA_VACIA "Error:\nSe ha encontrado una linea vacia\n"
 # define ERROR_RGB_FORMAT "Error:\nFormato RGB inválido.\n"
 # define ERROR_RGB_VALUES "Error:\nValores RGB deben estar entre 0 y 255.\n"
-# define ERROR_NO_TEXTURE "Error: Falta textura del norte (NO)\n"
-# define ERROR_SO_TEXTURE "Error: Falta textura del sur (SO)\n"
-# define ERROR_EA_TEXTURE "Error: Falta textura del este (EA)\n"
-# define ERROR_WE_TEXTURE "Error: Falta textura del oeste (WE)\n"
-# define ERROR_CEILING_COLOR "Error: Falta color del cielo (C)\n"
-# define ERROR_FLOOR_COLOR "Error: Falta color del suelo (F)\n"
-# define ERROR_NO_MAP_LINES "Error: No se encontraron líneas de mapa\n"
-# define ERROR_TEXTURE_LOAD "Error: No se pudo cargar la textura: %s\n"
-# define ERROR_TEXTURE_BUFFER "Error: No se pudo obtener el buffer de la textura: %s\n"
-# define ERROR_MISSING_TEXTURES "Error: Faltan texturas en el archivo .cub\n"
+# define ERROR_NO_TEXTURE "Error:\nFalta textura del norte (NO)\n"
+# define ERROR_SO_TEXTURE "Error:\nFalta textura del sur (SO)\n"
+# define ERROR_EA_TEXTURE "Error:\nFalta textura del este (EA)\n"
+# define ERROR_WE_TEXTURE "Error:\nFalta textura del oeste (WE)\n"
+# define ERROR_CEILING_COLOR "Error:\nFalta color del cielo (C)\n"
+# define ERROR_FLOOR_COLOR "Error:\nFalta color del suelo (F)\n"
+# define ERROR_NO_MAP_LINES "Error:\nNo se encontraron líneas de mapa\n"
+# define ERROR_TEXTURE_LOAD "Error:\nNo se pudo cargar la textura: %s\n"
+# define ERROR_TEXTURE_BUFFER "Error:\nNo se pudo obtener el buffer de la textura: %s\n"
+# define ERROR_MISSING_TEXTURES "Error:\nFaltan texturas en el archivo .cub\n"
 
 // BONUS
 # define MINIMAP_CELL_SIZE 8
