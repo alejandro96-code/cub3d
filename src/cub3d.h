@@ -6,7 +6,7 @@
 /*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/21 09:27:19 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/08/21 09:38:54 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ int			raycast_dda(t_g *g);
 void		calculate_perp_wall_and_lineheight(t_mlx *mlx, t_g *g);
 void		calculate_draw_limits(t_mlx *mlx, t_g *g);
 // drawColors.c
-void		draw_column_colors(t_mlx *mlx, t_g *g);
+// Archivo obsoleto - funciones ya no se usan
 // hooks.c
 void		setup_hooks(t_g *g);
 int			key_press(int keycode, t_g *g);
@@ -176,16 +176,9 @@ void		rotate_view(int keycode, t_g *g);
 void		my_mlx_pixel_put(t_mlx *mlx, int x, int y, int color);
 // textures.c
 void		load_textures(t_mlx *mlx, t_g *g);
-// textures.c
-void		load_textures(t_mlx *mlx, t_g *g);
 // draw.c
 void		draw_floor_ceiling(t_mlx *mlx, t_g *g);
 void		draw_wall_textures(t_mlx *mlx, t_g *g);
-// player_control.c
-void		move_player(int keycode, t_g *g);
-void		rotate_view(int keycode, t_g *g);
-// utils.c
-void		my_mlx_pixel_put(t_mlx *mlx, int x, int y, int color);
 
 # ifdef BONUS
 // bonus_minimap.c
