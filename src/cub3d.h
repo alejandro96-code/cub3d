@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/21 10:28:42 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/08/21 12:46:29 by ybahri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ typedef struct s_g
 	int		floor_color_set; // Bandera: 1 si se configuró el color del suelo
 	int		ceiling_color_set; // Bandera: 1 si se configuró el color del techo
 	char	*north_texture; // Ruta textura norte (NO)
-	char	*south_texture; // Ruta textura sur (SO)  
+	char	*south_texture; // Ruta textura sur (SO)
 	char	*east_texture; // Ruta textura este (EA)
 	char	*west_texture; // Ruta textura oeste (WE)
 	char	**map; // Array 2D con el mapa del juego

@@ -3,14 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/21 10:35:26 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/08/21 12:46:47 by ybahri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+static void	pad_map_to_rect(t_g *g);
+
+static void	rtrim(char *s)
+{
+	int	len;
+
+	if (!s)
+		return ;
+	len = (int)ft_strlen(s);
+	while (len > 0 && (s[len - 1] == ' ' || s[len - 1] == '\t'))
+	{
+		s[len - 1] = '\0';
+		len--;
+	}
+}
 
 // Función auxiliar para eliminar espacios al inicio de una cadena
 char	*trim_whitespace(char *str)
@@ -24,29 +40,33 @@ char	*trim_whitespace(char *str)
 int	parse_texture_line(char *line, t_g *g)
 {
 	char	*path;
-	
+
 	line = trim_whitespace(line);
 	if (ft_strncmp(line, "NO ", 3) == 0)
 	{
 		path = trim_whitespace(line + 3);
+		rtrim(path);
 		g->north_texture = ft_strdup(path);
 		return (g->north_texture != NULL);
 	}
 	else if (ft_strncmp(line, "SO ", 3) == 0)
 	{
 		path = trim_whitespace(line + 3);
+		rtrim(path);
 		g->south_texture = ft_strdup(path);
 		return (g->south_texture != NULL);
 	}
 	else if (ft_strncmp(line, "WE ", 3) == 0)
 	{
 		path = trim_whitespace(line + 3);
+		rtrim(path);
 		g->west_texture = ft_strdup(path);
 		return (g->west_texture != NULL);
 	}
 	else if (ft_strncmp(line, "EA ", 3) == 0)
 	{
 		path = trim_whitespace(line + 3);
+		rtrim(path);
 		g->east_texture = ft_strdup(path);
 		return (g->east_texture != NULL);
 	}
@@ -57,9 +77,13 @@ int	parse_texture_line(char *line, t_g *g)
 static int	parse_rgb_values(char *rgb_str, int *color)
 {
 	char	**values;
-	int		r, g, b;
+	int		r;
+	int		g;
+	int		b;
 	int		i;
-	
+
+	rgb_str = trim_whitespace(rgb_str);
+	rtrim(rgb_str);
 	values = ft_split(rgb_str, ',');
 	if (!values || !values[0] || !values[1] || !values[2])
 	{
@@ -68,7 +92,10 @@ static int	parse_rgb_values(char *rgb_str, int *color)
 		{
 			i = 0;
 			while (values[i])
-				free(values[i++]);
+			{
+				free(values[i]);
+				i++;
+			}
 			free(values);
 		}
 		return (0);
@@ -76,14 +103,13 @@ static int	parse_rgb_values(char *rgb_str, int *color)
 	r = ft_atoi(trim_whitespace(values[0]));
 	g = ft_atoi(trim_whitespace(values[1]));
 	b = ft_atoi(trim_whitespace(values[2]));
-	
-	// Liberar el array values
 	i = 0;
 	while (values[i])
-		free(values[i++]);
+	{
+		free(values[i]);
+		i++;
+	}
 	free(values);
-	
-	// Verificar que los valores estén en rango válido
 	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
 	{
 		printf("Error:\nValores RGB deben estar entre 0 y 255.");
@@ -97,7 +123,7 @@ static int	parse_rgb_values(char *rgb_str, int *color)
 int	parse_color_line(char *line, t_g *g)
 {
 	char	*rgb_str;
-	
+
 	line = trim_whitespace(line);
 	if (ft_strncmp(line, "C ", 2) == 0)
 	{
@@ -173,6 +199,7 @@ static int	create_map(t_g *g, char **lines, int count)
 			g->map_width = l;
 		i++;
 	}
+	pad_map_to_rect(g);
 	return (1);
 }
 
@@ -199,7 +226,7 @@ t_g	*parse_cub_file(const char *f)
 		close(fd);
 		return (NULL);
 	}
-	
+
 	// Reservar espacio para líneas del mapa (estimación inicial)
 	map_lines = malloc(100 * sizeof(char *));
 	if (!map_lines)
@@ -210,7 +237,7 @@ t_g	*parse_cub_file(const char *f)
 	}
 	map_count = 0;
 	map_index = 0;
-	
+
 	// Procesar todas las líneas en una sola pasada
 	line = get_next_line(fd);
 	while (line)
@@ -218,7 +245,7 @@ t_g	*parse_cub_file(const char *f)
 		len = ft_strlen(line);
 		if (len > 0 && line[len - 1] == '\n')
 			line[len - 1] = 0;
-			
+
 		if (is_config_line(line))
 		{
 			if (!parse_texture_line(line, g) && !parse_color_line(line, g))
@@ -252,12 +279,12 @@ t_g	*parse_cub_file(const char *f)
 			map_count++;
 		}
 		// Ignorar líneas vacías
-		
+
 		free(line);
 		line = get_next_line(fd);
 	}
 	close(fd);
-	
+
 	// Validar que todas las configuraciones estén presentes
 	if (!validate_config_completeness(g))
 	{
@@ -267,7 +294,7 @@ t_g	*parse_cub_file(const char *f)
 		free_g(g);
 		return (NULL);
 	}
-	
+
 	// Crear el mapa final
 	if (map_count == 0)
 	{
@@ -278,7 +305,7 @@ t_g	*parse_cub_file(const char *f)
 		free_g(g);
 		return (NULL);
 	}
-	
+
 	if (!create_map(g, map_lines, map_count))
 	{
 		while (map_count > 0)
@@ -287,11 +314,37 @@ t_g	*parse_cub_file(const char *f)
 		free_g(g);
 		return (NULL);
 	}
-	
+
 	// Liberar el array temporal
 	while (map_count > 0)
 		free(map_lines[--map_count]);
 	free(map_lines);
-	
+
 	return (g);
+}
+
+/* Rellena con espacios hasta map_width para evitar '\0' en filas cortas */
+static void	pad_map_to_rect(t_g *g)
+{
+	int		y;
+	int		len;
+	char	*row;
+
+	y = 0;
+	while (y < g->map_height)
+	{
+		len = (int)ft_strlen(g->map[y]);
+		if (len < g->map_width)
+		{
+			row = (char *)malloc(g->map_width + 1);
+			if (!row)
+				return ;
+			ft_memset(row, ' ', g->map_width);
+			ft_memcpy(row, g->map[y], len);
+			row[g->map_width] = '\0';
+			free(g->map[y]);
+			g->map[y] = row;
+		}
+		y++;
+	}
 }

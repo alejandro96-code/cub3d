@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 12:45:00 by ybahri            #+#    #+#             */
-/*   Updated: 2025/08/16 13:23:24 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/21 12:32:00 by ybahri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,20 @@ int	has_empty_line(t_g *g)
 	return (0);
 }
 
+static int	is_player_char(char c)
+{
+	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
+		return (1);
+	return (0);
+}
+
 // Comprueba que todos los caracteres del mapa sean válidos (0,1,N,S,E,W)
 int	has_only_valid_chars(t_g *g)
 {
-	int		x;
 	int		y;
+	int		x;
 	char	c;
 
-	x = 0;
 	y = 0;
 	while (y < g->map_height)
 	{
@@ -67,8 +73,7 @@ int	has_only_valid_chars(t_g *g)
 		while (x < g->map_width)
 		{
 			c = g->map[y][x];
-			if (c != '0' && c != '1' && c != 'N' && c != 'S' && c != 'E'
-				&& c != 'W' && c != '\0')
+			if (c != '0' && c != '1' && c != ' ' && !is_player_char(c))
 				return (0);
 			x++;
 		}
@@ -77,30 +82,37 @@ int	has_only_valid_chars(t_g *g)
 	return (1);
 }
 
+static int	cell_is_open(t_g *g, int x, int y)
+{
+	if (x < 0 || y < 0 || y >= g->map_height || x >= g->map_width)
+		return (1);
+	if (g->map[y][x] == ' ' || g->map[y][x] == '\0')
+		return (1);
+	return (0);
+}
+
 // Verifica que el mapa esté completamente cerrado por '1'
 int	is_map_closed(t_g *g)
 {
-	int	x;
-	int	y;
+	int		y;
+	int		x;
+	char	c;
 
-	x = 0;
 	y = 0;
-	while (x < g->map_width)
-	{
-		if (g->map[0][x] != '1' && g->map[0][x] != '\0')
-			return (0);
-		if (g->map[g->map_height - 1][x] != '1'
-			&& g->map[g->map_height - 1][x] != '\0')
-			return (0);
-		x++;
-	}
 	while (y < g->map_height)
 	{
-		if (g->map[y][0] != '1')
-			return (0);
-		if (g->map[y][g->map_width - 1] != '1'
-			&& g->map[y][g->map_width - 1] != '\0')
-			return (0);
+		x = 0;
+		while (x < g->map_width)
+		{
+			c = g->map[y][x];
+			if (c == '0' || (c == 'N' || c == 'S' || c == 'E' || c == 'W'))
+			{
+				if (cell_is_open(g, x + 1, y) || cell_is_open(g, x - 1, y)
+					|| cell_is_open(g, x, y + 1) || cell_is_open(g, x, y - 1))
+					return (0);
+			}
+			x++;
+		}
 		y++;
 	}
 	return (1);
