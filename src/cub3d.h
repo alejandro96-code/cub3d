@@ -6,7 +6,7 @@
 /*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/21 17:09:43 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/08/21 17:11:17 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,7 @@ void		move_player(int keycode, t_g *g);
 void		rotate_view(int keycode, t_g *g);
 // utils.c
 void		my_mlx_pixel_put(t_mlx *mlx, int x, int y, int color);
+// free.c
 void		free_string_array(char **array);
 void		free_string_array_count(char **array, int count);
 void		cleanup_file_and_line(int fd, char **line);
