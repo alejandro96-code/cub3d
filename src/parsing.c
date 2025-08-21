@@ -6,7 +6,7 @@
 /*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:34:38 by aleja             #+#    #+#             */
-/*   Updated: 2025/08/21 16:01:05 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/08/21 16:07:42 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ static int	parse_rgb_values(char *rgb_str, int *color)
 	}
 	free(values);
 	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
-	{
+        {
 		printf(ERROR_RGB_VALUES);
 		return (0);
 	}
@@ -238,7 +238,6 @@ t_g	*parse_cub_file(const char *f)
 	char	*line;
 	char	**map_lines;
 	int		map_count;
-	int		map_index;
 	int		len;
 
 	fd = open(f, O_RDONLY);
@@ -258,7 +257,6 @@ t_g	*parse_cub_file(const char *f)
 		return (NULL);
 	}
 	map_count = 0;
-	map_index = 0;
 	line = get_next_line(fd);
 	while (line)
 	{
@@ -270,8 +268,8 @@ t_g	*parse_cub_file(const char *f)
 			if (!parse_texture_line(line, g) && !parse_color_line(line, g))
 			{
 				free(line);
-				while (map_index > 0)
-					free(map_lines[--map_index]);
+				while (map_count > 0)
+					free(map_lines[--map_count]);
 				free(map_lines);
 				free_g(g);
 				close(fd);
