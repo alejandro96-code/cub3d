@@ -6,7 +6,7 @@
 /*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/21 17:11:17 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/08/21 17:20:00 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,14 @@ t_g			*parse_cub_file(const char *f);
 int			parse_texture_line(char *line, t_g *g);
 int			parse_color_line(char *line, t_g *g);
 char		*trim_whitespace(char *str);
+
+// validate_parse_errors.c
+int			parse_rgb_values(char *rgb_str, int *color);
+int			is_config_line(char *line);
+int			validate_config_completeness(t_g *g);
+int			validate_file_access(const char *filename);
+int			validate_map_lines_count(int map_count);
+int			validate_complete_parsing(t_g *g, char **map_lines, int map_count);
 // map_parser.c
 int			process_map_lines(const char *f, char ***lines_out, int *count_out);
 // free.c

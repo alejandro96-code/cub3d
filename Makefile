@@ -53,6 +53,7 @@ CUB3DSRC = \
    src/validation.c \
    src/init_window.c \
    src/parsing.c \
+   src/validate_parse_errors.c \
    src/map_parser.c \
    src/renderScene.c \
    src/init_player.c \
