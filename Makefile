@@ -55,7 +55,7 @@ CUB3DSRC = \
    src/parsing.c \
    src/validate_parse_errors.c \
    src/map_parser.c \
-   src/renderScene.c \
+   src/render_scene.c \
    src/init_player.c \
    src/raycast_calc.c \
    src/hooks.c \
@@ -65,10 +65,30 @@ CUB3DSRC = \
    src/textures.c \
    src/draw.c \
 
+# Archivos principales para bonus (reemplaza main.c y hooks.c)
+CUB3DSRC_BONUS = \
+   src/bonus/main_bonus.c \
+   src/bonus/hooks_bonus.c \
+   src/checks_errors.c \
+   src/validation.c \
+   src/init_window.c \
+   src/parsing.c \
+   src/validate_parse_errors.c \
+   src/map_parser.c \
+   src/render_scene.c \
+   src/init_player.c \
+   src/raycast_calc.c \
+   src/player_control.c \
+   src/free.c \
+   src/utils.c \
+   src/textures.c \
+   src/draw.c \
+
 # Archivos bonus (solo se incluyen con make bonus)
 BONUSSRC = \
-   src/bonus_minimap.c \
-   src/bonus_mouse.c \
+   src/bonus/bonus_minimap.c \
+   src/bonus/bonus_mouse.c \
+   src/bonus/render_bonus.c \
 
 # Directorio de objetos
 OBJDIR = src/obj
@@ -79,7 +99,7 @@ OBJS = $(addprefix $(OBJDIR)/, $(notdir $(CUB3DSRC:.c=.o))) \
        $(addprefix $(OBJDIR)/, $(notdir $(GNLSRC:.c=.o)))
 
 # Objetos con bonus
-BONUS_OBJS = $(addprefix $(OBJDIR)/, $(notdir $(CUB3DSRC:.c=.o))) \
+BONUS_OBJS = $(addprefix $(OBJDIR)/, $(notdir $(CUB3DSRC_BONUS:.c=.o))) \
              $(addprefix $(OBJDIR)/, $(notdir $(BONUSSRC:.c=.o))) \
              $(addprefix $(OBJDIR)/, $(notdir $(LIBFTSRC:.c=.o))) \
              $(addprefix $(OBJDIR)/, $(notdir $(GNLSRC:.c=.o)))
@@ -90,7 +110,6 @@ MLXFLAGS = -L mlx -lmlx -lX11 -lXext -lbsd -lm
 
 all: $(NAME)
 
-bonus: CFLAGS += -DBONUS
 bonus: $(NAME)_bonus
 
 $(NAME)_bonus: $(BONUS_OBJS)
@@ -111,6 +130,9 @@ $(OBJDIR):
 
 # Reglas para compilar archivos .c a .o en el directorio obj
 $(OBJDIR)/%.o: src/%.c | $(OBJDIR)
+	@$(CC) -I src/ $(CFLAGS) -c $< -o $@
+
+$(OBJDIR)/%.o: src/bonus/%.c | $(OBJDIR)
 	@$(CC) -I src/ $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/%.o: src/libft/%.c | $(OBJDIR)

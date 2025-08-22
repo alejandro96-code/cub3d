@@ -6,7 +6,7 @@
 /*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/22 01:17:45 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/08/22 15:28:00 by ybahri           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -64,7 +64,7 @@
 # define MINIMAP_MARGIN 16
 # define MINIMAP_WALL_COLOR 0x888888
 # define MINIMAP_FLOOR_COLOR 0x222222
-# define MOUSE_SENSITIVITY 0.0008
+# define MOUSE_SENSITIVITY 0.0005
 
 // EVENTOS Y TECLAS
 # define KEYPRESS 2
@@ -214,13 +214,14 @@ void		load_textures(t_mlx *mlx, t_g *g);
 void		draw_floor_ceiling(t_mlx *mlx, t_g *g);
 void		draw_wall_textures(t_mlx *mlx, t_g *g);
 
-# ifdef BONUS
 // bonus_minimap.c
 void		bonus_minimap(t_mlx *mlx, t_g *g);
 
 // bonus_mouse.c
 void		setup_mouse_hooks(t_mlx *mlx, t_g *g);
 int			mouse_move(int x, int y, t_g *g);
-# endif
+
+// render_bonus.c
+void		render_scene_with_bonus(t_mlx *mlx, t_g *g);
 
 #endif

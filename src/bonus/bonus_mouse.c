@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   bonus_mouse.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/16 13:37:23 by aleja            ###   ########.fr       */
+/*   Created: 2025/08/22 15:27:04 by ybahri            #+#    #+#             */
+/*   Updated: 2025/08/22 15:27:06 by ybahri           ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "cub3d.h"
 
@@ -29,7 +29,7 @@ static void	rotate_camera_mouse(t_g *g, double rotation)
 		* cos(rotation);
 }
 
-// Función del mouse SIN auto-centrando
+// Función del mouse usando movimiento relativo
 int	mouse_move(int x, int y, t_g *g)
 {
 	double	rotation;
@@ -47,13 +47,13 @@ int	mouse_move(int x, int y, t_g *g)
 	{
 		rotation = delta_x * MOUSE_SENSITIVITY;
 		rotate_camera_mouse(g, rotation);
-		render_scene(g->mlx, g);
+		render_scene_with_bonus(g->mlx, g);
 	}
 	g->mouse_last_x = x;
 	return (0);
 }
 
-// Setup básico sin trucos
+// Setup básico sin forzar posición del mouse
 void	setup_mouse_hooks(t_mlx *mlx, t_g *g)
 {
 	mlx_hook(mlx->win_ptr, 6, 64, mouse_move, g);

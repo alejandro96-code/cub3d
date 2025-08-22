@@ -1,12 +1,12 @@
 /******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hooks.c                                            :+:      :+:    :+:   */
+/*   hooks_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/11 19:35:26 by aleja             #+#    #+#             */
-/*   Updated: 2025/08/22 15:05:43 by ybahri           ###   ########.fr       */
+/*   Created: 2025/08/22 15:27:11 by ybahri            #+#    #+#             */
+/*   Updated: 2025/08/22 15:27:14 by ybahri           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -16,6 +16,7 @@ void	setup_hooks(t_g *g)
 {
 	mlx_hook(g->mlx->win_ptr, KEYPRESS, KEYPRESSMASK, key_press, g);
 	mlx_hook(g->mlx->win_ptr, 33, 1L << 17, close_window_hook, g);
+	setup_mouse_hooks(g->mlx, g);
 }
 
 int	key_press(int keycode, t_g *g)
@@ -27,7 +28,7 @@ int	key_press(int keycode, t_g *g)
 		move_player(keycode, g);
 	if (keycode == KEY_LEFT || keycode == KEY_RIGHT)
 		rotate_view(keycode, g);
-	render_scene(g->mlx, g);
+	render_scene_with_bonus(g->mlx, g);
 	return (0);
 }
 
