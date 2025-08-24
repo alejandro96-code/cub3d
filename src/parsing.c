@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:34:38 by aleja             #+#    #+#             */
-/*   Updated: 2025/08/22 01:18:48 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/08/24 21:26:44 by aleja            ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "cub3d.h"
 
@@ -179,6 +179,14 @@ static int	process_file_line(char *line, t_g *g, char **map_lines, int *map_coun
 			g->map_started = 1;
 		}
 		map_lines[*map_count] = ft_strdup(line);
+		if (!map_lines[*map_count])
+			return (0);
+		(*map_count)++;
+	}
+	else if (g->map_started && line[0] == '\0')
+	{
+		// Línea vacía después de que empezó el mapa - agregar como línea vacía
+		map_lines[*map_count] = ft_strdup("");
 		if (!map_lines[*map_count])
 			return (0);
 		(*map_count)++;

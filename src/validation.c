@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 12:45:00 by ybahri            #+#    #+#             */
-/*   Updated: 2025/08/21 12:32:00 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/08/24 21:26:50 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,30 @@ int	has_player(t_g *g)
 int	has_empty_line(t_g *g)
 {
 	int	y;
+	int	x;
+	int	only_spaces;
 
 	y = 0;
 	while (y < g->map_height)
 	{
 		if (!g->map[y] || g->map[y][0] == '\0')
 			return (1);
+		
+		// Verificar si la línea contiene solo espacios
+		only_spaces = 1;
+		x = 0;
+		while (g->map[y][x])
+		{
+			if (g->map[y][x] != ' ')
+			{
+				only_spaces = 0;
+				break;
+			}
+			x++;
+		}
+		if (only_spaces && ft_strlen(g->map[y]) > 0)
+			return (1);
+		
 		y++;
 	}
 	return (0);

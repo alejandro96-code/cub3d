@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   checks_errors.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/22 01:07:22 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/08/24 21:27:00 by aleja            ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "cub3d.h"
 
@@ -29,13 +29,25 @@ int	validate_extension(const char *f)
 void	validate_map_config(t_g *g)
 {
 	if (has_empty_line(g))
+	{
+		free_g(g);
 		error_exit(ERROR_LINEA_VACIA);
+	}
 	if (!has_only_valid_chars(g))
+	{
+		free_g(g);
 		error_exit(ERROR_CHAR);
+	}
 	if (!is_map_closed(g))
+	{
+		free_g(g);
 		error_exit(ERROR_MAPA_NO_CERRADO);
+	}
 	if (!has_player(g))
+	{
+		free_g(g);
 		error_exit(ERROR_PLAYERS);
+	}
 }
 
 // Comprueba todos los errores iniciales y retorna 0 si hay error, 1 si todo OK
