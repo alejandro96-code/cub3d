@@ -56,6 +56,9 @@ static int	assign_texture(char *line, int prefix_len, char **texture_dest)
 	trimmed_path = ft_strtrim(path, " \t");
 	if (!trimmed_path)
 		return (0);
+	// Liberar la textura anterior si ya existe (caso de duplicados)
+	if (*texture_dest)
+		free(*texture_dest);
 	*texture_dest = trimmed_path;
 	return (1);
 }
