@@ -31,14 +31,14 @@ int	parse_rgb_values(char *rgb_str, int *color)
 	{
 		if (values)
 			free_string_array(values);
-		error_exit(ERROR_RGB_FORMAT);
+		return (0);
 	}
 	r = ft_atoi(trim_whitespace(values[0]));
 	g = ft_atoi(trim_whitespace(values[1]));
 	b = ft_atoi(trim_whitespace(values[2]));
 	free_string_array(values);
 	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
-		error_exit(ERROR_RGB_VALUES);
+		return (0);
 	*color = (r << 16) | (g << 8) | b;
 	return (1);
 }
@@ -57,20 +57,21 @@ int	is_config_line(char *line)
 }
 
 // Verifica que todas las configuraciones requeridas estén presentes
-void	validate_config_completeness(t_g *g)
+int	validate_config_completeness(t_g *g)
 {
 	if (!g->north_texture)
-		error_exit(ERROR_NO_TEXTURE);
+		return (-1);  // ERROR_NO_TEXTURE
 	if (!g->south_texture)
-		error_exit(ERROR_SO_TEXTURE);
+		return (-2);  // ERROR_SO_TEXTURE
 	if (!g->east_texture)
-		error_exit(ERROR_EA_TEXTURE);
+		return (-3);  // ERROR_EA_TEXTURE
 	if (!g->west_texture)
-		error_exit(ERROR_WE_TEXTURE);
+		return (-4);  // ERROR_WE_TEXTURE
 	if (!g->ceiling_color_set)
-		error_exit(ERROR_CEILING_COLOR);
+		return (-5);  // ERROR_CEILING_COLOR
 	if (!g->floor_color_set)
-		error_exit(ERROR_FLOOR_COLOR);
+		return (-6);  // ERROR_FLOOR_COLOR
+	return (1);  // Todo OK
 }
 
 // Valida que el archivo se pueda abrir
@@ -86,17 +87,25 @@ int	validate_file_access(const char *filename)
 }
 
 // Valida que las líneas del mapa no estén vacías
-void	validate_map_lines_count(int map_count)
+// Valida que haya líneas de mapa
+int	validate_map_lines_count(int map_count)
 {
 	if (map_count == 0)
-		error_exit(ERROR_NO_MAP_LINES);
+		return (-7);  // ERROR_NO_MAP_LINES
+	return (1);
 }
 
 int	validate_complete_parsing(t_g *g, char **map_lines, int map_count)
 {
+	int	result;
+	
 	(void)map_lines;
-	validate_config_completeness(g);
-	validate_map_lines_count(map_count);
+	result = validate_config_completeness(g);
+	if (result < 0)
+		return (result);  // Retorna el código de error específico
+	result = validate_map_lines_count(map_count);
+	if (result < 0)
+		return (result);  // Retorna el código de error de mapa
 	return (1);
 }
 

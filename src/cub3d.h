@@ -170,9 +170,9 @@ char		*trim_whitespace(char *str);
 // validate_parse_errors.c
 int			parse_rgb_values(char *rgb_str, int *color);
 int			is_config_line(char *line);
-void		validate_config_completeness(t_g *g);
+int			validate_config_completeness(t_g *g);
 int			validate_file_access(const char *filename);
-void		validate_map_lines_count(int map_count);
+int			validate_map_lines_count(int map_count);
 int			validate_complete_parsing(t_g *g, char **map_lines, int map_count);
 // map_parser.c
 int			process_map_lines(const char *f, char ***lines_out, int *count_out);

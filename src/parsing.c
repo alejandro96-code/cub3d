@@ -79,27 +79,30 @@ int	parse_texture_line(char *line, t_g *g)
 int	parse_color_line(char *line, t_g *g)
 {
 	char	*rgb_str;
+	int		result;
 
 	line = trim_whitespace(line);
 	if (ft_strncmp(line, "C ", 2) == 0)
 	{
 		rgb_str = trim_whitespace(line + 2);
-		if (parse_rgb_values(rgb_str, &g->ceiling_color))
+		result = parse_rgb_values(rgb_str, &g->ceiling_color);
+		if (result == 1)
 		{
 			g->ceiling_color_set = 1;
 			return (1);
 		}
-		return (0);
+		return (result);  // Retorna 0 para errores de RGB
 	}
 	else if (ft_strncmp(line, "F ", 2) == 0)
 	{
 		rgb_str = trim_whitespace(line + 2);
-		if (parse_rgb_values(rgb_str, &g->floor_color))
+		result = parse_rgb_values(rgb_str, &g->floor_color);
+		if (result == 1)
 		{
 			g->floor_color_set = 1;
 			return (1);
 		}
-		return (0);
+		return (result);  // Retorna 0 para errores de RGB
 	}
 	return (0);
 }
@@ -149,15 +152,22 @@ static t_g	*init_parsing_structures(int fd, char ***map_lines)
 	return (g);
 }
 
+// Error específico de parsing con limpieza
+static void	parsing_error(const char *msg, int fd, char *line, char **map_lines, int map_count, t_g *g)
+{
+	cleanup_parsing(fd, line, map_lines, map_count, g);
+	error_exit(msg);
+}
+
 // Procesa una línea del archivo .cub
 static int	process_file_line(char *line, t_g *g, char **map_lines, int *map_count)
 {
 	if (is_config_line(line))
 	{
 		if (g->map_started)
-			error_exit(ERROR_CONFIG_AFTER_MAP);
+			return (-1);  // Error: configuración después del mapa
 		if (!parse_texture_line(line, g) && !parse_color_line(line, g))
-			return (0);
+			return (-2);  // Error: RGB inválido u otro error de configuración
 	}
 	else if (line[0] != '\0' && (line[0] == ' ' || line[0] == '1' || line[0] == '0'))
 	{
@@ -165,7 +175,7 @@ static int	process_file_line(char *line, t_g *g, char **map_lines, int *map_coun
 		{
 			if (!g->north_texture || !g->south_texture || !g->east_texture || 
 				!g->west_texture || !g->ceiling_color_set || !g->floor_color_set)
-				error_exit(ERROR_INCOMPLETE_CONFIG);
+				return (-3);  // Error: configuración incompleta
 			g->map_started = 1;
 		}
 		map_lines[*map_count] = ft_strdup(line);
@@ -181,6 +191,7 @@ static int	read_and_process_lines(int fd, t_g *g, char **map_lines, int *map_cou
 {
 	char	*line;
 	int		len;
+	int		result;
 
 	*map_count = 0;
 	line = get_next_line(fd);
@@ -190,7 +201,17 @@ static int	read_and_process_lines(int fd, t_g *g, char **map_lines, int *map_cou
 		if (len > 0 && line[len - 1] == '\n')
 			line[len - 1] = 0;
 		
-		if (!process_file_line(line, g, map_lines, map_count))
+		result = process_file_line(line, g, map_lines, map_count);
+		if (result < 0)
+		{
+			if (result == -1)
+				parsing_error(ERROR_CONFIG_AFTER_MAP, fd, line, map_lines, *map_count, g);
+			else if (result == -2)
+				parsing_error(ERROR_RGB_VALUES, fd, line, map_lines, *map_count, g);
+			else if (result == -3)
+				parsing_error(ERROR_INCOMPLETE_CONFIG, fd, line, map_lines, *map_count, g);
+		}
+		else if (result == 0)
 		{
 			cleanup_parsing(fd, line, map_lines, *map_count, g);
 			return (0);
@@ -211,6 +232,7 @@ t_g	*parse_cub_file(const char *f)
 	t_g		*g;
 	char	**map_lines;
 	int		map_count;
+	int		result;
 
 	if (!validate_file_access(f))
 		return (NULL);
@@ -223,8 +245,27 @@ t_g	*parse_cub_file(const char *f)
 	if (!read_and_process_lines(fd, g, map_lines, &map_count))
 		return (NULL);
 	close(fd);
-	if (!validate_complete_parsing(g, map_lines, map_count))
+	result = validate_complete_parsing(g, map_lines, map_count);
+	if (result < 0)
+	{
+		cleanup_map_lines(map_lines, map_count);
+		free_g(g);
+		if (result == -1)
+			error_exit(ERROR_NO_TEXTURE);
+		else if (result == -2)
+			error_exit(ERROR_SO_TEXTURE);
+		else if (result == -3)
+			error_exit(ERROR_EA_TEXTURE);
+		else if (result == -4)
+			error_exit(ERROR_WE_TEXTURE);
+		else if (result == -5)
+			error_exit(ERROR_CEILING_COLOR);
+		else if (result == -6)
+			error_exit(ERROR_FLOOR_COLOR);
+		else if (result == -7)
+			error_exit(ERROR_NO_MAP_LINES);
 		return (NULL);
+	}
 	if (!create_map(g, map_lines, map_count))
 	{
 		cleanup_map_lines(map_lines, map_count);
