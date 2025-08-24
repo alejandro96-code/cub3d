@@ -54,7 +54,6 @@ CUB3DSRC = \
    src/init_window.c \
    src/parsing.c \
    src/validate_parse_errors.c \
-   src/map_parser.c \
    src/render_scene.c \
    src/init_player.c \
    src/raycast_calc.c \
@@ -74,7 +73,6 @@ CUB3DSRC_BONUS = \
    src/init_window.c \
    src/parsing.c \
    src/validate_parse_errors.c \
-   src/map_parser.c \
    src/render_scene.c \
    src/init_player.c \
    src/raycast_calc.c \

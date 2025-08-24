@@ -187,8 +187,6 @@ int			validate_config_completeness(t_g *g);
 int			validate_file_access(const char *filename);
 int			validate_map_lines_count(int map_count);
 int			validate_complete_parsing(t_g *g, char **map_lines, int map_count);
-// map_parser.c
-int			process_map_lines(const char *f, char ***lines_out, int *count_out);
 // free.c
 void		free_g(t_g *g);
 // init_window.c
