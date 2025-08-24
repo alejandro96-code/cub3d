@@ -6,7 +6,7 @@
 /*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:34:38 by aleja             #+#    #+#             */
-/*   Updated: 2025/08/24 21:26:44 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/24 22:03:28 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,10 @@ static int	process_file_line(char *line, t_g *g, char **map_lines, int *map_coun
 	}
 	else if (line[0] != '\0' && (line[0] == ' ' || line[0] == '1' || line[0] == '0'))
 	{
+		// Si el mapa ya terminó, no se permiten más líneas de mapa
+		if (g->map_finished)
+			return (-1);  // Error: contenido después del mapa
+			
 		if (!g->map_started)
 		{
 			if (!g->north_texture || !g->south_texture || !g->east_texture || 
@@ -188,11 +192,16 @@ static int	process_file_line(char *line, t_g *g, char **map_lines, int *map_coun
 	}
 	else if (g->map_started && line[0] == '\0')
 	{
-		// Línea vacía después de que empezó el mapa - agregar como línea vacía
-		map_lines[*map_count] = ft_strdup("");
-		if (!map_lines[*map_count])
-			return (0);
-		(*map_count)++;
+		// Primera línea vacía después del mapa - marcar como terminado
+		if (!g->map_finished)
+			g->map_finished = 1;
+		// Líneas vacías después de que empezó el mapa - ignorar (no agregar al mapa)
+		// Las líneas vacías al final del archivo son válidas
+	}
+	else if (g->map_started)
+	{
+		// Contenido no vacío después del mapa - error
+		return (-1);
 	}
 	return (1);
 }
