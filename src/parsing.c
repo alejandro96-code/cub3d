@@ -6,7 +6,7 @@
 /*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:34:38 by aleja             #+#    #+#             */
-/*   Updated: 2025/08/24 22:03:28 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/24 23:04:03 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ static int	assign_texture(char *line, int prefix_len, char **texture_dest)
 	trimmed_path = ft_strtrim(path, " \t");
 	if (!trimmed_path)
 		return (0);
-	// Liberar la textura anterior si ya existe (caso de duplicados)
 	if (*texture_dest)
 		free(*texture_dest);
 	*texture_dest = trimmed_path;
@@ -94,7 +93,7 @@ int	parse_color_line(char *line, t_g *g)
 			g->ceiling_color_set = 1;
 			return (1);
 		}
-		return (result);  // Retorna 0 para errores de RGB
+		return (result);
 	}
 	else if (ft_strncmp(line, "F ", 2) == 0)
 	{
@@ -105,7 +104,7 @@ int	parse_color_line(char *line, t_g *g)
 			g->floor_color_set = 1;
 			return (1);
 		}
-		return (result);  // Retorna 0 para errores de RGB
+		return (result);
 	}
 	return (0);
 }
@@ -156,33 +155,42 @@ static t_g	*init_parsing_structures(int fd, char ***map_lines)
 }
 
 // Error específico de parsing con limpieza
-static void	parsing_error(const char *msg, int fd, char *line, char **map_lines, int map_count, t_g *g)
+static void	parsing_error(const char *msg, int fd, char *line, char **map_lines,
+		int map_count, t_g *g)
 {
-	cleanup_parsing(fd, line, map_lines, map_count, g);
+	t_parse_data	data;
+
+	data.fd = fd;
+	data.line = line;
+	data.map_lines = map_lines;
+	data.map_count = map_count;
+	data.g = g;
+	cleanup_parsing(&data);
 	error_exit(msg);
 }
 
 // Procesa una línea del archivo .cub
-static int	process_file_line(char *line, t_g *g, char **map_lines, int *map_count)
+static int	process_file_line(char *line, t_g *g, char **map_lines,
+		int *map_count)
 {
 	if (is_config_line(line))
 	{
 		if (g->map_started)
-			return (-1);  // Error: configuración después del mapa
+			return (-1);
 		if (!parse_texture_line(line, g) && !parse_color_line(line, g))
-			return (-2);  // Error: RGB inválido u otro error de configuración
+			return (-2);
 	}
-	else if (line[0] != '\0' && (line[0] == ' ' || line[0] == '1' || line[0] == '0'))
+	else if (line[0] != '\0' && (line[0] == ' ' || line[0] == '1'
+			|| line[0] == '0'))
 	{
-		// Si el mapa ya terminó, no se permiten más líneas de mapa
 		if (g->map_finished)
-			return (-1);  // Error: contenido después del mapa
-			
+			return (-1);
 		if (!g->map_started)
 		{
-			if (!g->north_texture || !g->south_texture || !g->east_texture || 
-				!g->west_texture || !g->ceiling_color_set || !g->floor_color_set)
-				return (-3);  // Error: configuración incompleta
+			if (!g->north_texture || !g->south_texture || !g->east_texture
+				|| !g->west_texture || !g->ceiling_color_set
+				|| !g->floor_color_set)
+				return (-3);
 			g->map_started = 1;
 		}
 		map_lines[*map_count] = ft_strdup(line);
@@ -192,22 +200,19 @@ static int	process_file_line(char *line, t_g *g, char **map_lines, int *map_coun
 	}
 	else if (g->map_started && line[0] == '\0')
 	{
-		// Primera línea vacía después del mapa - marcar como terminado
 		if (!g->map_finished)
 			g->map_finished = 1;
-		// Líneas vacías después de que empezó el mapa - ignorar (no agregar al mapa)
-		// Las líneas vacías al final del archivo son válidas
 	}
 	else if (g->map_started)
 	{
-		// Contenido no vacío después del mapa - error
 		return (-1);
 	}
 	return (1);
 }
 
 // Lee y procesa todas las líneas del archivo
-static int	read_and_process_lines(int fd, t_g *g, char **map_lines, int *map_count)
+static int	read_and_process_lines(int fd, t_g *g, char **map_lines,
+		int *map_count)
 {
 	char	*line;
 	int		len;
@@ -220,20 +225,29 @@ static int	read_and_process_lines(int fd, t_g *g, char **map_lines, int *map_cou
 		len = ft_strlen(line);
 		if (len > 0 && line[len - 1] == '\n')
 			line[len - 1] = 0;
-		
 		result = process_file_line(line, g, map_lines, map_count);
 		if (result < 0)
 		{
 			if (result == -1)
-				parsing_error(ERROR_CONFIG_AFTER_MAP, fd, line, map_lines, *map_count, g);
+				parsing_error(ERROR_CONFIG_AFTER_MAP, fd, line, map_lines,
+					*map_count, g);
 			else if (result == -2)
-				parsing_error(ERROR_RGB_VALUES, fd, line, map_lines, *map_count, g);
+				parsing_error(ERROR_RGB_VALUES, fd, line, map_lines, *map_count,
+					g);
 			else if (result == -3)
-				parsing_error(ERROR_INCOMPLETE_CONFIG, fd, line, map_lines, *map_count, g);
+				parsing_error(ERROR_INCOMPLETE_CONFIG, fd, line, map_lines,
+					*map_count, g);
 		}
 		else if (result == 0)
 		{
-			cleanup_parsing(fd, line, map_lines, *map_count, g);
+			t_parse_data	data;
+
+			data.fd = fd;
+			data.line = line;
+			data.map_lines = map_lines;
+			data.map_count = *map_count;
+			data.g = g;
+			cleanup_parsing(&data);
 			return (0);
 		}
 		free(line);

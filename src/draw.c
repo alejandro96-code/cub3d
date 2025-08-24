@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 02:18:43 by ybahri            #+#    #+#             */
-/*   Updated: 2025/08/21 10:31:58 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/08/24 23:04:02 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,9 @@ static void	draw_texture_column(t_mlx *mlx, int tex_idx, t_g *g)
 				+ g->tex_x];
 			if (g->side == 1)
 				color = (color >> 1) & 0x7F7F7F;
-			my_mlx_pixel_put(mlx, g->x, y, color);
+			g->current_pixel_y = y;
+			g->current_pixel_color = color;
+			my_mlx_pixel_put(g);
 		}
 		y++;
 	}

@@ -6,7 +6,7 @@
 /*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/24 22:35:01 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/24 23:04:02 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,12 +146,25 @@ typedef struct s_g
 	int		x; // Columna actual de píxeles renderizando
 	int		color; // Color calculado para esta columna
 	int		tex_x; // Coordenada X en la textura
+	int		current_pixel_y; // Y temporal para pixel actual
+	int		current_pixel_color; // Color temporal para pixel actual
 	int		mouse_last_x; // Última posición X del mouse
 	int		mouse_initialized; // Flag para saber si el mouse está inicializado
 	int		map_started; // Flag para validar orden del archivo (config antes del mapa)
 	int		map_finished; // Flag para detectar cuando el mapa terminó
 	t_mlx	*mlx; // Puntero a MLX para hooks
 }			t_g;
+
+// Estructura para datos de parsing (reduce número de parámetros)
+typedef struct s_parse_data
+{
+	int		fd;
+	char	*line;
+	char	**map_lines;
+	int		map_count;
+	t_g		*g;
+}			t_parse_data;
+
 // main.c
 int			main(int argc, char **argv);
 // checks_errors.c
@@ -200,14 +213,14 @@ int			close_window_hook(t_g *g);
 void		move_player(int keycode, t_g *g);
 void		rotate_view(int keycode, t_g *g);
 // utils.c
-void		my_mlx_pixel_put(t_mlx *mlx, int x, int y, int color);
+void		my_mlx_pixel_put(t_g *g);
 void		error_exit(const char *msg);
 // free.c
 void		free_string_array(char **array);
 void		free_string_array_count(char **array, int count);
 void		cleanup_file_and_line(int fd, char **line);
 void		cleanup_map_lines(char **map_lines, int count);
-void		cleanup_parsing(int fd, char *line, char **map_lines, int map_count, t_g *g);
+void		cleanup_parsing(t_parse_data *data);
 // textures.c
 void		load_textures(t_mlx *mlx, t_g *g);
 // draw.c

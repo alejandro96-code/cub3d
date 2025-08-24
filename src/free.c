@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:34:38 by aleja             #+#    #+#             */
-/*   Updated: 2025/08/21 17:10:06 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/08/24 23:04:03 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,15 +99,15 @@ void	cleanup_map_lines(char **map_lines, int count)
 }
 
 // Función de limpieza completa durante el parsing
-void	cleanup_parsing(int fd, char *line, char **map_lines, int map_count, t_g *g)
+void	cleanup_parsing(t_parse_data *data)
 {
 	char	*temp_line;
 
-	if (line)
-		free(line);
-	while ((temp_line = get_next_line(fd)) != NULL)
+	if (data->line)
+		free(data->line);
+	while ((temp_line = get_next_line(data->fd)) != NULL)
 		free(temp_line);
-	cleanup_map_lines(map_lines, map_count);
-	free_g(g);
-	close(fd);
+	cleanup_map_lines(data->map_lines, data->map_count);
+	free_g(data->g);
+	close(data->fd);
 }
