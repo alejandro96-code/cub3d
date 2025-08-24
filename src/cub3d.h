@@ -6,7 +6,7 @@
 /*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/24 22:03:25 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/24 22:35:01 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,6 @@ t_g			*parse_cub_file(const char *f);
 int			parse_texture_line(char *line, t_g *g);
 int			parse_color_line(char *line, t_g *g);
 char		*trim_whitespace(char *str);
-
 // validate_parse_errors.c
 int			parse_rgb_values(char *rgb_str, int *color);
 int			is_config_line(char *line);
@@ -214,14 +213,11 @@ void		load_textures(t_mlx *mlx, t_g *g);
 // draw.c
 void		draw_floor_ceiling(t_mlx *mlx, t_g *g);
 void		draw_wall_textures(t_mlx *mlx, t_g *g);
-
 // bonus_minimap.c
 void		bonus_minimap(t_mlx *mlx, t_g *g);
-
 // bonus_mouse.c
 void		setup_mouse_hooks(t_mlx *mlx, t_g *g);
 int			mouse_move(int x, int y, t_g *g);
-
 // render_bonus.c
 void		render_scene_with_bonus(t_mlx *mlx, t_g *g);
 
