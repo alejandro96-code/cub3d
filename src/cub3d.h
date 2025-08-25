@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/24 23:04:02 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/26 00:06:51 by ybahri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,15 +175,34 @@ int			has_player(t_g *g);
 int			has_only_valid_chars(t_g *g);
 int			has_empty_line(t_g *g);
 int			is_map_closed(t_g *g);
-// parsing.c
+// parsing/parsing.c
 t_g			*parse_cub_file(const char *f);
-int			parse_texture_line(char *line, t_g *g);
-int			parse_color_line(char *line, t_g *g);
+// parsing/parsing_utils.c
 char		*trim_whitespace(char *str);
-// validate_parse_errors.c
+int			parse_texture_line(char *line, t_g *g);
+int			create_map(t_g *g, char **lines, int count);
+// parsing/parsing_colors.c
+int			parse_color_line(char *line, t_g *g);
+// parsing/parsing_validation.c
+int			validate_map_start(t_g *g);
+int			handle_config_line(char *line, t_g *g);
+int			handle_map_line(char *line, t_g *g, char **map_lines,
+				int *map_count);
+int			validate_and_create_map(t_g *g, char **map_lines, int map_count);
+// parsing/parsing_process.c
+int			handle_negative_result(int result, t_parse_data *data);
+int			handle_zero_result(char *line, char **map_lines, int map_count,
+				t_g *g);
+int			process_file_line(char *line, t_g *g, char **map_lines,
+				int *map_count);
+void		parsing_error(const char *msg, t_parse_data *data);
+int			read_and_process_lines(int fd, t_g *g, char **map_lines,
+				int *map_count);
+// parsing/validate_parse_errors.c
 int			parse_rgb_values(char *rgb_str, int *color);
 int			is_config_line(char *line);
 int			validate_config_completeness(t_g *g);
+// parsing/parsing_file_utils.c
 int			validate_file_access(const char *filename);
 int			validate_map_lines_count(int map_count);
 int			validate_complete_parsing(t_g *g, char **map_lines, int map_count);

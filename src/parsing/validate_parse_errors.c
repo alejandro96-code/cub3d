@@ -3,47 +3,66 @@
 /*                                                        :::      ::::::::   */
 /*   validate_parse_errors.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/11 19:34:38 by aleja             #+#    #+#             */
-/*   Updated: 2025/08/24 21:27:01 by aleja            ###   ########.fr       */
+/*   Created: 2025/08/26 00:06:29 by ybahri            #+#    #+#             */
+/*   Updated: 2025/08/26 00:06:43 by ybahri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// Parsea valores RGB desde una cadena "r,g,b"
-int	parse_rgb_values(char *rgb_str, int *color)
+/* Validates that RGB values are within valid range (0-255) */
+static int	validate_rgb_range(int r, int g, int b)
+{
+	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
+		return (0);
+	return (1);
+}
+
+/* Parses RGB string format "r,g,b" and returns array of values */
+static char	**parse_rgb_string(char *rgb_str)
 {
 	char	**values;
 	char	*trimmed_str;
-	int		r;
-	int		g;
-	int		b;
 
 	rgb_str = trim_whitespace(rgb_str);
 	trimmed_str = ft_strtrim(rgb_str, " \t");
 	if (!trimmed_str)
-		return (0);
+		return (NULL);
 	values = ft_split(trimmed_str, ',');
 	free(trimmed_str);
 	if (!values || !values[0] || !values[1] || !values[2])
 	{
 		if (values)
 			free_string_array(values);
-		return (0);
+		return (NULL);
 	}
+	return (values);
+}
+
+/* Parses RGB string and converts to hex color value */
+int	parse_rgb_values(char *rgb_str, int *color)
+{
+	char	**values;
+	int		r;
+	int		g;
+	int		b;
+
+	values = parse_rgb_string(rgb_str);
+	if (!values)
+		return (0);
 	r = ft_atoi(trim_whitespace(values[0]));
 	g = ft_atoi(trim_whitespace(values[1]));
 	b = ft_atoi(trim_whitespace(values[2]));
 	free_string_array(values);
-	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
+	if (!validate_rgb_range(r, g, b))
 		return (0);
 	*color = (r << 16) | (g << 8) | b;
 	return (1);
 }
 
-// Verifica si una línea es de configuración (textura o color)
+/* Checks if line contains configuration data (textures or colors) */
 int	is_config_line(char *line)
 {
 	line = trim_whitespace(line);
@@ -56,56 +75,20 @@ int	is_config_line(char *line)
 	return (0);
 }
 
-// Verifica que todas las configuraciones requeridas estén presentes
+/* Validates that all required configuration elements are present */
 int	validate_config_completeness(t_g *g)
 {
 	if (!g->north_texture)
-		return (-1);  // ERROR_NO_TEXTURE
+		return (-1);
 	if (!g->south_texture)
-		return (-2);  // ERROR_SO_TEXTURE
+		return (-2);
 	if (!g->east_texture)
-		return (-3);  // ERROR_EA_TEXTURE
+		return (-3);
 	if (!g->west_texture)
-		return (-4);  // ERROR_WE_TEXTURE
+		return (-4);
 	if (!g->ceiling_color_set)
-		return (-5);  // ERROR_CEILING_COLOR
+		return (-5);
 	if (!g->floor_color_set)
-		return (-6);  // ERROR_FLOOR_COLOR
-	return (1);  // Todo OK
-}
-
-// Valida que el archivo se pueda abrir
-int	validate_file_access(const char *filename)
-{
-	int	fd;
-
-	fd = open(filename, O_RDONLY);
-	if (fd < 0)
-		return (0);
-	close(fd);
+		return (-6);
 	return (1);
 }
-
-// Valida que las líneas del mapa no estén vacías
-// Valida que haya líneas de mapa
-int	validate_map_lines_count(int map_count)
-{
-	if (map_count == 0)
-		return (-7);  // ERROR_NO_MAP_LINES
-	return (1);
-}
-
-int	validate_complete_parsing(t_g *g, char **map_lines, int map_count)
-{
-	int	result;
-	
-	(void)map_lines;
-	result = validate_config_completeness(g);
-	if (result < 0)
-		return (result);  // Retorna el código de error específico
-	result = validate_map_lines_count(map_count);
-	if (result < 0)
-		return (result);  // Retorna el código de error de mapa
-	return (1);
-}
-

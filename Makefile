@@ -52,8 +52,13 @@ CUB3DSRC = \
    src/checks_errors.c \
    src/validation.c \
    src/init_window.c \
-   src/parsing.c \
-   src/validate_parse_errors.c \
+   src/parsing/parsing.c \
+   src/parsing/parsing_utils.c \
+   src/parsing/parsing_colors.c \
+   src/parsing/parsing_validation.c \
+   src/parsing/parsing_process.c \
+   src/parsing/parsing_file_utils.c \
+   src/parsing/validate_parse_errors.c \
    src/render_scene.c \
    src/init_player.c \
    src/raycast_calc.c \
@@ -71,8 +76,13 @@ CUB3DSRC_BONUS = \
    src/checks_errors.c \
    src/validation.c \
    src/init_window.c \
-   src/parsing.c \
-   src/validate_parse_errors.c \
+   src/parsing/parsing.c \
+   src/parsing/parsing_utils.c \
+   src/parsing/parsing_colors.c \
+   src/parsing/parsing_validation.c \
+   src/parsing/parsing_process.c \
+   src/parsing/parsing_file_utils.c \
+   src/parsing/validate_parse_errors.c \
    src/render_scene.c \
    src/init_player.c \
    src/raycast_calc.c \
@@ -128,6 +138,9 @@ $(OBJDIR):
 
 # Reglas para compilar archivos .c a .o en el directorio obj
 $(OBJDIR)/%.o: src/%.c | $(OBJDIR)
+	@$(CC) -I src/ $(CFLAGS) -c $< -o $@
+
+$(OBJDIR)/%.o: src/parsing/%.c | $(OBJDIR)
 	@$(CC) -I src/ $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/%.o: src/bonus/%.c | $(OBJDIR)
