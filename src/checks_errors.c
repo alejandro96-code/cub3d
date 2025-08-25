@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   checks_errors.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/24 22:46:11 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/26 00:41:41 by ybahri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// Valida la extensión del archivo .cub
+/* Validates .cub file extension */
 int	validate_extension(const char *f)
 {
 	int	len;
@@ -22,10 +22,11 @@ int	validate_extension(const char *f)
 		len++;
 	if (len < 4)
 		return (0);
-	return (f[len - 4] == '.' && f[len - 3] == 'c' && f[len - 2] == 'u' && f[len - 1] == 'b');
+	return (f[len - 4] == '.' && f[len - 3] == 'c'
+		&& f[len - 2] == 'u' && f[len - 1] == 'b');
 }
 
-// validaciones del mapa
+/* Map validations */
 void	validate_map_config(t_g *g)
 {
 	if (has_empty_line(g))
@@ -50,7 +51,7 @@ void	validate_map_config(t_g *g)
 	}
 }
 
-// Comprueba todos los errores iniciales y retorna 0 si hay error, 1 si todo OK
+/* Checks all initial errors */
 void	checks_all_errors(int argc, char **argv, t_g **g, t_mlx **mlx)
 {
 	if (argc != 2)
@@ -61,9 +62,7 @@ void	checks_all_errors(int argc, char **argv, t_g **g, t_mlx **mlx)
 		error_exit(ERROR_EXTENSION);
 	*g = parse_cub_file(argv[1]);
 	if (!*g)
-	{
 		error_exit(ERROR_PARSEO);
-	}
 	validate_map_config(*g);
 	*mlx = init_window(*g);
 	if (!*mlx)

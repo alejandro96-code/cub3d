@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   raycast_calc.c                                     :+:      :+:    :+:   */
@@ -6,13 +6,13 @@
 /*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:34:38 by aleja             #+#    #+#             */
-/*   Updated: 2025/08/22 01:01:54 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/08/26 01:11:19 by ybahri           ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "cub3d.h"
 
-// Calcula la dirección del rayo y la posición de la cámara para una columna x
+/* Calculate ray direction and camera position for column x */
 void	calculate_ray_direction(t_g *g, t_mlx *mlx)
 {
 	g->camera_x = 2 * g->x / (double)mlx->width - 1;
@@ -24,10 +24,7 @@ void	calculate_ray_direction(t_g *g, t_mlx *mlx)
 	g->delta_dist_y = fabs(1 / g->ray_dir_y);
 }
 
-/*
-	Calcula el paso y la distancia inicial a la
-	siguiente línea de grid para el algoritmo DDA
-*/
+/* Calculate step and initial distance to next grid line for DDA algorithm */
 void	calculate_step_and_side_dist(t_g *g)
 {
 	if (g->ray_dir_x < 0)
@@ -52,14 +49,10 @@ void	calculate_step_and_side_dist(t_g *g)
 	}
 }
 
-/*
-	Realiza el algoritmo DDA para avanzar el rayo hasta chocar con una pared
-	Devuelve el lado impactado y modifica map_x/map_y
-*/
+/* Perform DDA algorithm to advance ray until hitting a wall */
 int	raycast_dda(t_g *g)
 {
-	int		hit;
-	char	cell;
+	int	hit;
 
 	hit = 0;
 	g->side = 0;
@@ -77,23 +70,15 @@ int	raycast_dda(t_g *g)
 			g->map_y += g->step_y;
 			g->side = 1;
 		}
-		if (g->map_x < 0 || g->map_x >= g->map_width || g->map_y < 0
-			|| g->map_y >= g->map_height)
+		if (g->map_x < 0 || g->map_x >= g->map_width
+			|| g->map_y < 0 || g->map_y >= g->map_height
+			|| g->map[g->map_y][g->map_x] != '0')
 			hit = 1;
-		else if (g->map[g->map_y][g->map_x] == '1')
-		{
-			cell = g->map[g->map_y][g->map_x];
-			if (cell == '1' || cell == ' ' || cell == '\0')
-				hit = 1;
-		}
 	}
 	return (g->side);
 }
 
-/*
-	Calcula la distancia perpendicular a la pared
-	y la altura de la línea a dibujar
-*/
+/* Calculate perpendicular wall distance and line height */
 void	calculate_perp_wall_and_lineheight(t_mlx *mlx, t_g *g)
 {
 	if (g->side == 0)
@@ -105,7 +90,7 @@ void	calculate_perp_wall_and_lineheight(t_mlx *mlx, t_g *g)
 	g->line_height = (int)(mlx->height / g->perp_wall_dist);
 }
 
-// Calcula los límites de dibujo (draw_start, draw_end) para la columna actual
+/* Calculate drawing limits for wall column */
 void	calculate_draw_limits(t_mlx *mlx, t_g *g)
 {
 	g->draw_start = -g->line_height / 2 + mlx->height / 2;

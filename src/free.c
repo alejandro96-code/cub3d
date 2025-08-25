@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:34:38 by aleja             #+#    #+#             */
-/*   Updated: 2025/08/24 23:04:03 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/26 01:10:36 by ybahri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	free_g(t_g *g)
 	free(g);
 }
 
-// Función unificada para liberar arrays de strings
+/* Unified function to free string arrays */
 void	free_string_array(char **array)
 {
 	int	i;
@@ -55,8 +55,8 @@ void	free_string_array(char **array)
 	free(array);
 }
 
-// Función unificada para liberar arrays de strings con count conocido
-void	free_string_array_count(char **array, int count)
+/* Free map lines array with known count (used by parser) */
+void	cleanup_map_lines(char **array, int count)
 {
 	int	i;
 
@@ -72,7 +72,7 @@ void	free_string_array_count(char **array, int count)
 	free(array);
 }
 
-// Función para cerrar archivo y liberar línea actual
+/* Clean up file and current line */
 void	cleanup_file_and_line(int fd, char **line)
 {
 	char	*temp_line;
@@ -84,29 +84,29 @@ void	cleanup_file_and_line(int fd, char **line)
 	}
 	if (fd >= 0)
 	{
-		while ((temp_line = get_next_line(fd)) != NULL)
+		temp_line = get_next_line(fd);
+		while (temp_line != NULL)
+		{
 			free(temp_line);
+			temp_line = get_next_line(fd);
+		}
 		close(fd);
 	}
 }
 
-// Libera el array de líneas del mapa
-void	cleanup_map_lines(char **map_lines, int count)
-{
-	while (count > 0)
-		free(map_lines[--count]);
-	free(map_lines);
-}
-
-// Función de limpieza completa durante el parsing
+/* Complete cleanup during parsing */
 void	cleanup_parsing(t_parse_data *data)
 {
 	char	*temp_line;
 
 	if (data->line)
 		free(data->line);
-	while ((temp_line = get_next_line(data->fd)) != NULL)
+	temp_line = get_next_line(data->fd);
+	while (temp_line != NULL)
+	{
 		free(temp_line);
+		temp_line = get_next_line(data->fd);
+	}
 	cleanup_map_lines(data->map_lines, data->map_count);
 	free_g(data->g);
 	close(data->fd);

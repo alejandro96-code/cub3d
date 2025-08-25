@@ -6,13 +6,13 @@
 /*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/21 12:33:22 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/08/26 00:54:20 by ybahri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// Inicializa la dirección y el plano del jugador para norte o sur
+/* Initialize player direction and plane for north or south */
 void	set_player_direction_ns(t_g *g, char c)
 {
 	if (c == PLAYER_N)
@@ -31,7 +31,7 @@ void	set_player_direction_ns(t_g *g, char c)
 	}
 }
 
-// Inicializa la dirección y el plano del jugador para este u oeste
+/* Initialize player direction and plane for east or west */
 void	set_player_direction_ew(t_g *g, char c)
 {
 	if (c == PLAYER_E)
@@ -50,7 +50,7 @@ void	set_player_direction_ew(t_g *g, char c)
 	}
 }
 
-// Llama a la función adecuada según el carácter
+/* Call appropriate function based on character */
 void	set_player_direction(t_g *g, char c)
 {
 	if (c == PLAYER_N || c == PLAYER_S)
@@ -59,21 +59,18 @@ void	set_player_direction(t_g *g, char c)
 		set_player_direction_ew(g, c);
 }
 
-/*
-	Inicializa la estructura del jugador según el
-	primer carácter de jugador encontrado en el mapa
-*/
+/* Initialize player from first player character found in map */
 void	init_player_from_map(t_g *g)
 {
 	int		y;
 	int		x;
 	char	c;
 
-	y = 0;
-	while (y < g->map_height)
+	y = -1;
+	while (++y < g->map_height)
 	{
-		x = 0;
-		while (x < g->map_width)
+		x = -1;
+		while (++x < g->map_width)
 		{
 			c = g->map[y][x];
 			if (c == PLAYER_N || c == PLAYER_S || c == PLAYER_E
@@ -87,8 +84,6 @@ void	init_player_from_map(t_g *g)
 				g->mouse_last_x = -1;
 				return ;
 			}
-			x++;
 		}
-		y++;
 	}
 }

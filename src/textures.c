@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   textures.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 02:18:18 by ybahri            #+#    #+#             */
-/*   Updated: 2025/08/24 22:03:28 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/26 01:12:24 by ybahri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ static void	load_one(char *path, t_mlx *mlx, int idx, t_g *g)
 
 void	load_textures(t_mlx *mlx, t_g *g)
 {
-	if (!g->north_texture || !g->south_texture || !g->east_texture || !g->west_texture)
+	if (!g->north_texture || !g->south_texture || !g->east_texture
+		|| !g->west_texture)
 		texture_error(ERROR_MISSING_TEXTURES, mlx, g);
 	load_one(g->north_texture, mlx, IDX_NO, g);
 	load_one(g->south_texture, mlx, IDX_SO, g);

@@ -6,7 +6,7 @@
 /*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 00:00:00 by aleja             #+#    #+#             */
-/*   Updated: 2025/08/26 00:06:51 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/08/26 00:46:30 by ybahri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 int	handle_negative_result(int result, t_parse_data *data)
 {
 	if (result == -1)
-		parsing_error(ERROR_CONFIG_AFTER_MAP, data);
+		parsing_error(ERROR_CFG_AFTER_MAP, data);
 	else if (result == -2)
 		parsing_error(ERROR_RGB_VALUES, data);
 	else if (result == -3)

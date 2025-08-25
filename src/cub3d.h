@@ -6,7 +6,7 @@
 /*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/26 00:06:51 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/08/26 00:43:02 by ybahri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@
 # define ERROR_FILE_ACCESS "No se puede acceder al archivo\n"
 # define ERROR_MEMORY "Error de memoria\n"
 # define ERROR_MAP_ORDER "El mapa debe estar al final del archivo\n"
-# define ERROR_CONFIG_AFTER_MAP "No se permiten configuraciones después del mapa\n"
+# define ERROR_CFG_AFTER_MAP "No se permiten configuraciones después del mapa\n"
 # define ERROR_INCOMPLETE_CONFIG "Configuración incompleta antes del mapa\n"
 
 // BONUS
@@ -150,7 +150,7 @@ typedef struct s_g
 	int		current_pixel_color; // Color temporal para pixel actual
 	int		mouse_last_x; // Última posición X del mouse
 	int		mouse_initialized; // Flag para saber si el mouse está inicializado
-	int		map_started; // Flag para validar orden del archivo (config antes del mapa)
+	int		map_started; // Flag para validar orden del archivo
 	int		map_finished; // Flag para detectar cuando el mapa terminó
 	t_mlx	*mlx; // Puntero a MLX para hooks
 }			t_g;

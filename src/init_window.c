@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   init_window.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/24 22:03:29 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/26 00:57:19 by ybahri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// Función que se ejecuta cuando se cierra la ventana
 int	close_window(t_mlx *mlx)
 {
 	destroy_window(mlx);
 	exit(0);
 }
 
+/* Initialize framebuffer for rendering */
 static int	init_framebuffer(t_mlx *mlx)
 {
 	mlx->img_ptr = mlx_new_image(mlx->mlx_ptr, mlx->width, mlx->height);
@@ -36,7 +36,8 @@ static int	init_mlx_components(t_mlx *mlx)
 	mlx->mlx_ptr = mlx_init();
 	if (!mlx->mlx_ptr)
 		return (0);
-	mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, mlx->width, mlx->height, "cub3D");
+	mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, mlx->width, mlx->height,
+			"cub3D");
 	if (!mlx->win_ptr)
 		return (0);
 	return (1);

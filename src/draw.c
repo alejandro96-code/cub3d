@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 02:18:43 by ybahri            #+#    #+#             */
-/*   Updated: 2025/08/24 23:04:02 by aleja            ###   ########.fr       */
+/*   Updated: 2025/08/26 00:46:03 by ybahri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,28 @@ static int	get_texture_idx(t_g *g)
 		return (IDX_NO);
 }
 
+static void	draw_texture_pixel(t_g *g, int tex_idx, int y, int tex_y)
+{
+	int	color;
+
+	if (g->tex_x >= 0 && g->tex_x < g->tex_width[tex_idx]
+		&& tex_y >= 0 && tex_y < g->tex_height[tex_idx])
+	{
+		color = g->tex_buffer[tex_idx][tex_y * g->tex_width[tex_idx]
+			+ g->tex_x];
+		if (g->side == 1)
+			color = (color >> 1) & 0x7F7F7F;
+		g->current_pixel_y = y;
+		g->current_pixel_color = color;
+		my_mlx_pixel_put(g);
+	}
+}
+
 static void	draw_texture_column(t_mlx *mlx, int tex_idx, t_g *g)
 {
 	double	step;
 	double	tex_pos;
 	int		y;
-	int		color;
 	int		tex_y;
 
 	if (!g->tex_buffer[tex_idx] || g->tex_width[tex_idx] <= 0
@@ -65,17 +81,7 @@ static void	draw_texture_column(t_mlx *mlx, int tex_idx, t_g *g)
 	{
 		tex_y = (int)tex_pos & (g->tex_height[tex_idx] - 1);
 		tex_pos += step;
-		if (g->tex_x >= 0 && g->tex_x < g->tex_width[tex_idx]
-			&& tex_y >= 0 && tex_y < g->tex_height[tex_idx])
-		{
-			color = g->tex_buffer[tex_idx][tex_y * g->tex_width[tex_idx]
-				+ g->tex_x];
-			if (g->side == 1)
-				color = (color >> 1) & 0x7F7F7F;
-			g->current_pixel_y = y;
-			g->current_pixel_color = color;
-			my_mlx_pixel_put(g);
-		}
+		draw_texture_pixel(g, tex_idx, y, tex_y);
 		y++;
 	}
 }

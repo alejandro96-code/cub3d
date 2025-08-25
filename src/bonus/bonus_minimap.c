@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   bonus_minimap.c                                    :+:      :+:    :+:   */
@@ -6,13 +6,13 @@
 /*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 15:26:52 by ybahri            #+#    #+#             */
-/*   Updated: 2025/08/22 15:26:55 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/08/26 01:18:55 by ybahri           ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "cub3d.h"
 
-// Dibuja un cuadrado en el minimapa
+/* Draw a square on the minimap */
 static void	draw_square(t_mlx *mlx, int x, int y, int color)
 {
 	int	i;
@@ -31,7 +31,7 @@ static void	draw_square(t_mlx *mlx, int x, int y, int color)
 	}
 }
 
-// Renderiza un minimapa fijo en la esquina superior izquierda
+/* Render a fixed minimap in the top-left corner */
 void	bonus_minimap(t_mlx *mlx, t_g *g)
 {
 	int		px;
