@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 15:27:11 by ybahri            #+#    #+#             */
-/*   Updated: 2025/08/26 01:21:02 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/09/10 16:41:21 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	setup_hooks(t_g *g)
 {
 	mlx_hook(g->mlx->win_ptr, KEYPRESS, KEYPRESSMASK, key_press, g);
 	mlx_hook(g->mlx->win_ptr, 33, 1L << 17, close_window_hook, g);
-	setup_mouse_hooks(g->mlx, g);
 }
 
 int	key_press(int keycode, t_g *g)

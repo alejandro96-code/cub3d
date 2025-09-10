@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_player.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/26 00:54:20 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/09/10 16:41:20 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,6 @@ void	init_player_from_map(t_g *g)
 				g->player_y = y + 0.5;
 				set_player_direction(g, c);
 				g->map[y][x] = '0';
-				g->mouse_initialized = 0;
-				g->mouse_last_x = -1;
 				return ;
 			}
 		}

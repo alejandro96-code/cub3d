@@ -95,7 +95,6 @@ CUB3DSRC_BONUS = \
 # Archivos bonus (solo se incluyen con make bonus)
 BONUSSRC = \
    src/bonus/bonus_minimap.c \
-   src/bonus/bonus_mouse.c \
    src/bonus/render_bonus.c \
 
 # Directorio de objetos

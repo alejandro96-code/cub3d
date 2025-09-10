@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/08/26 00:43:02 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/09/10 16:41:19 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@
 # define MINIMAP_MARGIN 16
 # define MINIMAP_WALL_COLOR 0x888888
 # define MINIMAP_FLOOR_COLOR 0x222222
-# define MOUSE_SENSITIVITY 0.0005
 
 // EVENTOS Y TECLAS
 # define KEYPRESS 2
@@ -148,8 +147,6 @@ typedef struct s_g
 	int		tex_x; // Coordenada X en la textura
 	int		current_pixel_y; // Y temporal para pixel actual
 	int		current_pixel_color; // Color temporal para pixel actual
-	int		mouse_last_x; // Última posición X del mouse
-	int		mouse_initialized; // Flag para saber si el mouse está inicializado
 	int		map_started; // Flag para validar orden del archivo
 	int		map_finished; // Flag para detectar cuando el mapa terminó
 	t_mlx	*mlx; // Puntero a MLX para hooks
@@ -245,9 +242,6 @@ void		draw_floor_ceiling(t_mlx *mlx, t_g *g);
 void		draw_wall_textures(t_mlx *mlx, t_g *g);
 // bonus_minimap.c
 void		bonus_minimap(t_mlx *mlx, t_g *g);
-// bonus_mouse.c
-void		setup_mouse_hooks(t_mlx *mlx, t_g *g);
-int			mouse_move(int x, int y, t_g *g);
 // render_bonus.c
 void		render_scene_with_bonus(t_mlx *mlx, t_g *g);
 
