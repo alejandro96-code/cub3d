@@ -12,6 +12,19 @@
 
 #include "cub3d.h"
 
+static int	is_map_position_free(t_g *g, double x, double y)
+{
+	int		map_x;
+	int		map_y;
+
+	map_x = (int)x;
+	map_y = (int)y;
+	if (map_x < 0 || map_x >= g->map_width || map_y < 0
+		|| map_y >= g->map_height)
+		return (0);
+	return (g->map[map_y][map_x] == '0');
+}
+
 static int	is_valid_position(t_g *g, double x, double y)
 {
 	int		map_x;
@@ -20,6 +33,13 @@ static int	is_valid_position(t_g *g, double x, double y)
 
 	if (!g)
 		return (0);
+	// Verificar los cuatro puntos alrededor del jugador con un margen de seguridad
+	if (!is_map_position_free(g, x - COLLISION_MARGIN, y - COLLISION_MARGIN)
+		|| !is_map_position_free(g, x + COLLISION_MARGIN, y - COLLISION_MARGIN)
+		|| !is_map_position_free(g, x - COLLISION_MARGIN, y + COLLISION_MARGIN)
+		|| !is_map_position_free(g, x + COLLISION_MARGIN, y + COLLISION_MARGIN))
+		return (0);
+	
 	map_x = (int)x;
 	map_y = (int)y;
 	if (map_x < 0 || map_x >= g->map_width || map_y < 0
