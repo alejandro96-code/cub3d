@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player_control.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 00:58:05 by ybahri            #+#    #+#             */
-/*   Updated: 2025/08/26 00:58:37 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/09/10 16:49:18 by aleja            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static int	is_map_position_free(t_g *g, double x, double y)
 {
-	int		map_x;
-	int		map_y;
+	int	map_x;
+	int	map_y;
 
 	map_x = (int)x;
 	map_y = (int)y;
@@ -33,13 +33,11 @@ static int	is_valid_position(t_g *g, double x, double y)
 
 	if (!g)
 		return (0);
-	// Verificar los cuatro puntos alrededor del jugador con un margen de seguridad
 	if (!is_map_position_free(g, x - COLLISION_MARGIN, y - COLLISION_MARGIN)
 		|| !is_map_position_free(g, x + COLLISION_MARGIN, y - COLLISION_MARGIN)
 		|| !is_map_position_free(g, x - COLLISION_MARGIN, y + COLLISION_MARGIN)
 		|| !is_map_position_free(g, x + COLLISION_MARGIN, y + COLLISION_MARGIN))
 		return (0);
-	
 	map_x = (int)x;
 	map_y = (int)y;
 	if (map_x < 0 || map_x >= g->map_width || map_y < 0
@@ -107,12 +105,9 @@ void	rotate_view(int keycode, t_g *g)
 	else
 		return ;
 	old_dir_x = g->dir_x;
-	g->dir_x = g->dir_x * cos(rotation) - g->dir_y
-		* sin(rotation);
+	g->dir_x = g->dir_x * cos(rotation) - g->dir_y * sin(rotation);
 	g->dir_y = old_dir_x * sin(rotation) + g->dir_y * cos(rotation);
 	old_plane_x = g->plane_x;
-	g->plane_x = g->plane_x * cos(rotation) - g->plane_y
-		* sin(rotation);
-	g->plane_y = old_plane_x * sin(rotation) + g->plane_y
-		* cos(rotation);
+	g->plane_x = g->plane_x * cos(rotation) - g->plane_y * sin(rotation);
+	g->plane_y = old_plane_x * sin(rotation) + g->plane_y * cos(rotation);
 }
