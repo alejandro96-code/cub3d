@@ -6,7 +6,7 @@
 /*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 00:06:01 by ybahri            #+#    #+#             */
-/*   Updated: 2025/09/12 17:16:23 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/09/12 17:28:41 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,16 +57,16 @@ int	handle_config_line(char *line, t_g *g)
 		return (-1);
 	texture_result = parse_texture_line(line, g);
 	if (texture_result == -1)
-		return (-8);  // Textura duplicada
+		return (-8);
 	if (texture_result == -2)
-		return (-9);  // Textura inválida
+		return (-9);
 	if (texture_result == 0)
 	{
 		color_result = parse_color_line(line, g);
 		if (color_result == -1)
-			return (-10);  // Color duplicado
+			return (-10);
 		if (color_result == 0)
-			return (-2);  // Línea de configuración no reconocida
+			return (-2);
 	}
 	return (1);
 }

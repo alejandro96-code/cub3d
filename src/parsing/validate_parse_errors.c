@@ -6,7 +6,7 @@
 /*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 00:06:29 by ybahri            #+#    #+#             */
-/*   Updated: 2025/09/12 17:16:16 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/09/12 17:29:23 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,11 @@ int	is_config_line(char *line)
 		|| ft_strncmp(line, "WE ", 3) == 0 || ft_strncmp(line, "EA ", 3) == 0
 		|| ft_strncmp(line, "C ", 2) == 0 || ft_strncmp(line, "F ", 2) == 0)
 		return (1);
-	if (ft_strlen(line) >= 3 && line[2] == ' ' && 
-		line[0] >= 'A' && line[0] <= 'Z' && line[1] >= 'A' && line[1] <= 'Z')
+	if (ft_strlen(line) >= 3 && line[2] == ' ' && line[0] >= 'A'
+		&& line[0] <= 'Z' && line[1] >= 'A' && line[1] <= 'Z')
 		return (1);
-	if (ft_strlen(line) >= 2 && line[1] == ' ' && 
-		line[0] >= 'A' && line[0] <= 'Z')
+	if (ft_strlen(line) >= 2 && line[1] == ' ' && line[0] >= 'A'
+		&& line[0] <= 'Z')
 		return (1);
 	return (0);
 }

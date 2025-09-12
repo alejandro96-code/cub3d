@@ -6,7 +6,7 @@
 /*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/09/12 17:16:18 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/09/12 17:26:50 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,6 +209,7 @@ int			validate_map_lines_count(int map_count);
 int			validate_complete_parsing(t_g *g, char **map_lines, int map_count);
 // free.c
 void		free_g(t_g *g);
+void		free_textures(t_g *g);
 // init_window.c
 t_mlx		*init_window(const t_g *g);
 void		destroy_window(t_mlx *mlx);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 00:51:22 by ybahri            #+#    #+#             */
-/*   Updated: 2025/08/26 00:51:23 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/09/12 17:26:49 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	key_press(int keycode, t_g *g)
 
 int	close_window_hook(t_g *g)
 {
+	free_textures(g);
 	destroy_window(g->mlx);
 	free_g(g);
 	exit(0);

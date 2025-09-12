@@ -6,7 +6,7 @@
 /*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 00:00:00 by aleja             #+#    #+#             */
-/*   Updated: 2025/09/12 17:16:34 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/09/12 17:29:31 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	process_floor_color(char *line, t_g *g)
 	int		result;
 
 	if (g->floor_color_set)
-		return (-1);  // Color duplicado
+		return (-1);
 	rgb_str = trim_whitespace(line + 2);
 	result = parse_rgb_values(rgb_str, &g->floor_color);
 	if (result == 1)

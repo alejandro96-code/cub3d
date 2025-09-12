@@ -6,7 +6,7 @@
 /*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 00:00:00 by aleja             #+#    #+#             */
-/*   Updated: 2025/09/12 17:16:22 by alejanr2         ###   ########.fr       */
+/*   Updated: 2025/09/12 17:29:37 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ int	parse_texture_line(char *line, t_g *g)
 		return (assign_texture(line, 3, &g->west_texture));
 	else if (ft_strncmp(line, "EA ", 3) == 0)
 		return (assign_texture(line, 3, &g->east_texture));
-	else if (ft_strlen(line) >= 3 && line[2] == ' ' && 
-		((line[0] >= 'A' && line[0] <= 'Z') || (line[1] >= 'A' && line[1] <= 'Z')))
+	else if (ft_strlen(line) >= 3 && line[2] == ' ' && ((line[0] >= 'A'
+				&& line[0] <= 'Z') || (line[1] >= 'A' && line[1] <= 'Z')))
 		return (-2);
 	return (0);
 }
