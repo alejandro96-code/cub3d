@@ -3,7 +3,6 @@ CC = cc
 CFLAGS = -Wall -Werror -Wextra
 RM = rm -f
 
-
 # Archivos de la libft
 LIBFTSRC = \
 	src/libft/ft_isalpha.c \

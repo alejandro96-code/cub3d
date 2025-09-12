@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_process.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 00:00:00 by aleja             #+#    #+#             */
-/*   Updated: 2025/08/26 00:46:30 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/09/12 17:16:24 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@ int	handle_negative_result(int result, t_parse_data *data)
 		parsing_error(ERROR_RGB_VALUES, data);
 	else if (result == -3)
 		parsing_error(ERROR_INCOMPLETE_CONFIG, data);
+	else if (result == -8)
+		parsing_error(ERROR_TEXTURE_DUPLICATE, data);
+	else if (result == -9)
+		parsing_error(ERROR_TEXTURE_INVALID, data);
+	else if (result == -10)
+		parsing_error(ERROR_COLOR_DUPLICATE, data);
 	return (0);
 }
 

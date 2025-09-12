@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 00:00:00 by aleja             #+#    #+#             */
-/*   Updated: 2025/08/26 00:06:51 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/09/12 17:16:22 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,10 @@ static int	assign_texture(char *line, int prefix_len, char **texture_dest)
 	if (!trimmed_path)
 		return (0);
 	if (*texture_dest)
-		free(*texture_dest);
+	{
+		free(trimmed_path);
+		return (-1);
+	}
 	*texture_dest = trimmed_path;
 	return (1);
 }
@@ -74,6 +77,9 @@ int	parse_texture_line(char *line, t_g *g)
 		return (assign_texture(line, 3, &g->west_texture));
 	else if (ft_strncmp(line, "EA ", 3) == 0)
 		return (assign_texture(line, 3, &g->east_texture));
+	else if (ft_strlen(line) >= 3 && line[2] == ' ' && 
+		((line[0] >= 'A' && line[0] <= 'Z') || (line[1] >= 'A' && line[1] <= 'Z')))
+		return (-2);
 	return (0);
 }
 

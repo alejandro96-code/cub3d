@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aleja <aleja@student.42.fr>                +#+  +:+       +#+        */
+/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:56:10 by alejanr2          #+#    #+#             */
-/*   Updated: 2025/09/10 16:41:19 by aleja            ###   ########.fr       */
+/*   Updated: 2025/09/12 17:16:18 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@
 # define ERROR_LINEA_VACIA "Se ha encontrado una linea vacia\n"
 # define ERROR_RGB_FORMAT "Formato RGB inválido.\n"
 # define ERROR_RGB_VALUES "Valores RGB deben estar entre 0 y 255.\n"
+# define ERROR_TEXTURE_DUPLICATE "Textura duplicada encontrada\n"
+# define ERROR_TEXTURE_INVALID "Textura inválida encontrada\n"
+# define ERROR_COLOR_DUPLICATE "Color duplicado encontrado\n"
 # define ERROR_NO_TEXTURE "Falta textura del norte (NO)\n"
 # define ERROR_SO_TEXTURE "Falta textura del sur (SO)\n"
 # define ERROR_EA_TEXTURE "Falta textura del este (EA)\n"
