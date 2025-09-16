@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   raycast_calc.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybahri <ybahri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alejanr2 <alejanr2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:34:38 by aleja             #+#    #+#             */
-/*   Updated: 2025/08/26 01:11:19 by ybahri           ###   ########.fr       */
+/*   Updated: 2025/09/16 09:07:15 by alejanr2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-/* Calculate ray direction and camera position for column x */
+/* Calcula la dirección del rayo y la posición de la cámara
+para cada columna de la pantalla */
 void	calculate_ray_direction(t_g *g, t_mlx *mlx)
 {
 	g->camera_x = 2 * g->x / (double)mlx->width - 1;
@@ -24,7 +25,11 @@ void	calculate_ray_direction(t_g *g, t_mlx *mlx)
 	g->delta_dist_y = fabs(1 / g->ray_dir_y);
 }
 
-/* Calculate step and initial distance to next grid line for DDA algorithm */
+/* Calcula los pasos (step_x y step_y) que el rayo debe dar en el mapa
+(en qué dirección moverse en el eje X o Y).
+También calcula la distancia inicial (side_dist_x y side_dist_y)
+hasta la primera línea de cuadrícula que el rayo cruza.*/
+
 void	calculate_step_and_side_dist(t_g *g)
 {
 	if (g->ray_dir_x < 0)
@@ -49,7 +54,10 @@ void	calculate_step_and_side_dist(t_g *g)
 	}
 }
 
-/* Perform DDA algorithm to advance ray until hitting a wall */
+/* Implementa el algoritmo DDA (Digital Differential Analyzer),
+que avanza el rayo paso a paso en el mapa hasta que golpea una pared.
+Determina si el rayo se mueve más rápido en el eje X o Y y actualiza
+las coordenadas del mapa (map_x, map_y) hasta encontrar un obstáculo.*/
 int	raycast_dda(t_g *g)
 {
 	int	hit;
@@ -70,15 +78,17 @@ int	raycast_dda(t_g *g)
 			g->map_y += g->step_y;
 			g->side = 1;
 		}
-		if (g->map_x < 0 || g->map_x >= g->map_width
-			|| g->map_y < 0 || g->map_y >= g->map_height
-			|| g->map[g->map_y][g->map_x] != '0')
+		if (g->map_x < 0 || g->map_x >= g->map_width || g->map_y < 0
+			|| g->map_y >= g->map_height || g->map[g->map_y][g->map_x] != '0')
 			hit = 1;
 	}
 	return (g->side);
 }
 
-/* Calculate perpendicular wall distance and line height */
+/* Calcula la distancia perpendicular desde el jugador
+hasta la pared que el rayo golpeó.
+Usa esta distancia para determinar la altura de la línea
+que se debe dibujar en la pantalla para representar esa pared. */
 void	calculate_perp_wall_and_lineheight(t_mlx *mlx, t_g *g)
 {
 	if (g->side == 0)
@@ -90,7 +100,10 @@ void	calculate_perp_wall_and_lineheight(t_mlx *mlx, t_g *g)
 	g->line_height = (int)(mlx->height / g->perp_wall_dist);
 }
 
-/* Calculate drawing limits for wall column */
+/* Calcula los límites superior e inferior de la línea que
+se dibujará en la pantalla para esa pared.
+Esto asegura que las paredes se dibujen correctamente en
+perspectiva, ajustando su altura según la distancia. */
 void	calculate_draw_limits(t_mlx *mlx, t_g *g)
 {
 	g->draw_start = -g->line_height / 2 + mlx->height / 2;
